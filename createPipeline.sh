@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 branch=main
 
 source ./setupEnvironment.sh
