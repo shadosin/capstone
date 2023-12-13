@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
 
-public class UserUpdateRequest {
+public class CreateUserRequest {
+
     @NotEmpty
-    @JsonProperty("userId")
-    private String userId;
     @JsonProperty("userName")
     private String userName;
     @JsonProperty("firstName")
@@ -25,13 +24,7 @@ public class UserUpdateRequest {
     @JsonProperty("dateJoined")
     private String dateJoined;
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public CreateUserRequest() {}
 
     public String getUserName() {
         return userName;
