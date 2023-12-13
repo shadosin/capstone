@@ -1,5 +1,6 @@
 package com.kenzie.capstone.service.dependency;
 
+import com.kenzie.capstone.service.ExerciseService;
 import com.kenzie.capstone.service.LambdaService;
 
 import dagger.Component;
@@ -13,4 +14,5 @@ import javax.inject.Singleton;
 @Component(modules = {DaoModule.class, ServiceModule.class})
 public interface ServiceComponent {
     LambdaService provideLambdaService();
+    ExerciseService provideExerciseService();
 }

@@ -1,6 +1,8 @@
-package com.kenzie.appserver.repositories.model;
+package com.kenzie.capstone.service.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
@@ -21,7 +23,7 @@ public class ExerciseRecord {
     private double distance;
     private double METS;
     private String description;
-    @DynamoDBAttribute(attributeName = "exerciseId")
+    @DynamoDBHashKey(attributeName = "exerciseId")
     public String getExerciseId() {
         return exerciseId;
     }
@@ -29,7 +31,7 @@ public class ExerciseRecord {
     public void setExerciseId(String exerciseId) {
         this.exerciseId = exerciseId;
     }
-    @DynamoDBAttribute(attributeName = "type")
+    @DynamoDBRangeKey(attributeName = "type")
     public String getType() {
         return type;
     }
