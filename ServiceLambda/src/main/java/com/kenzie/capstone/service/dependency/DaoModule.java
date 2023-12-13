@@ -2,6 +2,7 @@ package com.kenzie.capstone.service.dependency;
 
 
 import com.kenzie.capstone.service.dao.ExampleDao;
+import com.kenzie.capstone.service.dao.ExerciseDao;
 import com.kenzie.capstone.service.util.DynamoDbClientProvider;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -31,6 +32,13 @@ public class DaoModule {
     @Inject
     public ExampleDao provideExampleDao(@Named("DynamoDBMapper") DynamoDBMapper mapper) {
         return new ExampleDao(mapper);
+    }
+    @Singleton
+    @Provides
+    @Named("ExerciseDao")
+    @Inject
+    public ExerciseDao provideExerciseDao(@Named("DynamoDBMapper") DynamoDBMapper mapper){
+        return new ExerciseDao(mapper);
     }
 
 }

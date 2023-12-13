@@ -1,28 +1,36 @@
-package com.kenzie.appserver.controller.model;
+package com.kenzie.capstone.service.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 
-public class ExerciseCreateRequest {
-    @JsonProperty("exerciseId")
+public class ExerciseData {
     private String exerciseId;
-    @JsonProperty("type")
+
     private String type;
-    @JsonProperty("intensity")
+
     private String intensity;
-    @JsonProperty("exerciseName")
+
     private String exerciseName;
-    @JsonProperty("duration")
+
     private int duration;
-    @JsonProperty("reps")
     private int reps;
-    @JsonProperty("sets")
     private int sets;
-    @JsonProperty("distance")
     private double distance;
-    @JsonProperty("METS")
     private double METS;
-    @JsonProperty("description")
     private String description;
+
+    public ExerciseData(String exerciseId, String type, String intensity, String exerciseName, int duration, int reps,
+                    int sets, double distance, double METS, String description){
+        this.exerciseId = exerciseId;
+        this.type = type;
+        this.intensity = intensity;
+        this.exerciseName = exerciseName;
+        this.duration = duration;
+        this.reps = reps;
+        this.sets = sets;
+        this.distance = distance;
+        this.METS = METS;
+        this.description = description;
+    }
 
     public String getExerciseId() {
         return exerciseId;
@@ -102,5 +110,18 @@ public class ExerciseCreateRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExerciseData)) return false;
+        ExerciseData that = (ExerciseData) o;
+        return getExerciseId().equals(that.getExerciseId()) && getType().equals(that.getType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getExerciseId(), getType());
     }
 }
