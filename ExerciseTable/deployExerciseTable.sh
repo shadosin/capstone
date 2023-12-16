@@ -1,45 +1,65 @@
 #!/usr/bin/env bash
+STACK_NAME='capstone-exercise-tables'
+EXERCISE_FILE='exerciseData.json'
+TEMP_FILE='temp.json'
 
-# Script to deploy the Exercise Data from a Google Sheet to a DynamoDB table, using aws cli and CloudFormation.
+get_data() {
+    echo "Getting Exercise Data from Google Sheet"
+    node getExerciseJson.mjs > $EXERCISE_FILE
+    echo "Exercise data obtained"
+}
 
-# Google Sheet URL
-# https://sheets.googleapis.com/v4/spreadsheets/{spreadsheetId}/values/{sheetName}?alt=json&key={theKey}
-
-# You will need to install the program jq  to run this script.
-# if your on windows install scoop then run scoop install jq
-# if your on mac install homebrew then run brew install jq
-# if your on linux install apt-get then run apt-get install jq
-
-# you will also need to have an api key from google.
-
-
-echo "Getting Exercise Data from Google Sheet"
-node getExerciseJson.mjs > exerciseData.json
-echo "Exercise Data obtained"
-echo "Creating Stack and Table"
-aws cloudformation create-stack --stack-name capstone-exercise-tables --template-body file://ExerciseTable.yml
-echo "Waiting for stack to be created"
-aws cloudformation wait stack-create-complete --stack-name capstone-exercise-tables
-echo "Stack and Table created"
+create_stack() {
+    echo "Creating Stack and Table"
+    aws cloudformation create-stack --stack-name $STACK_NAME --template-body file://ExerciseTable.yml
+    echo "Waiting for stack to be created"
+    aws cloudformation wait stack-create-complete --stack-name $STACK_NAME
+    echo "Stack and Table created"
+}
 
 split_and_write() {
     local file=$1
-    local length=$(jq '.Exercise | length' "$file")
+    local dataLength=$(jq '.Exercise | length' "$file")
     local -i count=0
-
-    while [[ $count -lt $length ]]; do
+    while [[ $count -lt $dataLength ]]; do
         jq "{Exercise: .Exercise[$count:$((count + 25))]}" $file > temp.json
         echo "Writing batch $count to DynamoDB"
-        aws dynamodb batch-write-item --request-items file://temp.json
+        aws dynamodb batch-write-item --request-items file://$TEMP_FILE
         let count+=25
     done
 }
-split_and_write exerciseData.json
-echo "Exercise Data written to DynamoDB"
-echo "Cleaning up"
 
-[[ -f exerciseData.json ]] && rm exerciseData.json
+cleanup() {
+    echo "Cleaning up"
+    [[ -f $EXERCISE_FILE ]] && rm $EXERCISE_FILE
+    [[ -f $TEMP_FILE ]] && rm $TEMP_FILE
+}
 
-[[ -f temp.json ]] && rm temp.json
+delete_stack() {
+    echo "Deleting Stack"
+    aws cloudformation delete-stack --stack-name $STACK_NAME
+    echo "Waiting for stack to be deleted"
+    aws cloudformation wait stack-delete-complete --stack-name $STACK_NAME
+    echo "Stack deleted"
+}
 
+if [[ $1 == "-d" ]]; then
+    delete_stack
+    cleanup
+fi
+
+if [[ $1 != "-d" ]]; then
+    get_data
+fi
+
+if [[ $1 == "-c" ]]; then
+    create_stack
+    split_and_write $EXERCISE_FILE
+    cleanup
+fi
+
+if [[ $1 == "-r" ]]; then
+  echo  "Cleaning files and exiting."
+    cleanup
+fi
 echo "Good Bye"
