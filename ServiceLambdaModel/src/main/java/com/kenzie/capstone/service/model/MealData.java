@@ -12,6 +12,8 @@ public class MealData {
 
     private String recipe;
 
+    private String type;
+
     private int protein;
 
     private int carb;
@@ -26,6 +28,7 @@ public class MealData {
                     String name,
                     String description,
                     String recipe,
+                    String type,
                     int protein,
                     int carb,
                     int fat,
@@ -35,6 +38,7 @@ public class MealData {
         this.name = name;
         this.description = description;
         this.recipe = recipe;
+        this.type = type;
         this.protein = protein;
         this.carb = carb;
         this.fat = fat ;
@@ -86,11 +90,12 @@ public class MealData {
         return protein == mealData.protein &&
                 carb == mealData.carb &&
                 fat == mealData.fat &&
-                Objects.equals(mealId, mealData.mealId);
+                Objects.equals(mealId, mealData.mealId) &&
+                Objects.equals(type, mealData.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mealId, protein, carb, fat);
+        return Objects.hash(mealId,type, protein, carb, fat);
     }
 }
