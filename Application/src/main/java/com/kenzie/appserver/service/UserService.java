@@ -2,6 +2,7 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
+import com.kenzie.capstone.service.client.LambdaServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class UserService {
   private final UserRepository userRepository;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, LambdaServiceClient lambdaServiceClient) {
     this.userRepository = userRepository;
   }
 

@@ -30,3 +30,7 @@ lambda-service-development.yml
 
 package-lock.json
 yarn.lock
+
+# Ignore qodana
+qodana*
+
