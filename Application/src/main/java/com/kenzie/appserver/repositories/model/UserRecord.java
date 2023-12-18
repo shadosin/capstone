@@ -1,8 +1,9 @@
 package com.kenzie.appserver.repositories.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.kenzie.appserver.service.model.ScheduledEvent;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "Users")
@@ -16,6 +17,8 @@ public class UserRecord {
   private String phoneNum;
   private String email;
   private String dateJoined;
+  private ArrayList<ScheduledEvent> scheduledEventList = new ArrayList<>();
+
 
   @DynamoDBHashKey(attributeName = "userId")
   public String getUserId() {
@@ -96,6 +99,15 @@ public class UserRecord {
 
   public void setDateJoined(String dateJoined) {
     this.dateJoined = dateJoined;
+  }
+
+  @DynamoDBTypeConvertedJson
+  public ArrayList<ScheduledEvent> getScheduledEventList() {
+    return scheduledEventList;
+  }
+
+  public void setScheduledEventList(ArrayList<ScheduledEvent> scheduledEventList) {
+    this.scheduledEventList = scheduledEventList;
   }
 
   @Override

@@ -1,14 +1,11 @@
 package com.kenzie.appserver.controller;
 
-import com.amazonaws.services.cloudwatch.model.ResourceNotFoundException;
 import com.kenzie.appserver.controller.model.CreateUserRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.service.UserService;
 import com.kenzie.appserver.utils.UserConverter;
-
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
   private final UserService userService;
@@ -31,8 +28,6 @@ public class UserController {
       UserRecord userRecord = userService.findById(userId);
       UserResponse userResponse = UserConverter.recordToResponse(userRecord);
       return ResponseEntity.ok(userResponse);
-    } catch (ResourceNotFoundException e) {
-      return ResponseEntity.notFound().build();
     } catch (IllegalArgumentException | NullPointerException e) {
       return ResponseEntity.badRequest().build();
     }
@@ -48,8 +43,6 @@ public class UserController {
 
       return ResponseEntity.ok(userList);
 
-    } catch (ResourceNotFoundException e) {
-      return ResponseEntity.notFound().build();
     } catch (IllegalArgumentException | NullPointerException e) {
       return ResponseEntity.badRequest().build();
     }
@@ -75,7 +68,7 @@ public class UserController {
     try {
       String result = userService.deleteUser(userId);
       return ResponseEntity.ok(result);
-    } catch (IllegalArgumentException | ResourceNotFoundException e) {
+    } catch (IllegalArgumentException e) {
       return ResponseEntity.notFound().build();
     }
   }
@@ -87,7 +80,7 @@ public class UserController {
       UserRecord userRecord = UserConverter.requestToUserRecord(userUpdateRequest);
       UserRecord updatedRecord = userService.updateUser(userRecord);
       return ResponseEntity.accepted().body(UserConverter.recordToResponse(updatedRecord));
-    } catch (IllegalArgumentException | ResourceNotFoundException e) {
+    } catch (IllegalArgumentException e) {
       return ResponseEntity.notFound().build();
     }
   }
