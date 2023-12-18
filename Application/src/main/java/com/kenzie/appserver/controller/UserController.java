@@ -73,7 +73,7 @@ public class UserController {
     }
   }
 
-  @PutMapping("/userId")
+  @PutMapping("/{userId}")
   public ResponseEntity<UserResponse> updateUser(
       @PathVariable("userId") String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
     try {
