@@ -2,8 +2,6 @@ package com.kenzie.appserver.repositories.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.kenzie.appserver.converter.ZonedDateTimeConverter;
-import com.kenzie.appserver.service.model.ScheduledEvent;
-import org.joda.time.DateTime;
 
 import java.time.ZonedDateTime;
 import java.util.List;
