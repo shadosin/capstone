@@ -1,9 +1,10 @@
 package com.kenzie.appserver.repositories.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.kenzie.appserver.service.model.ScheduledEvent;
+import com.kenzie.appserver.converter.ZonedDateTimeConverter;
 
-import java.util.ArrayList;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "Users")
@@ -12,12 +13,11 @@ public class UserRecord {
   private String username;
   private String firstName;
   private String lastName;
-  private String birthDate;
   private String address;
   private String phoneNum;
   private String email;
-  private String dateJoined;
-  private ArrayList<ScheduledEvent> scheduledEventList = new ArrayList<>();
+  private ZonedDateTime dateJoined;
+  private List<String> userScheduleIds;
 
 
   @DynamoDBHashKey(attributeName = "userId")
@@ -56,15 +56,6 @@ public class UserRecord {
     this.lastName = lastName;
   }
 
-  @DynamoDBAttribute(attributeName = "birthDate")
-  public String getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(String birthDate) {
-    this.birthDate = birthDate;
-  }
-
   @DynamoDBAttribute(attributeName = "address")
   public String getAddress() {
     return address;
@@ -92,22 +83,23 @@ public class UserRecord {
     this.email = email;
   }
 
+  @DynamoDBTypeConverted(converter = ZonedDateTimeConverter.class)
   @DynamoDBAttribute(attributeName = "dateJoined")
-  public String getDateJoined() {
+  public ZonedDateTime getDateJoined() {
     return dateJoined;
   }
 
-  public void setDateJoined(String dateJoined) {
+  public void setDateJoined(ZonedDateTime dateJoined) {
     this.dateJoined = dateJoined;
   }
 
-  @DynamoDBTypeConvertedJson
-  public ArrayList<ScheduledEvent> getScheduledEventList() {
-    return scheduledEventList;
+  @DynamoDBAttribute(attributeName = "scheduleIdList")
+  public List<String> getUserScheduleIds() {
+    return userScheduleIds;
   }
 
-  public void setScheduledEventList(ArrayList<ScheduledEvent> scheduledEventList) {
-    this.scheduledEventList = scheduledEventList;
+  public void setUserScheduleIds(List<String> userScheduleIds) {
+    this.userScheduleIds = userScheduleIds;
   }
 
   @Override
@@ -119,7 +111,6 @@ public class UserRecord {
         && Objects.equals(username, that.username)
         && Objects.equals(firstName, that.firstName)
         && Objects.equals(lastName, that.lastName)
-        && Objects.equals(birthDate, that.birthDate)
         && Objects.equals(address, that.address)
         && Objects.equals(phoneNum, that.phoneNum)
         && Objects.equals(email, that.email)
@@ -129,6 +120,6 @@ public class UserRecord {
   @Override
   public int hashCode() {
     return Objects.hash(
-        userId, username, firstName, lastName, birthDate, address, phoneNum, email, dateJoined);
+        userId, username, firstName, lastName, address, phoneNum, email, dateJoined);
   }
 }

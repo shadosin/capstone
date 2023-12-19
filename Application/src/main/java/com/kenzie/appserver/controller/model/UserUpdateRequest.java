@@ -3,6 +3,8 @@ package com.kenzie.appserver.controller.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 public class UserUpdateRequest {
     @NotEmpty
@@ -14,8 +16,6 @@ public class UserUpdateRequest {
     private String firstName;
     @JsonProperty("lastName")
     private String lastName;
-    @JsonProperty("birthDate")
-    private String birthDate;
     @JsonProperty("address")
     private String address;
     @JsonProperty("phoneNum")
@@ -23,7 +23,9 @@ public class UserUpdateRequest {
     @JsonProperty("email")
     private String email;
     @JsonProperty("dateJoined")
-    private String dateJoined;
+    private ZonedDateTime dateJoined;
+    @JsonProperty("scheduleIdList")
+    private List<String> userScheduleIds;
 
     public String getUserId() {
         return userId;
@@ -57,14 +59,6 @@ public class UserUpdateRequest {
         this.lastName = lastName;
     }
 
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -89,11 +83,19 @@ public class UserUpdateRequest {
         this.email = email;
     }
 
-    public String getDateJoined() {
+    public ZonedDateTime getDateJoined() {
         return dateJoined;
     }
 
-    public void setDateJoined(String dateJoined) {
+    public void setDateJoined(ZonedDateTime dateJoined) {
         this.dateJoined = dateJoined;
+    }
+
+    public List<String> getUserScheduleIds() {
+        return userScheduleIds;
+    }
+
+    public void setUserScheduleIds(List<String> userScheduleIds) {
+        this.userScheduleIds = userScheduleIds;
     }
 }

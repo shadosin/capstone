@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.model.UserRecord;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResponse {
@@ -17,8 +19,6 @@ public class UserResponse {
     private String firstName;
     @JsonProperty("lastName")
     private String lastName;
-    @JsonProperty("birthDate")
-    private String birthDate;
     @JsonProperty("address")
     private String address;
     @JsonProperty("phoneNum")
@@ -26,7 +26,9 @@ public class UserResponse {
     @JsonProperty("email")
     private String email;
     @JsonProperty("dateJoined")
-    private String dateJoined;
+    private ZonedDateTime dateJoined;
+    @JsonProperty("scheduleIdList")
+    private List<String> userScheduleIds;
 
     public UserResponse() {}
 
@@ -35,11 +37,11 @@ public class UserResponse {
         this.userName = userRecord.getUsername();
         this.firstName = userRecord.getFirstName();
         this.lastName = userRecord.getLastName();
-        this.birthDate = userRecord.getBirthDate();
         this.address = userRecord.getAddress();
         this.phoneNum = userRecord.getPhoneNum();
         this.email = userRecord.getEmail();
         this.dateJoined = userRecord.getDateJoined();
+        this.userScheduleIds = userRecord.getUserScheduleIds();
     }
 
     public String getUserId() {
@@ -74,14 +76,6 @@ public class UserResponse {
         this.lastName = lastName;
     }
 
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -106,11 +100,19 @@ public class UserResponse {
         this.email = email;
     }
 
-    public String getDateJoined() {
+    public ZonedDateTime getDateJoined() {
         return dateJoined;
     }
 
-    public void setDateJoined(String dateJoined) {
+    public void setDateJoined(ZonedDateTime dateJoined) {
         this.dateJoined = dateJoined;
+    }
+
+    public List<String> getUserScheduleIds() {
+        return userScheduleIds;
+    }
+
+    public void setUserScheduleIds(List<String> userScheduleIds) {
+        this.userScheduleIds = userScheduleIds;
     }
 }
