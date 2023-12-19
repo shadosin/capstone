@@ -6,6 +6,7 @@ import com.kenzie.capstone.service.MealService;
 import com.kenzie.capstone.service.dao.ExampleDao;
 
 import com.kenzie.capstone.service.dao.ExerciseDao;
+import com.kenzie.capstone.service.dao.MealDao;
 import dagger.Module;
 import dagger.Provides;
 
@@ -29,6 +30,13 @@ public class ServiceModule {
     @Inject
     public ExerciseService provideExerciseService(@Named("ExerciseDao")ExerciseDao exerciseDao){
         return new ExerciseService(exerciseDao);
+    }
+
+    @Singleton
+    @Provides
+    @Inject
+    public MealService provideMealService(@Named("MealDao") MealDao mealDao){
+        return new MealService(mealDao);
     }
 }
 
