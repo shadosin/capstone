@@ -3,11 +3,10 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
@@ -20,7 +19,8 @@ public class UserService {
   }
 
   public UserRecord findById(String userId) {
-    return userRepository.findById(userId).orElse(null);
+    return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(
+        "User with id " + userId + " does not exist"));
   }
 
   public List<UserRecord> getAllUsers() {
