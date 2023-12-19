@@ -31,6 +31,6 @@ public class UserScheduleService {
         if (userRecord == null) {
             throw new IllegalArgumentException("User does not exist with ID: " + userId);
         }
-        List<String> userSchedules = userRecord.
+        List<String> userSchedules = userRecord
     }
 }
