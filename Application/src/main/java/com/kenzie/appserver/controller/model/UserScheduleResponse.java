@@ -14,8 +14,10 @@ public class UserScheduleResponse {
     private ZonedDateTime start;
     @JsonProperty("end")
     private ZonedDateTime end;
-    @JsonProperty("scheduledItems")
-    private List<String> scheduledItems;
+    @JsonProperty("scheduledEventIds")
+    private List<String> scheduledEventIds;
+    @JsonProperty("userId")
+    private String userId;
 
     public UserScheduleResponse(){}
 
@@ -23,7 +25,8 @@ public class UserScheduleResponse {
         this.scheduleId = record.getScheduleId();
         this.start = record.getStart();
         this.end = record.getEnd();
-        this.scheduledItems = record.getScheduleItems();
+        this.scheduledEventIds = record.getScheduledEventIds();
+        this.userId = record.getUserId();
     }
 
     public String getScheduleId() {
@@ -49,13 +52,19 @@ public class UserScheduleResponse {
     public void setEnd(ZonedDateTime end) {
         this.end = end;
     }
-    public List<String> getScheduledItems() {
-        return scheduledItems;
+    public List<String> getScheduledEventIds() {
+        return scheduledEventIds;
     }
 
-    public void setScheduledItems(List<String> scheduledItems) {
-        this.scheduledItems = scheduledItems;
+    public void setScheduledEventIds(List<String> scheduledEventIds) {
+        this.scheduledEventIds = scheduledEventIds;
     }
 
+    public String getUserId() {
+        return userId;
+    }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

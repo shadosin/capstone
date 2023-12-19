@@ -6,12 +6,15 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public class CreateUserScheduleRequest {
+
+    @JsonProperty("userId")
+    private String userId;
     @JsonProperty("start")
     private ZonedDateTime start;
     @JsonProperty("end")
     private ZonedDateTime end;
-    @JsonProperty("scheduledItems")
-    private List<String> scheduledItems;
+    @JsonProperty("scheduledEventIds")
+    private List<String> scheduledEventIds;
 
 
 
@@ -31,11 +34,19 @@ public class CreateUserScheduleRequest {
         this.end = end;
     }
 
-    public List<String> getScheduleItems() {
-        return scheduledItems;
+    public List<String> getScheduledEventIds() {
+        return scheduledEventIds;
     }
 
-    public void setScheduleItems(List<String> scheduleItems) {
-        this.scheduledItems = scheduleItems;
+    public void setScheduledEventIds(List<String> scheduledEventIds) {
+        this.scheduledEventIds = scheduledEventIds;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

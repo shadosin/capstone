@@ -1,9 +1,10 @@
 package com.kenzie.appserver.service.model;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class ScheduledEvent {
-    private String scheduledDateTime;
+    private ZonedDateTime scheduledDateTime;
     private String eventType;
     private String eventId;
     private boolean completed;
@@ -11,7 +12,7 @@ public class ScheduledEvent {
 
     public ScheduledEvent() {}
 
-    public ScheduledEvent(String scheduledDateTime,
+    public ScheduledEvent(ZonedDateTime scheduledDateTime,
                           String eventType,
                           String eventId,
                           boolean completed,
@@ -23,11 +24,11 @@ public class ScheduledEvent {
         this.metricsCalculated = metricsCalculated;
     }
 
-    public String getScheduledDateTime() {
+    public ZonedDateTime getScheduledDateTime() {
         return scheduledDateTime;
     }
 
-    public void setScheduledDateTime(String scheduledDateTime) {
+    public void setScheduledDateTime(ZonedDateTime scheduledDateTime) {
         this.scheduledDateTime = scheduledDateTime;
     }
 
@@ -68,7 +69,11 @@ public class ScheduledEvent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduledEvent that = (ScheduledEvent) o;
-        return completed == that.completed && metricsCalculated == that.metricsCalculated && Objects.equals(scheduledDateTime, that.scheduledDateTime) && Objects.equals(eventType, that.eventType) && Objects.equals(eventId, that.eventId);
+        return completed == that.completed &&
+                metricsCalculated == that.metricsCalculated &&
+                Objects.equals(scheduledDateTime, that.scheduledDateTime) &&
+                Objects.equals(eventType, that.eventType) &&
+                Objects.equals(eventId, that.eventId);
     }
 
     @Override
