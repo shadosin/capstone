@@ -2,6 +2,7 @@ package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -15,6 +16,15 @@ public class UserScheduleResponse {
     private ZonedDateTime end;
     @JsonProperty("scheduledItems")
     private List<String> scheduledItems;
+
+    public UserScheduleResponse(){}
+
+    public UserScheduleResponse (UserScheduleRecord record){
+        this.scheduleId = record.getScheduleId();
+        this.start = record.getStart();
+        this.end = record.getEnd();
+        this.scheduledItems = record.getScheduleItems();
+    }
 
     public String getScheduleId() {
         return scheduleId;
