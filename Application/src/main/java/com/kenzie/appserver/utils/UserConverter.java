@@ -67,4 +67,18 @@ public class UserConverter {
     userRecord.setUserScheduleIds(userUpdateRequest.getUserScheduleIds());
     return userRecord;
   }
+  public static UserUpdateRequest recordToUpdateUserRequest(UserRecord userRecord){
+    UserUpdateRequest updateRequest = new UserUpdateRequest();
+    updateRequest.setUserId(userRecord.getUserId());
+    updateRequest.setUserName(userRecord.getUsername());
+    updateRequest.setFirstName(userRecord.getFirstName());
+    updateRequest.setLastName(userRecord.getLastName());
+    updateRequest.setAddress(userRecord.getAddress());
+    updateRequest.setPhoneNum(userRecord.getPhoneNum());
+    updateRequest.setEmail(userRecord.getEmail());
+    updateRequest.setDateJoined(userRecord.getDateJoined());
+    updateRequest.setUserScheduleIds(userRecord.getUserScheduleIds());
+
+    return updateRequest;
+  }
 }

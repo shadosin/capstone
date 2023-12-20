@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.controller.model.CreateUserRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.UserRepository;
@@ -36,8 +37,13 @@ public class UserService {
     return allUsers;
   }
 
-  public UserRecord createUser(UserRecord user) {
-    return userRepository.save(user);
+  public UserResponse createUser(CreateUserRequest createUserRequest) {
+    if(createUserRequest == null){
+      throw new IllegalArgumentException("Request was null");
+    }
+    UserRecord userRecord = UserConverter.requestToUserRecord(createUserRequest);
+    userRepository.save(userRecord);
+    return new UserResponse(userRecord);
   }
 
   public String deleteUser(String userId) {

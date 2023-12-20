@@ -4,6 +4,7 @@ import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.UserScheduleRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
+import com.kenzie.appserver.utils.UserConverter;
 import com.kenzie.appserver.utils.UserScheduleConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class UserScheduleService {
 
         newSchedule = userScheduleRepository.save(newSchedule);
         userRecord.getUserScheduleIds().add(newSchedule.getScheduleId());
-        userService.updateUser(userRecord);
+        userService.updateUser(userRecord.getUserId(), UserConverter.recordToUpdateUserRequest(userRecord));
 
         return new UserScheduleResponse(newSchedule);
     }
@@ -94,7 +95,7 @@ public class UserScheduleService {
         List<String> userScheduleIds = userRecord.get().getUserScheduleIds();
         userScheduleIds.remove(scheduleId);
 
-        userService.updateUser(userRecord.get());
+        userService.updateUser(userRecord.get().getUserId(), UserConverter.recordToUpdateUserRequest(userRecord.get()));
         userScheduleRepository.deleteById(scheduleId);
     }
 
