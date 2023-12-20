@@ -1,10 +1,8 @@
 package com.kenzie.appserver.utils;
 
-import com.kenzie.appserver.controller.model.CreateUserScheduleRequest;
 import com.kenzie.appserver.controller.model.UserScheduleResponse;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 
-import java.util.UUID;
 
 public class UserScheduleConverter {
 

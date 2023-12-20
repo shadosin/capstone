@@ -1,7 +1,6 @@
 package com.kenzie.appserver.utils;
 
 import com.kenzie.appserver.controller.model.CreateScheduledEventRequest;
-import com.kenzie.appserver.controller.model.ScheduledEventUpdateRequest;
 import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
 
 import java.util.UUID;
