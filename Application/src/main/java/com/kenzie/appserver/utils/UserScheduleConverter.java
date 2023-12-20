@@ -8,17 +8,6 @@ import java.util.UUID;
 
 public class UserScheduleConverter {
 
-    public static UserScheduleRecord convertToRecordFromRequest(CreateUserScheduleRequest request) {
-        UserScheduleRecord record = new UserScheduleRecord();
-        record.setScheduleId(UUID.randomUUID().toString());
-        record.setUserId(request.getUserId());
-        record.setStart(request.getStart());
-        record.setEnd(request.getEnd());
-        record.setScheduledEventIds(request.getScheduledEventIds());
-
-        return record;
-    }
-
     public static UserScheduleRecord convertToRecordFromResponse(UserScheduleResponse response) {
         UserScheduleRecord record = new UserScheduleRecord();
         record.setScheduleId(response.getScheduleId());

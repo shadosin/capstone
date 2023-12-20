@@ -14,7 +14,7 @@ public class CreateUserScheduleRequest {
     @JsonProperty("end")
     private ZonedDateTime end;
     @JsonProperty("scheduledEventIds")
-    private List<String> scheduledEventIds;
+    private List<CreateScheduledEventRequest> scheduledEvents;
 
 
 
@@ -34,12 +34,12 @@ public class CreateUserScheduleRequest {
         this.end = end;
     }
 
-    public List<String> getScheduledEventIds() {
-        return scheduledEventIds;
+    public List<CreateScheduledEventRequest> getScheduledEvents() {
+        return scheduledEvents;
     }
 
-    public void setScheduledEventIds(List<String> scheduledEventIds) {
-        this.scheduledEventIds = scheduledEventIds;
+    public void setScheduledEvents(List<CreateScheduledEventRequest> scheduledEvents) {
+        this.scheduledEvents = scheduledEvents;
     }
 
     public String getUserId() {
