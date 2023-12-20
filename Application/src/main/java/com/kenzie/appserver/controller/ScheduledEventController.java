@@ -22,28 +22,44 @@ public class ScheduledEventController {
         this.scheduledEventService = scheduledEventService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<ScheduledEventResponse> createScheduledEvent(@RequestBody CreateScheduledEventRequest request) {
-//
-//    }
+    @PostMapping
+    public ResponseEntity<ScheduledEventResponse> createScheduledEvent(@RequestBody CreateScheduledEventRequest request) {
+        ScheduledEventResponse response = scheduledEventService.createScheduledEvent(request);
+    return ResponseEntity.ok(response);
+    }
 
-//    @PutMapping("/{eventId}")
-//    public ResponseEntity<ScheduledEventResponse> updateScheduledEvent(@PathVariable("eventId") String eventId, @RequestBody ScheduledEventUpdateRequest request) {
-//
-//    }
+    @PutMapping("/{eventId}")
+    public ResponseEntity<ScheduledEventResponse> updateScheduledEvent(@PathVariable("eventId") String eventId,
+                                                                       @RequestBody ScheduledEventUpdateRequest request
+    ) {
+        ScheduledEventResponse response = scheduledEventService.updateScheduledEvent(eventId, request);
+        if(response == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 
-//    @GetMapping("/{eventId}/")
-//    public ResponseEntity<ScheduledEventResponse> getScheduledEvent(@PathVariable("eventId") String eventId) {
-//
-//    }
+    @GetMapping("/{eventId}/")
+    public ResponseEntity<ScheduledEventResponse> getScheduledEventById(@PathVariable("eventId") String eventId) {
+        ScheduledEventResponse response = scheduledEventService.findById(eventId);
+        if(response == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 
-//    @DeleteMapping("/{eventId}")
-//    public ResponseEntity<ScheduledEventResponse> deleteEvent(@PathVariable("eventId") String eventId) {
-//
-//    }
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<ScheduledEventResponse> deleteEvent(@PathVariable("eventId") String eventId) {
+    scheduledEventService.deleteScheduledEvent(eventId);
+    return ResponseEntity.noContent().build();
+    }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<List<ScheduledEventResponse>> getAllScheduledEvents() {
-//
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<List<ScheduledEventResponse>> getAllScheduledEvents() {
+    List<ScheduledEventResponse> responses = scheduledEventService.getAllScheduledEvents();
+    if(responses == null || responses.isEmpty()){
+        return ResponseEntity.noContent().build();
+    }
+    return ResponseEntity.ok(responses);
+    }
 }

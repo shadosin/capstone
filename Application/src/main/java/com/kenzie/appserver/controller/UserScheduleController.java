@@ -50,4 +50,5 @@ public class UserScheduleController {
         UserScheduleResponse response = userScheduleService.updateUserSchedule(scheduleId, request);
         return ResponseEntity.ok(response);
     }
+  
 }

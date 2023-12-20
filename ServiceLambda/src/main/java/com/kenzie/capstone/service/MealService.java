@@ -26,8 +26,8 @@ public class MealService {
     }
 
     public MealData setData(String mealId, String type,
-                            String recipe, String name, String description, int fat,
-                            int protein, int carb, boolean glutenFree, boolean vegan) {
+                            String recipe, String name, String description, double fat,
+                            double protein, double carb, boolean glutenFree, boolean vegan) {
         MealRecord record = dao.setMealRecord(mealId, type, recipe, name, description,
                 fat, protein, carb, glutenFree, vegan);
 
