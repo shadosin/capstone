@@ -46,13 +46,12 @@ public class UserService {
     return new UserResponse(userRecord);
   }
 
-  public String deleteUser(String userId) {
-    try {
-      userRepository.deleteById(userId);
-      return userId;
-    } catch (Exception e) {
-      throw new IllegalArgumentException(e);
+  public void deleteUser(String userId) {
+    Optional<UserRecord> record = userRepository.findById(userId);
+    if (record.isEmpty()) {
+      throw new IllegalArgumentException("Event does not exist with given ID");
     }
+    userRepository.deleteById(record.get().getUserId());
   }
 
   public UserResponse updateUser(String userId, UserUpdateRequest userUpdateRequest) {
