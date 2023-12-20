@@ -7,6 +7,8 @@ import com.kenzie.appserver.repositories.UserScheduleRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 import com.kenzie.appserver.utils.UserScheduleConverter;
+import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
+import com.kenzie.capstone.service.client.MealLambdaServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,18 @@ public class UserScheduleService {
 
     private final UserScheduleRepository userScheduleRepository;
     private final UserService userService;
+    private final MealLambdaServiceClient mealLambdaServiceClient;
+    private final ExerciseLambdaServiceClient exerciseLambdaServiceClient;
 
     @Autowired
-    public UserScheduleService(UserScheduleRepository userScheduleRepository, UserService userService) {
+    public UserScheduleService(UserScheduleRepository userScheduleRepository,
+                               UserService userService,
+                               MealLambdaServiceClient mealLambdaServiceClient,
+                               ExerciseLambdaServiceClient exerciseLambdaServiceClient) {
         this.userScheduleRepository = userScheduleRepository;
         this.userService = userService;
+        this.mealLambdaServiceClient = mealLambdaServiceClient;
+        this.exerciseLambdaServiceClient = exerciseLambdaServiceClient;
     }
 
     public UserScheduleResponse findById(String scheduleId) {
