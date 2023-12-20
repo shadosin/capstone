@@ -4,6 +4,7 @@ import static java.util.UUID.randomUUID;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
@@ -36,7 +37,7 @@ class UserServiceTest {
 
     // WHEN
     when(userRepository.findById(testUserId)).thenReturn(Optional.of(testUserRecord));
-    UserRecord user = userService.findById(testUserId);
+    UserResponse user = userService.findById(testUserId);
 
     // THEN
     Assertions.assertNotNull(user, "User record should not be null");

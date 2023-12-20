@@ -26,9 +26,9 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public UserRecord findById(String userId) {
-    return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(
-        "User with id " + userId + " does not exist"));
+  public UserResponse findById(String userId) {
+    return UserConverter.recordToResponse(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(
+        "User with id " + userId + " does not exist")));
   }
 
   public List<UserResponse> getAllUsers() {
