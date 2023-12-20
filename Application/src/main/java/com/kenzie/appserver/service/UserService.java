@@ -13,7 +13,6 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  //TODO - why LambdaServiceclient is here?
   @Autowired
   public UserService(UserRepository userRepository, LambdaServiceClient lambdaServiceClient) {
     this.userRepository = userRepository;
