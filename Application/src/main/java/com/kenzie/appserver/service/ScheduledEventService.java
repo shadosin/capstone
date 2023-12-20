@@ -6,9 +6,6 @@ import com.kenzie.appserver.controller.model.ScheduledEventUpdateRequest;
 import com.kenzie.appserver.repositories.ScheduledEventRepository;
 import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
 import com.kenzie.appserver.utils.ScheduledEventConverter;
-import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
-import com.kenzie.capstone.service.client.MealLambdaServiceClient;
-import com.kenzie.capstone.service.model.ExerciseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

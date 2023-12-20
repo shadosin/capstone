@@ -1,7 +1,6 @@
 package com.kenzie.appserver.repositories.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.converter.ZonedDateTimeConverter;
 import com.kenzie.appserver.service.model.EventType;
 

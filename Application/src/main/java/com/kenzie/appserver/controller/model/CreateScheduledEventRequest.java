@@ -3,7 +3,6 @@ package com.kenzie.appserver.controller.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.service.model.EventType;
 
-import javax.validation.constraints.NotEmpty;
 import java.time.ZonedDateTime;
 
 public class CreateScheduledEventRequest {
