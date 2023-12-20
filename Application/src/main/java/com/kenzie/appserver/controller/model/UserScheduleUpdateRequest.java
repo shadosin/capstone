@@ -13,7 +13,7 @@ public class UserScheduleUpdateRequest {
     @JsonProperty("end")
     private ZonedDateTime end;
     @JsonProperty("scheduledEventIds")
-    private List<String> scheduledEventIds;
+    private List<ScheduledEventUpdateRequest> scheduledEventUpdates;
     @JsonProperty("userId")
     private String userId;
 
@@ -40,12 +40,13 @@ public class UserScheduleUpdateRequest {
     public void setEnd(ZonedDateTime end) {
         this.end = end;
     }
-    public List<String> getScheduledEventIds() {
-        return scheduledEventIds;
+
+    public List<ScheduledEventUpdateRequest> getScheduledEventUpdates() {
+        return scheduledEventUpdates;
     }
 
-    public void setScheduledEventIds(List<String> scheduledEventIds) {
-        this.scheduledEventIds = scheduledEventIds;
+    public void setScheduledEventUpdates(List<ScheduledEventUpdateRequest> scheduledEventUpdates) {
+        this.scheduledEventUpdates = scheduledEventUpdates;
     }
 
     public String getUserId() {

@@ -20,9 +20,9 @@ public class ScheduledEventUpdateRequest {
     @JsonProperty("scheduledDateTime")
     private ZonedDateTime scheduledDateTime;
     @JsonProperty("completed")
-    private boolean completed;
+    private Boolean completed;
     @JsonProperty("metricsCompleted")
-    private boolean metricsCalculated;
+    private Boolean metricsCalculated;
 
     public String getEventId() {
         return eventId;
@@ -48,19 +48,19 @@ public class ScheduledEventUpdateRequest {
         this.scheduledDateTime = scheduledDateTime;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 
-    public boolean isMetricsCalculated() {
+    public Boolean isMetricsCalculated() {
         return metricsCalculated;
     }
 
-    public void setMetricsCalculated(boolean metricsCalculated) {
+    public void setMetricsCalculated(Boolean metricsCalculated) {
         this.metricsCalculated = metricsCalculated;
     }
 

@@ -5,11 +5,11 @@ import com.kenzie.appserver.controller.model.ScheduledEventResponse;
 import com.kenzie.appserver.controller.model.ScheduledEventUpdateRequest;
 import com.kenzie.appserver.repositories.ScheduledEventRepository;
 import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
+import com.kenzie.appserver.service.model.EventType;
 import com.kenzie.appserver.utils.ScheduledEventConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,12 +45,29 @@ public class ScheduledEventService {
     }
 
     public ScheduledEventResponse updateScheduledEvent(String eventId, ScheduledEventUpdateRequest request) {
-        Optional<ScheduledEventRecord> oldRecord = scheduledEventRepository.findById(eventId);
-        if (oldRecord.isEmpty()) {
-            throw new IllegalArgumentException("Event does not exist with given ID");
+        ScheduledEventRecord oldRecord = scheduledEventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event does not exist with given ID:" + eventId));
+
+        if (request.getEventType() != null) {
+            oldRecord.setEventType(request.getEventType());
         }
-        ScheduledEventRecord updatedRecord = ScheduledEventConverter.updateRequestToRecord(request);
-        updatedRecord = scheduledEventRepository.save(updatedRecord);
+        if (request.getScheduledDateTime() != null) {
+            oldRecord.setScheduledDateTime(request.getScheduledDateTime());
+        }
+        if (request.getExerciseId() != null && request.getEventType().equals(EventType.EXERCISE)) {
+            oldRecord.setExerciseId(request.getExerciseId());
+        }
+        if (request.getMealId() != null && request.getEventType().equals(EventType.MEAL)) {
+            oldRecord.setMealId(request.getMealId());
+        }
+        if (request.isCompleted() != null) {
+            oldRecord.setCompleted(request.isCompleted());
+        }
+        if (request.isMetricsCalculated() != null) {
+            oldRecord.setMetricsCalculated(request.isMetricsCalculated());
+        }
+
+        ScheduledEventRecord updatedRecord = scheduledEventRepository.save(oldRecord);
 
         return new ScheduledEventResponse(updatedRecord);
     }
