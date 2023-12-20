@@ -47,9 +47,9 @@ public class MealDao {
                                     String description,
                                     String recipe,
                                     String type,
-                                    int protein,
-                                    int carb,
-                                    int fat,
+                                    double protein,
+                                    double carb,
+                                    double fat,
                                     boolean glutenFree,
                                     boolean vegan){
 

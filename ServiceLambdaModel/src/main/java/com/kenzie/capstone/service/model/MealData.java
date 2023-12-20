@@ -46,6 +46,10 @@ public class MealData {
         this.vegan = vegan;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public String getMealId() {
         return mealId;
     }
