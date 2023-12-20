@@ -5,6 +5,8 @@ import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
 
+import java.util.UUID;
+
 public class UserConverter {
 
   private UserConverter() {
@@ -40,6 +42,7 @@ public class UserConverter {
 
   public static UserRecord requestToUserRecord(CreateUserRequest createUserRequest) {
     UserRecord userRecord = new UserRecord();
+    userRecord.setUserId(UUID.randomUUID().toString());
     userRecord.setUsername(createUserRequest.getUserName());
     userRecord.setEmail(createUserRequest.getEmail());
     userRecord.setDateJoined(createUserRequest.getDateJoined());
