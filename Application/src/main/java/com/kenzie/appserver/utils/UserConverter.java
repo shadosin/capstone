@@ -37,7 +37,7 @@ public class UserConverter {
     userResponse.setUserScheduleIds(userRecord.getUserScheduleIds());
     return userResponse;
   }
-
+  //todo any time we have a createUserRequest we need a UUID
   public static UserRecord requestToUserRecord(CreateUserRequest createUserRequest) {
     UserRecord userRecord = new UserRecord();
     userRecord.setUsername(createUserRequest.getUserName());
