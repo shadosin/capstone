@@ -1,18 +1,15 @@
 package com.kenzie.appserver.service;
 
-import com.kenzie.appserver.controller.model.CreateUserScheduleRequest;
-import com.kenzie.appserver.controller.model.UserScheduleResponse;
-import com.kenzie.appserver.controller.model.UserScheduleUpdateRequest;
+import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.UserScheduleRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 import com.kenzie.appserver.utils.UserScheduleConverter;
-import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
-import com.kenzie.capstone.service.client.MealLambdaServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -22,18 +19,15 @@ public class UserScheduleService {
 
     private final UserScheduleRepository userScheduleRepository;
     private final UserService userService;
-    private final MealLambdaServiceClient mealLambdaServiceClient;
-    private final ExerciseLambdaServiceClient exerciseLambdaServiceClient;
+    private final ScheduledEventService scheduledEventService;
 
     @Autowired
     public UserScheduleService(UserScheduleRepository userScheduleRepository,
                                UserService userService,
-                               MealLambdaServiceClient mealLambdaServiceClient,
-                               ExerciseLambdaServiceClient exerciseLambdaServiceClient) {
+                               ScheduledEventService scheduledEventService) {
         this.userScheduleRepository = userScheduleRepository;
         this.userService = userService;
-        this.mealLambdaServiceClient = mealLambdaServiceClient;
-        this.exerciseLambdaServiceClient = exerciseLambdaServiceClient;
+        this.scheduledEventService = scheduledEventService;
     }
 
     public UserScheduleResponse findById(String scheduleId) {
@@ -42,36 +36,24 @@ public class UserScheduleService {
     }
 
     public UserScheduleResponse createUserSchedule(CreateUserScheduleRequest request) {
-        Optional<CreateUserScheduleRequest> optionalRequest = Optional.ofNullable(request);
-
-        if (optionalRequest.isEmpty()) {
+        if (request == null) {
             throw new IllegalArgumentException("Unable to create Schedule, as request is null");
         }
+        UserRecord userRecord = userService.findById(request.getUserId());
+        manageUserScheduleLimit(userRecord);
 
-        Optional<UserRecord> userRecord = Optional.ofNullable(userService.findById(optionalRequest.get().getUserId()));
+        UserScheduleRecord newSchedule = new UserScheduleRecord();
+        newSchedule.setStart(request.getStart());
+        newSchedule.setScheduledEventIds(new ArrayList<>());
 
-        if (userRecord.isEmpty()) {
-            throw new IllegalArgumentException("User does not exist with given ID: " + optionalRequest.get().getUserId());
+        for (CreateScheduledEventRequest eventRequest : request.getScheduledEvents()) {
+            ScheduledEventResponse scheduledEvent = scheduledEventService.createScheduledEvent(eventRequest);
+            newSchedule.getScheduledEventIds().add(scheduledEvent.getEventId());
         }
 
-        List<String> userScheduleIds = userRecord.get().getUserScheduleIds();
-
-        if (userScheduleIds.size() == 12) {
-            String oldestScheduleId = userScheduleIds.stream()
-                    .map(this::findById)
-                    .map(UserScheduleConverter::convertToRecordFromResponse)
-                    .sorted(Comparator.comparing(UserScheduleRecord::getStart))
-                    .map(UserScheduleRecord::getScheduleId)
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("Failed to find the oldest schedule for user with ID: " + userRecord.get().getUserId()));
-
-            userScheduleIds.remove(oldestScheduleId);
-            userScheduleRepository.deleteById(oldestScheduleId);
-        }
-
-        UserScheduleRecord newSchedule = UserScheduleConverter.convertToRecordFromRequest(request);
-        userScheduleIds.add(newSchedule.getScheduleId());
-        userService.updateUser(userRecord.get());
+        newSchedule = userScheduleRepository.save(newSchedule);
+        userRecord.getUserScheduleIds().add(newSchedule.getScheduleId());
+        userService.updateUser(userRecord);
 
         return new UserScheduleResponse(newSchedule);
     }
@@ -117,19 +99,36 @@ public class UserScheduleService {
     }
 
     public UserScheduleResponse updateUserSchedule(String scheduleId, UserScheduleUpdateRequest request) {
-        Optional<UserScheduleRecord> oldRecord = userScheduleRepository.findById(scheduleId);
-        if (oldRecord.isEmpty()) {
-            throw new IllegalArgumentException("No schedule exists with given ID: " + scheduleId);
+        UserScheduleRecord oldRecord = userScheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new IllegalArgumentException("Schedule not found with ID: " + scheduleId));
+
+        if (request.getStart() != null) {
+            oldRecord.setStart(request.getStart());
         }
-        UserScheduleRecord updatedRecord = oldRecord.get();
-        updatedRecord.setUserId(request.getUserId());
-        updatedRecord.setScheduleId(request.getScheduleId());
-        updatedRecord.setStart(request.getStart());
-        updatedRecord.setEnd(request.getEnd());
-        updatedRecord.setScheduledEventIds(request.getScheduledEventIds());
+        if (request.getEnd() != null) {
+            oldRecord.setEnd(request.getEnd());
+        }
+        for (ScheduledEventUpdateRequest eventUpdateRequest : request.getScheduledEventUpdates()) {
+            scheduledEventService.updateScheduledEvent(eventUpdateRequest.getEventId(), eventUpdateRequest);
+        }
 
-        userScheduleRepository.save(updatedRecord);
-
+        UserScheduleRecord updatedRecord = userScheduleRepository.save(oldRecord);
         return new UserScheduleResponse(updatedRecord);
+    }
+
+    private void manageUserScheduleLimit(UserRecord record) {
+        List<String> userScheduleIds = record.getUserScheduleIds();
+        if (userScheduleIds.size() == 12) {
+            String oldestScheduleId = userScheduleIds.stream()
+                    .map(this::findById)
+                    .map(UserScheduleConverter::convertToRecordFromResponse)
+                    .sorted(Comparator.comparing(UserScheduleRecord::getStart))
+                    .map(UserScheduleRecord::getScheduleId)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Failed to find the oldest schedule for user with ID: " + record.getUserId()));
+
+            userScheduleIds.remove(oldestScheduleId);
+            userScheduleRepository.deleteById(oldestScheduleId);
+        }
     }
 }
