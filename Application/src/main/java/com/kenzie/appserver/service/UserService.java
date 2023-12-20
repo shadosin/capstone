@@ -11,6 +11,7 @@ import com.kenzie.capstone.service.client.LambdaServiceClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,12 @@ public class UserService {
         "User with id " + userId + " does not exist"));
   }
 
-  public List<UserRecord> getAllUsers() {
-    List<UserRecord> allUsers = new ArrayList<>();
-
-    userRepository.findAll().forEach(allUsers::add);
-    return allUsers;
+  public List<UserResponse> getAllUsers() {
+    List<UserRecord> records = new ArrayList<>();
+    userRepository.findAll().forEach(records::add);
+    return records.stream()
+            .map(UserResponse::new)
+            .collect(Collectors.toList());
   }
 
   public UserResponse createUser(CreateUserRequest createUserRequest) {

@@ -31,10 +31,7 @@ public class UserController {
 
   @GetMapping("/all")
   public ResponseEntity<List<UserResponse>> getAllUsers() {
-      List<UserResponse> userList =
-          userService.getAllUsers().stream()
-              .map(UserConverter::recordToResponse)
-              .collect(Collectors.toList());
+      List<UserResponse> userList = userService.getAllUsers();
       return ResponseEntity.ok(userList);
   }
 
