@@ -14,11 +14,11 @@ public class MealData {
 
     private String type;
 
-    private int protein;
+    private double protein;
 
-    private int carb;
+    private double carb;
 
-    private int fat;
+    private double fat;
 
     private boolean glutenFree;
 
@@ -29,9 +29,9 @@ public class MealData {
                     String description,
                     String recipe,
                     String type,
-                    int protein,
-                    int carb,
-                    int fat,
+                    double protein,
+                    double carb,
+                    double fat,
                     boolean glutenFree,
                     boolean vegan){
         this.mealId = mealId;
@@ -62,15 +62,15 @@ public class MealData {
         return recipe;
     }
 
-    public int getProtein() {
+    public double getProtein() {
         return protein;
     }
 
-    public int getCarb() {
+    public double getCarb() {
         return carb;
     }
 
-    public int getFat() {
+    public double getFat() {
         return fat;
     }
 
