@@ -22,18 +22,11 @@ import java.util.stream.Collectors;
 public class ScheduledEventService {
 
     private final ScheduledEventRepository scheduledEventRepository;
-    private final MealLambdaServiceClient mealLambdaServiceClient;
-    private final ExerciseLambdaServiceClient exerciseLambdaServiceClient;
 
-    //TODO - REMOVE SHIT  looks at extra constructor parameter lambda fucks
 
     @Autowired
-    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository,
-                                 MealLambdaServiceClient mealLambdaServiceClient,
-                                 ExerciseLambdaServiceClient exerciseLambdaServiceClient) {
+    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository) {
         this.scheduledEventRepository = scheduledEventRepository;
-        this.mealLambdaServiceClient = mealLambdaServiceClient;
-        this.exerciseLambdaServiceClient = exerciseLambdaServiceClient;
     }
 
     public ScheduledEventResponse findById(String eventId) {
