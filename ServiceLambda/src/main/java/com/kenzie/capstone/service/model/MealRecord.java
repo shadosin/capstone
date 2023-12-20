@@ -19,11 +19,11 @@ public class MealRecord {
 
     private String type;
 
-    private int protein;
+    private double protein;
 
-    private int carb;
+    private double carb;
 
-    private int fat;
+    private double fat;
 
     private boolean glutenFree;
 
@@ -69,27 +69,27 @@ public class MealRecord {
         this.type = type;
     }
     @DynamoDBAttribute(attributeName = "protein")
-    public int getProtein() {
+    public double getProtein() {
         return protein;
     }
 
-    public void setProtein(int protein) {
+    public void setProtein(double protein) {
         this.protein = protein;
     }
     @DynamoDBAttribute(attributeName = "carb")
-    public int getCarb() {
+    public double getCarb() {
         return carb;
     }
 
-    public void setCarb(int carb) {
+    public void setCarb(double carb) {
         this.carb = carb;
     }
     @DynamoDBAttribute(attributeName = "fat")
-    public int getFat() {
+    public double getFat() {
         return fat;
     }
 
-    public void setFat(int fat) {
+    public void setFat(double fat) {
         this.fat = fat;
     }
     @DynamoDBAttribute(attributeName = "glutenFree")
