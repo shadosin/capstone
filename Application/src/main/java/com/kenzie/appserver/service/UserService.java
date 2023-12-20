@@ -1,10 +1,16 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.controller.model.UserResponse;
+import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.UserRepository;
+import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
 import com.kenzie.appserver.repositories.model.UserRecord;
+import com.kenzie.appserver.utils.UserConverter;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +49,33 @@ public class UserService {
     }
   }
 
-  public UserRecord updateUser(UserRecord user) {
-    return userRepository.save(user);
+  public UserResponse updateUser(String userId, UserUpdateRequest userUpdateRequest) {
+    UserRecord oldRecord = userRepository.findById(userId).orElseThrow(() ->
+            new IllegalArgumentException("User does not exist with given userId: " + userId));
+    if(userUpdateRequest.getUserId() != null){
+        oldRecord.setUserId(userUpdateRequest.getUserId());
+    }
+    if (userUpdateRequest.getUserName() != null) {
+        oldRecord.setUsername(userUpdateRequest.getUserName());
+    }
+    if (userUpdateRequest.getFirstName() != null) {
+        oldRecord.setFirstName(userUpdateRequest.getFirstName());
+    }
+    if (userUpdateRequest.getLastName() != null) {
+        oldRecord.setLastName(userUpdateRequest.getLastName());
+    }
+    if (userUpdateRequest.getAddress() != null) {
+        oldRecord.setAddress(userUpdateRequest.getAddress());
+    }
+    if (userUpdateRequest.getPhoneNum() != null) {
+        oldRecord.setPhoneNum(userUpdateRequest.getPhoneNum());
+    }
+    if (userUpdateRequest.getEmail() != null) {
+        oldRecord.setEmail(userUpdateRequest.getEmail());
+    }
+
+    UserRecord updatedUserRecord = userRepository.save(oldRecord);
+    return new UserResponse(updatedUserRecord);
   }
 
   public Boolean doesUserIdExist(String userId) {

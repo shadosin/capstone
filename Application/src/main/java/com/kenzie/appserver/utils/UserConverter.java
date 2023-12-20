@@ -54,7 +54,7 @@ public class UserConverter {
     return userRecord;
   }
 
-  public static UserRecord requestToUserRecord(UserUpdateRequest userUpdateRequest) {
+  public static UserRecord updateRequestToUserRecord(UserUpdateRequest userUpdateRequest) {
     UserRecord userRecord = new UserRecord();
     userRecord.setUsername(userUpdateRequest.getUserName());
     userRecord.setEmail(userUpdateRequest.getEmail());

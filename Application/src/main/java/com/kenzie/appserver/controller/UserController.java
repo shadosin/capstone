@@ -77,9 +77,8 @@ public class UserController {
   public ResponseEntity<UserResponse> updateUser(
       @PathVariable("userId") String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
     try {
-      UserRecord userRecord = UserConverter.requestToUserRecord(userUpdateRequest);
-      UserRecord updatedRecord = userService.updateUser(userRecord);
-      return ResponseEntity.accepted().body(UserConverter.recordToResponse(updatedRecord));
+      UserResponse response = userService.updateUser(userId, userUpdateRequest);
+      return ResponseEntity.ok(response);
     } catch (IllegalArgumentException e) {
       return ResponseEntity.notFound().build();
     }
