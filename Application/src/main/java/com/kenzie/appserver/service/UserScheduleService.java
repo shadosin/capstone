@@ -4,6 +4,7 @@ import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.UserScheduleRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
+import com.kenzie.appserver.utils.UserConverter;
 import com.kenzie.appserver.utils.UserScheduleConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class UserScheduleService {
         if (request == null) {
             throw new IllegalArgumentException("Unable to create Schedule, as request is null");
         }
-        UserRecord userRecord = userService.findById(request.getUserId());
+        UserResponse userResponse = userService.findById(request.getUserId());
+        UserRecord userRecord = UserConverter.responseToRecord(userResponse);
         manageUserScheduleLimit(userRecord);
 
         UserScheduleRecord newSchedule = new UserScheduleRecord();
@@ -53,13 +55,13 @@ public class UserScheduleService {
 
         newSchedule = userScheduleRepository.save(newSchedule);
         userRecord.getUserScheduleIds().add(newSchedule.getScheduleId());
-        userService.updateUser(userRecord);
+        userService.updateUser(userRecord.getUserId(), UserConverter.recordToUpdateUserRequest(userRecord));
 
         return new UserScheduleResponse(newSchedule);
     }
 
     public UserScheduleResponse findCurrentSchedule(String userId) {
-        UserRecord userRecord = userService.findById(userId);
+        UserRecord userRecord = UserConverter.responseToRecord(userService.findById(userId));
         if (userRecord == null) {
             throw new IllegalArgumentException("User does not exist with ID: " + userId);
         }
@@ -86,15 +88,16 @@ public class UserScheduleService {
             throw new IllegalArgumentException("No record exists with given ID: " + scheduleId);
         }
 
-        Optional<UserRecord> userRecord = Optional.ofNullable(userService.findById(scheduleRecord.get().getUserId()));
-        if (userRecord.isEmpty()) {
+        Optional<UserResponse> userResponse = Optional.ofNullable(userService.findById(scheduleRecord.get().getUserId()));
+        if (userResponse.isEmpty()) {
             throw new IllegalArgumentException("No user exists with given user ID: " + scheduleRecord.get().getUserId());
         }
 
-        List<String> userScheduleIds = userRecord.get().getUserScheduleIds();
+        List<String> userScheduleIds = userResponse.get().getUserScheduleIds();
         userScheduleIds.remove(scheduleId);
+        UserRecord record = UserConverter.responseToRecord(userResponse.get());
 
-        userService.updateUser(userRecord.get());
+        userService.updateUser(userResponse.get().getUserId(), UserConverter.recordToUpdateUserRequest(record));
         userScheduleRepository.deleteById(scheduleId);
     }
 

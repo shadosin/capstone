@@ -24,64 +24,33 @@ public class UserController {
 
   @GetMapping("/{userId}/")
   public ResponseEntity<UserResponse> getUser(@PathVariable("userId") String userId) {
-    try {
-      UserRecord userRecord = userService.findById(userId);
-      UserResponse userResponse = UserConverter.recordToResponse(userRecord);
+      UserResponse userResponse = userService.findById(userId);
       return ResponseEntity.ok(userResponse);
-    } catch (IllegalArgumentException | NullPointerException e) {
-      return ResponseEntity.badRequest().build();
-    }
   }
 
   @GetMapping("/all")
   public ResponseEntity<List<UserResponse>> getAllUsers() {
-    try {
-      List<UserResponse> userList =
-          userService.getAllUsers().stream()
-              .map(UserConverter::recordToResponse)
-              .collect(Collectors.toList());
-
+      List<UserResponse> userList = userService.getAllUsers();
       return ResponseEntity.ok(userList);
-
-    } catch (IllegalArgumentException | NullPointerException e) {
-      return ResponseEntity.badRequest().build();
-    }
   }
 
   @PostMapping("/create")
   public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
-    try {
-      UserRecord userRecord = UserConverter.requestToUserRecord(createUserRequest);
-      UserRecord savedRecord = userService.createUser(userRecord);
-      UserResponse userResponse = UserConverter.recordToResponse(savedRecord);
-      //      return ResponseEntity.created(URI.create("/user/" +
-      // userResponse.getUserId())).body(userResponse);
-      return ResponseEntity.ok().body(userResponse);
+      UserResponse response = userService.createUser(createUserRequest);
+      return ResponseEntity.ok().body(response);
 
-    } catch (IllegalArgumentException | NullPointerException e) {
-      return ResponseEntity.badRequest().build();
-    }
   }
 
   @DeleteMapping("/{userId}")
   public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) {
-    try {
-      String result = userService.deleteUser(userId);
-      return ResponseEntity.ok(result);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.notFound().build();
-    }
+      userService.deleteUser(userId);
+      return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{userId}")
   public ResponseEntity<UserResponse> updateUser(
       @PathVariable("userId") String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-    try {
-      UserRecord userRecord = UserConverter.requestToUserRecord(userUpdateRequest);
-      UserRecord updatedRecord = userService.updateUser(userRecord);
-      return ResponseEntity.accepted().body(UserConverter.recordToResponse(updatedRecord));
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.notFound().build();
-    }
+      UserResponse response = userService.updateUser(userId, userUpdateRequest);
+      return ResponseEntity.ok(response);
   }
 }

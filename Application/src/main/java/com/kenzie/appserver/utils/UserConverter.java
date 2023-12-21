@@ -5,6 +5,8 @@ import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
 
+import java.util.UUID;
+
 public class UserConverter {
 
   private UserConverter() {
@@ -40,6 +42,7 @@ public class UserConverter {
   //todo any time we have a createUserRequest we need a UUID
   public static UserRecord requestToUserRecord(CreateUserRequest createUserRequest) {
     UserRecord userRecord = new UserRecord();
+    userRecord.setUserId(UUID.randomUUID().toString());
     userRecord.setUsername(createUserRequest.getUserName());
     userRecord.setEmail(createUserRequest.getEmail());
     userRecord.setDateJoined(createUserRequest.getDateJoined());
@@ -51,7 +54,7 @@ public class UserConverter {
     return userRecord;
   }
 
-  public static UserRecord requestToUserRecord(UserUpdateRequest userUpdateRequest) {
+  public static UserRecord updateRequestToUserRecord(UserUpdateRequest userUpdateRequest) {
     UserRecord userRecord = new UserRecord();
     userRecord.setUsername(userUpdateRequest.getUserName());
     userRecord.setEmail(userUpdateRequest.getEmail());
@@ -63,5 +66,19 @@ public class UserConverter {
     userRecord.setUserId(userUpdateRequest.getUserId());
     userRecord.setUserScheduleIds(userUpdateRequest.getUserScheduleIds());
     return userRecord;
+  }
+  public static UserUpdateRequest recordToUpdateUserRequest(UserRecord userRecord){
+    UserUpdateRequest updateRequest = new UserUpdateRequest();
+    updateRequest.setUserId(userRecord.getUserId());
+    updateRequest.setUserName(userRecord.getUsername());
+    updateRequest.setFirstName(userRecord.getFirstName());
+    updateRequest.setLastName(userRecord.getLastName());
+    updateRequest.setAddress(userRecord.getAddress());
+    updateRequest.setPhoneNum(userRecord.getPhoneNum());
+    updateRequest.setEmail(userRecord.getEmail());
+    updateRequest.setDateJoined(userRecord.getDateJoined());
+    updateRequest.setUserScheduleIds(userRecord.getUserScheduleIds());
+
+    return updateRequest;
   }
 }
