@@ -12,11 +12,13 @@ public class MealData {
 
     private String recipe;
 
-    private int protein;
+    private String type;
 
-    private int carb;
+    private double protein;
 
-    private int fat;
+    private double carb;
+
+    private double fat;
 
     private boolean glutenFree;
 
@@ -26,20 +28,26 @@ public class MealData {
                     String name,
                     String description,
                     String recipe,
-                    int protein,
-                    int carb,
-                    int fat,
+                    String type,
+                    double protein,
+                    double carb,
+                    double fat,
                     boolean glutenFree,
                     boolean vegan){
         this.mealId = mealId;
         this.name = name;
         this.description = description;
         this.recipe = recipe;
+        this.type = type;
         this.protein = protein;
         this.carb = carb;
         this.fat = fat ;
         this.glutenFree = glutenFree;
         this.vegan = vegan;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getMealId() {
@@ -58,15 +66,15 @@ public class MealData {
         return recipe;
     }
 
-    public int getProtein() {
+    public double getProtein() {
         return protein;
     }
 
-    public int getCarb() {
+    public double getCarb() {
         return carb;
     }
 
-    public int getFat() {
+    public double getFat() {
         return fat;
     }
 
@@ -86,11 +94,12 @@ public class MealData {
         return protein == mealData.protein &&
                 carb == mealData.carb &&
                 fat == mealData.fat &&
-                Objects.equals(mealId, mealData.mealId);
+                Objects.equals(mealId, mealData.mealId) &&
+                Objects.equals(type, mealData.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mealId, protein, carb, fat);
+        return Objects.hash(mealId,type, protein, carb, fat);
     }
 }

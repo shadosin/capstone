@@ -9,6 +9,7 @@
 /httpRequests/
 
 node_modules
+*/node_modules
 dist
 
 # Ignore Gradle project-specific cache directory
@@ -30,3 +31,13 @@ lambda-service-development.yml
 
 package-lock.json
 yarn.lock
+
+# Ignore qodana
+qodana*
+
+# Ignore .DS_Store
+.DS_Store
+
+# Ignore env variables
+.env
+*/.env

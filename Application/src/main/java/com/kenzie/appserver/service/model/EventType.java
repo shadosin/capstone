@@ -1,4 +1,6 @@
 package com.kenzie.appserver.service.model;
 
-public class User {
+public enum EventType {
+    EXERCISE,
+    MEAL
 }
