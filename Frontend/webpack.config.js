@@ -2,13 +2,14 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+const {GenerateSW} = require("workbox-webpack-plugin");
 
 module.exports = {
   optimization: {
     usedExports: true
   },
   entry: {
-    examplePage: path.resolve(__dirname, 'src', 'pages', 'examplePage.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -38,8 +39,13 @@ module.exports = {
         {
           from: path.resolve('src/css'),
           to: path.resolve("dist/css")
-        }
+        },
+        {from: 'src/manifest.json', to: 'dist'}
       ]
+    }),
+      new WorkboxWebpackPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
     }),
     new CleanWebpackPlugin()
   ]
