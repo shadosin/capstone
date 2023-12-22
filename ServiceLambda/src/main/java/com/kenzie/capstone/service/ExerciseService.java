@@ -2,13 +2,11 @@ package com.kenzie.capstone.service;
 
 
 import com.kenzie.capstone.service.dao.ExerciseDao;
-import com.kenzie.capstone.service.model.ExampleData;
 import com.kenzie.capstone.service.model.ExerciseData;
 import com.kenzie.capstone.service.model.ExerciseRecord;
 
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 
