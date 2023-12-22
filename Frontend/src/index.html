@@ -1,40 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <script type="text/javascript" src="examplePage.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <title>VitaTrac</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="206030">
+    <meta name="description" content="VitaTrac will track your meals and exercises.">
 </head>
-<body class="background">
-    <header class="header" id="header">
-        <div class="site-title">
-            <a class="header_home" href="index.html">Example App</a>
-        </div>
-    </header>
-    <div class="card">
-        <h2>Create Example</h2>
-        <form class="card-content" id="create-form">
-            <p class="form-field">
-                <label>Name</label>
-                <input type="text" required class="validated-field" id="create-name-field">
-            </p>
-            <button type="submit">Create</button>
-        </form>
-    </div>
-    <div class="card">
-        <h2>Get By ID</h2>
-        <form class="card-content" id="get-by-id-form">
-            <p class="form-field">
-                <label>ID</label>
-                <input type="text" required class="validated-field" id="id-field">
-            </p>
-            <button type="submit">Get</button>
-        </form>
-    </div>
-    <div class="card" id="result">
-        <h2>Result:</h2>
-        <p id="result-info"></p>
-    </div>
+<style>
+    :root {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    body {
+        background-color: hsla(0,0%,95%, 1);
+    }
 
+    img {
+        border-radius: 15px;
+    }
+    .nav {
+        display: flex;
+        gap: 10px;
+        align-content: center;
+
+    }
+</style>
+<body>
+
+<script>
+    if ('serviceWorker' in navigator) {
+    }
+    navigator.serviceWorker.register('/service-worker.js')
+</script>
+    <div>
+<hr>
+    <nav class="nav">
+        <img src="assets/vitatrac.png" width="50px" height="50px">
+    <h1>VitaTrac</h1>
+    </nav>
+        <hr>
+    </div>
+<div>
+</div>
 </body>
 </html>
+
