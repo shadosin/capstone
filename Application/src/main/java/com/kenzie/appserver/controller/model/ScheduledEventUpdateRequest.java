@@ -11,6 +11,8 @@ public class ScheduledEventUpdateRequest {
     @NotEmpty
     @JsonProperty("eventId")
     private String eventId;
+    @JsonProperty("userId")
+    private String userId;
     @JsonProperty("mealId")
     private String mealId;
     @JsonProperty("exerciseId")
@@ -20,9 +22,9 @@ public class ScheduledEventUpdateRequest {
     @JsonProperty("scheduledDateTime")
     private ZonedDateTime scheduledDateTime;
     @JsonProperty("completed")
-    private Boolean completed;
+    private boolean completed;
     @JsonProperty("metricsCompleted")
-    private Boolean metricsCalculated;
+    private boolean metricsCalculated;
 
     public String getEventId() {
         return eventId;
@@ -30,6 +32,30 @@ public class ScheduledEventUpdateRequest {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(String mealId) {
+        this.mealId = mealId;
+    }
+
+    public String getExerciseId() {
+        return exerciseId;
+    }
+
+    public void setExerciseId(String exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public EventType getEventType() {
@@ -48,35 +74,19 @@ public class ScheduledEventUpdateRequest {
         this.scheduledDateTime = scheduledDateTime;
     }
 
-    public Boolean isCompleted() {
+    public boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(Boolean completed) {
+    public void setCompleted(boolean completed) {
         this.completed = completed;
     }
 
-    public Boolean isMetricsCalculated() {
+    public boolean isMetricsCalculated() {
         return metricsCalculated;
     }
 
-    public void setMetricsCalculated(Boolean metricsCalculated) {
+    public void setMetricsCalculated(boolean metricsCalculated) {
         this.metricsCalculated = metricsCalculated;
-    }
-
-    public String getMealId() {
-        return mealId;
-    }
-
-    public void setMealId(String mealId) {
-        this.mealId = mealId;
-    }
-
-    public String getExerciseId() {
-        return exerciseId;
-    }
-
-    public void setExerciseId(String exerciseId) {
-        this.exerciseId = exerciseId;
     }
 }

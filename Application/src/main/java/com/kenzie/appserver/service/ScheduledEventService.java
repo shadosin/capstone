@@ -19,11 +19,14 @@ import java.util.stream.Collectors;
 public class ScheduledEventService {
 
     private final ScheduledEventRepository scheduledEventRepository;
+    private final HealthMetricsService healthMetricsService;
 
 
     @Autowired
-    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository) {
+    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository,
+                                 HealthMetricsService healthMetricsService) {
         this.scheduledEventRepository = scheduledEventRepository;
+        this.healthMetricsService = healthMetricsService;
     }
 
     public ScheduledEventResponse findById(String eventId) {
@@ -60,11 +63,13 @@ public class ScheduledEventService {
         if (request.getMealId() != null && request.getEventType().equals(EventType.MEAL)) {
             oldRecord.setMealId(request.getMealId());
         }
-        if (request.isCompleted() != null) {
-            oldRecord.setCompleted(request.isCompleted());
-        }
-        if (request.isMetricsCalculated() != null) {
-            oldRecord.setMetricsCalculated(request.isMetricsCalculated());
+        oldRecord.setCompleted(request.isCompleted());
+        oldRecord.setMetricsCalculated(request.isMetricsCalculated());
+
+        if (oldRecord.isCompleted() && !oldRecord.isMetricsCalculated()) {
+            String userId = oldRecord.getUserId();
+            healthMetricsService.updateMetricsBasedOnEvent(userId, oldRecord);
+            oldRecord.setMetricsCalculated(true);
         }
 
         ScheduledEventRecord updatedRecord = scheduledEventRepository.save(oldRecord);

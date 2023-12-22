@@ -2,13 +2,11 @@ package com.kenzie.capstone.service;
 
 
 import com.kenzie.capstone.service.dao.ExerciseDao;
-import com.kenzie.capstone.service.model.ExampleData;
 import com.kenzie.capstone.service.model.ExerciseData;
 import com.kenzie.capstone.service.model.ExerciseRecord;
 
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,10 +19,16 @@ public class ExerciseService {
     public ExerciseData getExerciseData(String exerciseId){
         List<ExerciseRecord> records = dao.findExerciseData(exerciseId);
         if(records.size() > 0){
-            return new ExerciseData(records.get(0).getExerciseId(), records.get(0).getType(),
-                    records.get(0).getIntensity(), records.get(0).getExerciseName(),records.get(0).getDuration()
-            , records.get(0).getReps(), records.get(0).getSets(), records.get(0).getDistance(), records.get(0).getMETS()
-            , records.get(0).getDescription());
+            return new ExerciseData(records.get(0).getExerciseId(),
+                    records.get(0).getType(),
+                    records.get(0).getIntensity(),
+                    records.get(0).getExerciseName(),
+                    records.get(0).getDuration(),
+                    records.get(0).getReps(),
+                    records.get(0).getSets(),
+                    records.get(0).getDistance(),
+                    records.get(0).getMETS(),
+                    records.get(0).getDescription());
         }
         return null;
     }

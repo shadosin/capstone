@@ -6,8 +6,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.google.common.collect.ImmutableMap;
-import com.kenzie.capstone.service.model.ExerciseData;
-import com.kenzie.capstone.service.model.ExerciseRecord;
 import com.kenzie.capstone.service.model.MealData;
 import com.kenzie.capstone.service.model.MealRecord;
 
@@ -47,6 +45,7 @@ public class MealDao {
                                     String description,
                                     String recipe,
                                     String type,
+                                    double calories,
                                     double protein,
                                     double carb,
                                     double fat,
@@ -59,6 +58,7 @@ public class MealDao {
         record.setDescription(description);
         record.setRecipe(recipe);
         record.setType(type);
+        record.setCalories(calories);
         record.setProtein(protein);
         record.setCarb(carb);
         record.setFat(fat);
