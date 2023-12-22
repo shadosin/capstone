@@ -31,8 +31,8 @@ public class MealData {
                     String description,
                     String recipe,
                     String type,
-                    double protein,
                     double calories,
+                    double protein,
                     double carb,
                     double fat,
                     boolean glutenFree,
@@ -42,6 +42,7 @@ public class MealData {
         this.description = description;
         this.recipe = recipe;
         this.type = type;
+        this.calories = calories;
         this.protein = protein;
         this.carb = carb;
         this.fat = fat ;
@@ -67,6 +68,10 @@ public class MealData {
 
     public String getRecipe() {
         return recipe;
+    }
+
+    public double getCalories() {
+        return calories;
     }
 
     public double getProtein() {
@@ -97,12 +102,13 @@ public class MealData {
         return protein == mealData.protein &&
                 carb == mealData.carb &&
                 fat == mealData.fat &&
+                calories == mealData.calories &&
                 Objects.equals(mealId, mealData.mealId) &&
                 Objects.equals(type, mealData.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mealId,type, protein, carb, fat);
+        return Objects.hash(mealId, type,calories, protein, carb, fat);
     }
 }

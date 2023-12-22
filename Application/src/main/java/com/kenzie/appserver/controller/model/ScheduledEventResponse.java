@@ -12,6 +12,8 @@ public class ScheduledEventResponse {
     @NotEmpty
     @JsonProperty("eventId")
     private String eventId;
+    @JsonProperty("userId")
+    private String userId;
     @JsonProperty("mealId")
     private String mealId;
     @JsonProperty("exerciseId")
@@ -29,6 +31,7 @@ public class ScheduledEventResponse {
 
     public ScheduledEventResponse(ScheduledEventRecord record) {
         this.eventId = record.getEventId();
+        this.userId = record.getUserId();
         this.exerciseId = record.getExerciseId();
         this.mealId = record.getMealId();
         this.eventType = record.getEventType();
@@ -91,5 +94,13 @@ public class ScheduledEventResponse {
 
     public void setExerciseId(String exerciseId) {
         this.exerciseId = exerciseId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

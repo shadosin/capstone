@@ -47,6 +47,7 @@ public class MealDao {
                                     String description,
                                     String recipe,
                                     String type,
+                                    double calories,
                                     double protein,
                                     double carb,
                                     double fat,
@@ -59,6 +60,7 @@ public class MealDao {
         record.setDescription(description);
         record.setRecipe(recipe);
         record.setType(type);
+        record.setCalories(calories);
         record.setProtein(protein);
         record.setCarb(carb);
         record.setFat(fat);
