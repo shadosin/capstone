@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/healthMetrics")
 public class HealthMetricsController {
 
-    private final HealthMetricsService healthMetricsService;
+    //private final HealthMetricsService healthMetricsService;
 }

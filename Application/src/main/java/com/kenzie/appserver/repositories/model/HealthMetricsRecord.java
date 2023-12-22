@@ -3,18 +3,34 @@ package com.kenzie.appserver.repositories.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
+import com.kenzie.appserver.service.model.WeightUnit;
 
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "HealthMetrics")
 public class HealthMetricsRecord {
     private String userId;
-    private double weight;
-    private double totalCalorieIntake;
-    private double totalCalorieExpenditure;
-    private double carbs;
-    private double fats;
-    private double protein;
+    private Double weight;
+    private WeightUnit weightUnit;
+    private Double totalCalorieIntake;
+    private Double totalCalorieExpenditure;
+    private Double carbs;
+    private Double fats;
+    private Double protein;
+
+    public HealthMetricsRecord() {}
+
+    public HealthMetricsRecord(String userId) {
+        this.userId = userId;
+        this.weight = 0.0;
+        this.weightUnit = WeightUnit.KG;
+        this.totalCalorieIntake = 0.0;
+        this.totalCalorieExpenditure = 0.0;
+        this.carbs = 0.0;
+        this.fats = 0.0;
+        this.protein = 0.0;
+    }
 
     @DynamoDBHashKey(attributeName = "userId")
     public String getUserId() {
@@ -22,32 +38,38 @@ public class HealthMetricsRecord {
     }
 
     @DynamoDBAttribute(attributeName = "weight")
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
+    @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName = "weightUnit")
+    public WeightUnit getWeightUnit() {
+        return weightUnit;
+    }
+
     @DynamoDBAttribute(attributeName = "totalCalorieIntake")
-    public double getTotalCalorieIntake() {
+    public Double getTotalCalorieIntake() {
         return totalCalorieIntake;
     }
 
     @DynamoDBAttribute(attributeName = "totalCalorieExpenditure")
-    public double getTotalCalorieExpenditure() {
+    public Double getTotalCalorieExpenditure() {
         return totalCalorieExpenditure;
     }
 
     @DynamoDBAttribute(attributeName = "carbs")
-    public double getCarbs() {
+    public Double getCarbs() {
         return carbs;
     }
 
     @DynamoDBAttribute(attributeName = "fats")
-    public double getFats() {
+    public Double getFats() {
         return fats;
     }
 
     @DynamoDBAttribute(attributeName = "protein")
-    public double getProtein() {
+    public Double getProtein() {
         return protein;
     }
 
@@ -55,27 +77,31 @@ public class HealthMetricsRecord {
         this.userId = userId;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public void setTotalCalorieIntake(double totalCalorieIntake) {
+    public void setWeightUnit(WeightUnit weightUnit) {
+        this.weightUnit = weightUnit;
+    }
+
+    public void setTotalCalorieIntake(Double totalCalorieIntake) {
         this.totalCalorieIntake = totalCalorieIntake;
     }
 
-    public void setTotalCalorieExpenditure(double totalCalorieExpenditure) {
+    public void setTotalCalorieExpenditure(Double totalCalorieExpenditure) {
         this.totalCalorieExpenditure = totalCalorieExpenditure;
     }
 
-    public void setCarbs(double carbs) {
+    public void setCarbs(Double carbs) {
         this.carbs = carbs;
     }
 
-    public void setFats(double fats) {
+    public void setFats(Double fats) {
         this.fats = fats;
     }
 
-    public void setProtein(double protein) {
+    public void setProtein(Double protein) {
         this.protein = protein;
     }
 
@@ -84,17 +110,18 @@ public class HealthMetricsRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HealthMetricsRecord that = (HealthMetricsRecord) o;
-        return Double.compare(weight, that.weight) == 0 &&
-                Double.compare(totalCalorieIntake, that.totalCalorieIntake) == 0 &&
-                Double.compare(totalCalorieExpenditure, that.totalCalorieExpenditure) == 0 &&
-                Double.compare(carbs, that.carbs) == 0 &&
-                Double.compare(fats, that.fats) == 0 &&
-                Double.compare(protein, that.protein) == 0 &&
-                Objects.equals(userId, that.userId);
+        return Objects.equals(userId, that.userId) &&
+                Objects.equals(weight, that.weight) &&
+                weightUnit == that.weightUnit &&
+                Objects.equals(totalCalorieIntake, that.totalCalorieIntake) &&
+                Objects.equals(totalCalorieExpenditure, that.totalCalorieExpenditure) &&
+                Objects.equals(carbs, that.carbs) &&
+                Objects.equals(fats, that.fats) &&
+                Objects.equals(protein, that.protein);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, weight, totalCalorieIntake, totalCalorieExpenditure, carbs, fats, protein);
+        return Objects.hash(userId, weight, weightUnit, totalCalorieIntake, totalCalorieExpenditure, carbs, fats, protein);
     }
 }

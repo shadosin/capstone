@@ -5,22 +5,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotEmpty;
 
 public class CreateHealthMetricsRequest {
-
     @NotEmpty
     @JsonProperty("userId")
     private String userId;
     @JsonProperty("weight")
-    private double weight;
+    private Double weight;
     @JsonProperty("totalCalorieIntake")
-    private double totalCalorieIntake;
+    private Double totalCalorieIntake;
     @JsonProperty("totalCalorieExpenditure")
-    private double totalCalorieExpenditure;
+    private Double totalCalorieExpenditure;
     @JsonProperty("carbs")
-    private double carbs;
+    private Double carbs;
     @JsonProperty("fats")
-    private double fats;
+    private Double fats;
     @JsonProperty("protein")
-    private double protein;
+    private Double protein;
 
     public CreateHealthMetricsRequest() {}
 
@@ -32,51 +31,51 @@ public class CreateHealthMetricsRequest {
         this.userId = userId;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public double getTotalCalorieIntake() {
+    public Double getTotalCalorieIntake() {
         return totalCalorieIntake;
     }
 
-    public void setTotalCalorieIntake(double totalCalorieIntake) {
+    public void setTotalCalorieIntake(Double totalCalorieIntake) {
         this.totalCalorieIntake = totalCalorieIntake;
     }
 
-    public double getTotalCalorieExpenditure() {
+    public Double getTotalCalorieExpenditure() {
         return totalCalorieExpenditure;
     }
 
-    public void setTotalCalorieExpenditure(double totalCalorieExpenditure) {
+    public void setTotalCalorieExpenditure(Double totalCalorieExpenditure) {
         this.totalCalorieExpenditure = totalCalorieExpenditure;
     }
 
-    public double getCarbs() {
+    public Double getCarbs() {
         return carbs;
     }
 
-    public void setCarbs(double carbs) {
+    public void setCarbs(Double carbs) {
         this.carbs = carbs;
     }
 
-    public double getFats() {
+    public Double getFats() {
         return fats;
     }
 
-    public void setFats(double fats) {
+    public void setFats(Double fats) {
         this.fats = fats;
     }
 
-    public double getProtein() {
+    public Double getProtein() {
         return protein;
     }
 
-    public void setProtein(double protein) {
+    public void setProtein(Double protein) {
         this.protein = protein;
     }
 }

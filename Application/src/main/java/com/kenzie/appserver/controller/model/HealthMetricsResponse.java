@@ -3,6 +3,7 @@ package com.kenzie.appserver.controller.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
+import com.kenzie.appserver.service.model.WeightUnit;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -13,6 +14,8 @@ public class HealthMetricsResponse {
     private String userId;
     @JsonProperty("weight")
     private double weight;
+    @JsonProperty("weightUnit")
+    private WeightUnit weightUnit;
     @JsonProperty("totalCalorieIntake")
     private double totalCalorieIntake;
     @JsonProperty("totalCalorieExpenditure")
@@ -29,6 +32,7 @@ public class HealthMetricsResponse {
     public HealthMetricsResponse(HealthMetricsRecord healthMetricsRecord) {
         this.userId = healthMetricsRecord.getUserId();
         this.weight = healthMetricsRecord.getWeight();
+        this.weightUnit = healthMetricsRecord.getWeightUnit();
         this.totalCalorieIntake = healthMetricsRecord.getTotalCalorieIntake();
         this.totalCalorieExpenditure = healthMetricsRecord.getTotalCalorieExpenditure();
         this.carbs = healthMetricsRecord.getCarbs();
@@ -50,6 +54,14 @@ public class HealthMetricsResponse {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public WeightUnit getWeightUnit() {
+        return weightUnit;
+    }
+
+    public void setWeightUnit(WeightUnit weightUnit) {
+        this.weightUnit = weightUnit;
     }
 
     public double getTotalCalorieIntake() {

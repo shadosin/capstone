@@ -14,6 +14,8 @@ public class MealData {
 
     private String type;
 
+    private double calories;
+
     private double protein;
 
     private double carb;
@@ -30,6 +32,7 @@ public class MealData {
                     String recipe,
                     String type,
                     double protein,
+                    double calories,
                     double carb,
                     double fat,
                     boolean glutenFree,
