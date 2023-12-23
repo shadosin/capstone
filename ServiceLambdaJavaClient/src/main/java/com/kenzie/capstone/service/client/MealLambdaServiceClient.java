@@ -15,7 +15,7 @@ public class MealLambdaServiceClient {
         this.mapper = new ObjectMapper();
     }
 
-    public MealData getMealData(String mealId) throws JsonProcessingException {
+    public MealData getMealData(String mealId) {
         EndpointUtility endpointUtility = new EndpointUtility();
         String response = endpointUtility.getEndpoint(GET_MEAL_ENDPOINT.replace("{id}", mealId));
         MealData mealData;

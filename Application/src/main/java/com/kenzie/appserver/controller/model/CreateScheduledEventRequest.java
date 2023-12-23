@@ -7,6 +7,8 @@ import java.time.ZonedDateTime;
 
 public class CreateScheduledEventRequest {
 
+    @JsonProperty("userId")
+    private String userId;
     @JsonProperty("mealId")
     private String mealId;
     @JsonProperty("exerciseId")
@@ -66,5 +68,13 @@ public class CreateScheduledEventRequest {
 
     public void setExerciseId(String exerciseId) {
         this.exerciseId = exerciseId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

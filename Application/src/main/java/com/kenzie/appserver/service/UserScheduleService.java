@@ -62,9 +62,6 @@ public class UserScheduleService {
 
     public UserScheduleResponse findCurrentSchedule(String userId) {
         UserRecord userRecord = UserConverter.responseToRecord(userService.findById(userId));
-        if (userRecord == null) {
-            throw new IllegalArgumentException("User does not exist with ID: " + userId);
-        }
         List<String> userScheduleIds = userRecord.getUserScheduleIds();
 
         ZonedDateTime now = ZonedDateTime.now();
