@@ -17,7 +17,7 @@ public class MealDao {
     public MealDao(DynamoDBMapper mapper){
         this.mapper = mapper;
     }
-    public MealRecord addMealRecord(){
+    public MealRecord addMealRecord(){ //TODO - never used
         return new MealRecord();
     }
     public MealData addMealData(MealData mealData){
@@ -64,6 +64,9 @@ public class MealDao {
         record.setFat(fat);
         record.setGlutenFree(glutenFree);
         record.setVegan(vegan);
+
+
+
         return record;
     }
 

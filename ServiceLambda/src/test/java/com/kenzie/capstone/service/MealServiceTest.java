@@ -41,7 +41,7 @@ public class MealServiceTest {
         ArgumentCaptor<Boolean> glutenFreeCaptor = ArgumentCaptor.forClass(Boolean.class);
         ArgumentCaptor<Boolean> veganCaptor = ArgumentCaptor.forClass(Boolean.class);
 
-        MealData response = this.mealService.setData("id", "type", "recipe",
+        MealData response = this.mealService.setData( "type", "recipe",
                 "name", "description", 1.4, 1.0, 1.0, 1.0, true, true);
 
         verify(mealDao, times(1)).setMealRecord(mealIdCaptor.capture(), mealNameCaptor.capture(),

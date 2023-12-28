@@ -56,4 +56,17 @@ public List<ExerciseRecord> findExerciseData(String exerciseId){
 
     }
 
+    public List<ExerciseRecord> getExerciseFromGSIByAttributeValue(String attributeValue) {
+
+        ExerciseRecord record = new ExerciseRecord();
+        record.setType(attributeValue);
+
+        DynamoDBQueryExpression<ExerciseRecord> query = new DynamoDBQueryExpression<ExerciseRecord>()
+                .withIndexName("TypeIndex")
+                .withHashKeyValues(record)
+                .withConsistentRead(false);
+
+        return mapper.query(ExerciseRecord.class, query);
+    }
+
 }
