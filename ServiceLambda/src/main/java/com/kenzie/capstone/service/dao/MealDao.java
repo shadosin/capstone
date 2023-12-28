@@ -75,4 +75,17 @@ public class MealDao {
         return record;
     }
 
+    public List<MealRecord> getMealFromGSIByAttributeValue(String attributeValue) {
+
+        MealRecord record = new MealRecord();
+        record.setType(attributeValue);
+
+        DynamoDBQueryExpression<MealRecord> query = new DynamoDBQueryExpression<MealRecord>()
+                .withIndexName("TypeIndex")
+                .withHashKeyValues(record)
+                .withConsistentRead(false);
+
+        return mapper.query(MealRecord.class, query);
+    }
+
 }
