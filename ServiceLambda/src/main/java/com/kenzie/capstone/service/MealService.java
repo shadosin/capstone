@@ -6,6 +6,7 @@ import com.kenzie.capstone.service.model.MealRecord;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.UUID;
 
 public class MealService {
     private final MealDao dao;
@@ -33,8 +34,7 @@ public class MealService {
         return null;
     }
 
-    public MealData setData(String mealId,
-                            String name,
+    public MealData setData(String name,
                             String description,
                             String recipe,
                             String type,
@@ -44,6 +44,9 @@ public class MealService {
                             double fat,
                             boolean glutenFree,
                             boolean vegan) {
+
+        String mealId = UUID.randomUUID().toString();
+
         MealRecord record = dao.setMealRecord(mealId,
                 name,
                 description,
