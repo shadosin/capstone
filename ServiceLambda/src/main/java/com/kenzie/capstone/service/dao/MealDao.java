@@ -64,6 +64,17 @@ public class MealDao {
         record.setFat(fat);
         record.setGlutenFree(glutenFree);
         record.setVegan(vegan);
+
+        try {
+            mapper.save(record, new DynamoDBSaveExpression()
+                    .withExpected(ImmutableMap.of(
+                            "mealId",
+                            new ExpectedAttributeValue().withExists(false)
+                    )));
+        } catch (ConditionalCheckFailedException e) {
+            throw new IllegalArgumentException("mealId already exists");
+        }
+
         return record;
     }
 
