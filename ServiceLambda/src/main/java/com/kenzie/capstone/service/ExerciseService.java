@@ -9,6 +9,9 @@ import com.kenzie.capstone.service.model.ExerciseRecord;
 import javax.inject.Inject;
 import java.util.List;
 
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 public class ExerciseService {
     private final ExerciseDao dao;
@@ -18,7 +21,7 @@ public class ExerciseService {
     }
     public ExerciseData getExerciseData(String exerciseId){
         List<ExerciseRecord> records = dao.findExerciseData(exerciseId);
-        if(records.size() > 0){
+        if(!records.isEmpty()){
             return new ExerciseData(records.get(0).getExerciseId(),
                     records.get(0).getType(),
                     records.get(0).getIntensity(),
@@ -32,11 +35,13 @@ public class ExerciseService {
         }
         return null;
     }
+    // todo add try catch to exercise DAO, change if parameter and add uuid after, refactor.
 
-    public ExerciseData setData(String exerciseId, String type,
+    public ExerciseData setData(String type,
                                 String intensity, String exerciseName, int duration,
                                 int reps, int sets, double distance, double METS,
                                 String description){
+        String exerciseId = UUID.randomUUID().toString();
         ExerciseRecord record = dao.setExerciseRecord(exerciseId, type,intensity,
                 exerciseName, duration, reps, sets, distance, METS, description);
 
@@ -44,4 +49,23 @@ public class ExerciseService {
         , reps, sets, distance, METS, description);
     }
 
+    public List<ExerciseData> getExerciseDataFromAttributeValue(String attributeValue){
+        List<ExerciseRecord> records = dao.getExerciseFromGSIByAttributeValue(attributeValue);
+        if(!records.isEmpty()){
+            return records.stream()
+                    .map(record -> new ExerciseData(
+                            record.getExerciseId(),
+                            record.getType(),
+                            record.getIntensity(),
+                            record.getExerciseName(),
+                            record.getDuration(),
+                            record.getReps(),
+                            record.getSets(),
+                            record.getDistance(),
+                            record.getMETS(),
+                            record.getDescription()))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
 }

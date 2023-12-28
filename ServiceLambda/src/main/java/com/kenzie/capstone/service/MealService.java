@@ -6,6 +6,8 @@ import com.kenzie.capstone.service.model.MealRecord;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MealService {
     private final MealDao dao;
@@ -17,7 +19,7 @@ public class MealService {
 
     public MealData getMealData(String mealId){
         List<MealRecord> records = dao.findMealData(mealId);
-        if(records.size() > 0){
+        if(!records.isEmpty()){
             return new MealData(records.get(0).getMealId(),
                     records.get(0).getName(),
                     records.get(0).getDescription(),
@@ -33,8 +35,7 @@ public class MealService {
         return null;
     }
 
-    public MealData setData(String mealId,
-                            String name,
+    public MealData setData(String name,
                             String description,
                             String recipe,
                             String type,
@@ -44,6 +45,9 @@ public class MealService {
                             double fat,
                             boolean glutenFree,
                             boolean vegan) {
+
+        String mealId = UUID.randomUUID().toString();
+
         MealRecord record = dao.setMealRecord(mealId,
                 name,
                 description,
@@ -67,5 +71,26 @@ public class MealService {
                 fat,
                 glutenFree,
                 vegan);
+    }
+
+    public List<MealData> getMealDataFromAttributeValue(String attributeValue){
+        List<MealRecord> records = dao.getMealFromGSIByAttributeValue(attributeValue);
+        if(!records.isEmpty()){
+            return records.stream()
+                    .map(record -> new MealData(
+                            record.getMealId(),
+                            record.getName(),
+                            record.getDescription(),
+                            record.getRecipe(),
+                            record.getType(),
+                            record.getCalories(),
+                            record.getProtein(),
+                            record.getCarb(),
+                            record.getFat(),
+                            record.isGlutenFree(),
+                            record.isVegan()))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }

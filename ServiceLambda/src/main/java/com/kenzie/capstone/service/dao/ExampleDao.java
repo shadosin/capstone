@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.List;
 
 public class ExampleDao {
-    private DynamoDBMapper mapper;
+    private final DynamoDBMapper mapper;
 
     /**
      * Allows access to and manipulation of Match objects from the data store.
@@ -65,4 +65,5 @@ public class ExampleDao {
 
         return exampleRecord;
     }
+
 }
