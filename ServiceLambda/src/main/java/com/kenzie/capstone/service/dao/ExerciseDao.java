@@ -52,6 +52,16 @@ public List<ExerciseRecord> findExerciseData(String exerciseId){
         record.setMETS(METS);
         record.setDescription(description);
 
+        try {
+            mapper.save(record, new DynamoDBSaveExpression()
+                    .withExpected(ImmutableMap.of(
+                            "id",
+                            new ExpectedAttributeValue().withExists(false)
+                    )));
+        } catch (ConditionalCheckFailedException e) {
+            throw new IllegalArgumentException("id already exists");
+        }
+
         return record;
 
     }
