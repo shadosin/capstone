@@ -37,7 +37,7 @@ public class ExerciseServiceTest {
         ArgumentCaptor<Double> metsCaptor = ArgumentCaptor.forClass(Double.class);
         ArgumentCaptor<String> descriptionCaptor = ArgumentCaptor.forClass(String.class);
 
-        ExerciseData response = this.exerciseService.setData("id", "type",
+        ExerciseData response = this.exerciseService.setData("type",
                 "intensity", "name", 1, 1, 1, 1.2,
                 1.0, "description");
 

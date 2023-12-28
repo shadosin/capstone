@@ -8,6 +8,7 @@ import com.kenzie.capstone.service.model.ExerciseRecord;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.UUID;
 
 
 public class ExerciseService {
@@ -32,11 +33,13 @@ public class ExerciseService {
         }
         return null;
     }
+    // todo add try catch to exercise DAO, change if parameter and add uuid after, refactor.
 
-    public ExerciseData setData(String exerciseId, String type,
+    public ExerciseData setData(String type,
                                 String intensity, String exerciseName, int duration,
                                 int reps, int sets, double distance, double METS,
                                 String description){
+        String exerciseId = UUID.randomUUID().toString();
         ExerciseRecord record = dao.setExerciseRecord(exerciseId, type,intensity,
                 exerciseName, duration, reps, sets, distance, METS, description);
 
