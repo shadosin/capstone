@@ -2,13 +2,11 @@ package com.kenzie.capstone.service;
 
 
 import com.kenzie.capstone.service.dao.ExerciseDao;
-import com.kenzie.capstone.service.model.ExampleRecord;
 import com.kenzie.capstone.service.model.ExerciseData;
 import com.kenzie.capstone.service.model.ExerciseRecord;
 
 
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,7 @@ public class ExerciseService {
     }
     public ExerciseData getExerciseData(String exerciseId){
         List<ExerciseRecord> records = dao.findExerciseData(exerciseId);
-        if(records.size() > 0){
+        if(!records.isEmpty()){
             return new ExerciseData(records.get(0).getExerciseId(),
                     records.get(0).getType(),
                     records.get(0).getIntensity(),
@@ -49,7 +47,7 @@ public class ExerciseService {
 
     public List<ExerciseData> getExerciseDataFromAttributeValue(String attributeValue){
         List<ExerciseRecord> records = dao.getExerciseFromGSIByAttributeValue(attributeValue);
-        if(records.size() > 0){
+        if(!records.isEmpty()){
             return records.stream()
                     .map(record -> new ExerciseData(
                             record.getExerciseId(),

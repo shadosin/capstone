@@ -12,7 +12,7 @@ import com.kenzie.capstone.service.model.ExerciseRecord;
 import java.util.List;
 
 public class ExerciseDao {
-    private DynamoDBMapper mapper;
+    private final DynamoDBMapper mapper;
 
     public ExerciseDao(DynamoDBMapper mapper){this.mapper = mapper;}
 

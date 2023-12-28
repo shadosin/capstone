@@ -12,14 +12,12 @@ import com.kenzie.capstone.service.model.MealRecord;
 import java.util.List;
 
 public class MealDao {
-    private DynamoDBMapper mapper;
+    private final DynamoDBMapper mapper;
 
     public MealDao(DynamoDBMapper mapper){
         this.mapper = mapper;
     }
-    public MealRecord addMealRecord(){ //TODO - never used
-        return new MealRecord();
-    }
+
     public MealData addMealData(MealData mealData){
         try{
             mapper.save(mealData, new DynamoDBSaveExpression()

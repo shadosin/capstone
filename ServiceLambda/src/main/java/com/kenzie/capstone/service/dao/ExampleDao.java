@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.List;
 
 public class ExampleDao {
-    private DynamoDBMapper mapper;
+    private final DynamoDBMapper mapper;
 
     /**
      * Allows access to and manipulation of Match objects from the data store.
@@ -23,7 +23,7 @@ public class ExampleDao {
         this.mapper = mapper;
     }
 
-    public ExampleData storeExampleData(ExampleData exampleData) { //TODO - waiting for Jacobus
+    public ExampleData storeExampleData(ExampleData exampleData) {
         try {
             mapper.save(exampleData, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(

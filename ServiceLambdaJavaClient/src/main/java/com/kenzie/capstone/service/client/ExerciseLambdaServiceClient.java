@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kenzie.capstone.service.model.ExerciseData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseLambdaServiceClient {
@@ -29,8 +28,8 @@ public class ExerciseLambdaServiceClient {
                                         String intensity, String exerciseName, int duration,
                                         int reps, int sets, double distance, double METS,
                                         String description){
-        String data = exerciseId + type + intensity + exerciseName + String.valueOf(duration) + String.valueOf(reps)
-                + String.valueOf(sets) + String.valueOf(distance) + String.valueOf(METS) + description;
+        String data = exerciseId + type + intensity + exerciseName + duration + reps
+                + sets + distance + METS + description;
 
         EndpointUtility endpointUtility = new EndpointUtility();
         String response = endpointUtility.postEndpoint(SET_EXERCISE_ENDPOINT, data);
