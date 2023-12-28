@@ -12,7 +12,7 @@ import com.kenzie.capstone.service.model.ExerciseRecord;
 import java.util.List;
 
 public class ExerciseDao {
-    private DynamoDBMapper mapper;
+    private final DynamoDBMapper mapper;
 
     public ExerciseDao(DynamoDBMapper mapper){this.mapper = mapper;}
 
@@ -64,6 +64,19 @@ public List<ExerciseRecord> findExerciseData(String exerciseId){
 
         return record;
 
+    }
+
+    public List<ExerciseRecord> getExerciseFromGSIByAttributeValue(String attributeValue) {
+
+        ExerciseRecord record = new ExerciseRecord();
+        record.setType(attributeValue);
+
+        DynamoDBQueryExpression<ExerciseRecord> query = new DynamoDBQueryExpression<ExerciseRecord>()
+                .withIndexName("TypeIndex")
+                .withHashKeyValues(record)
+                .withConsistentRead(false);
+
+        return mapper.query(ExerciseRecord.class, query);
     }
 
 }

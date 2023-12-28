@@ -18,7 +18,7 @@ public class MealService {
 
     public MealData getMealData(String mealId){
         List<MealRecord> records = dao.findMealData(mealId);
-        if(records.size() > 0){
+        if(!records.isEmpty()){
             return new MealData(records.get(0).getMealId(),
                     records.get(0).getName(),
                     records.get(0).getDescription(),
