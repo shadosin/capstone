@@ -4,7 +4,6 @@ import com.kenzie.appserver.controller.model.CreateUserRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
-import com.kenzie.appserver.service.model.User;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;

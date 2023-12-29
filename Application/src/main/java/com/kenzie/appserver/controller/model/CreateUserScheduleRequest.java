@@ -3,7 +3,6 @@ package com.kenzie.appserver.controller.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.List;
 

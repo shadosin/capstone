@@ -162,10 +162,6 @@ public class HealthMetricsService {
         return pounds / 2.20462;
     }
 
-    private double convertWeightToKg(double weight, WeightUnit weightUnit) {
-        return weightUnit.equals(WeightUnit.LBS) ? convertPoundsToKilograms(weight) : weight;
-    }
-
     private double calculateCaloriesBurned(double MET, double weightKg, int duration) {
         // The MET value represents the energy cost of physical activities.
         // 1 MET is roughly equivalent to the energy cost of sitting quietly.
@@ -177,11 +173,7 @@ public class HealthMetricsService {
 
     private HealthMetricsRecord retrieveMetricsFromRepository(String userId) {
         Optional<HealthMetricsRecord> optionalRecord = healthMetricsRepository.findById(userId);
-        HealthMetricsRecord metricsRecord = optionalRecord.orElseGet(() -> {
-            HealthMetricsRecord newRecord = new HealthMetricsRecord(userId);
-
-            return newRecord;
-        });
+        HealthMetricsRecord metricsRecord = optionalRecord.orElseGet(() -> new HealthMetricsRecord(userId));
         cacheStore.put(userId, metricsRecord);
         return metricsRecord;
     }

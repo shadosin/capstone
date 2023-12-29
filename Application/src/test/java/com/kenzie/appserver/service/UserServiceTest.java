@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
-import com.kenzie.capstone.service.client.LambdaServiceClient;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
