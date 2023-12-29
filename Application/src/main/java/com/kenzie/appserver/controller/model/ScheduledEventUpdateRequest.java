@@ -11,18 +11,26 @@ public class ScheduledEventUpdateRequest {
     @NotEmpty
     @JsonProperty("eventId")
     private String eventId;
+
+    @NotEmpty
     @JsonProperty("userId")
     private String userId;
+
     @JsonProperty("mealId")
     private String mealId;
+
     @JsonProperty("exerciseId")
     private String exerciseId;
+
     @JsonProperty("eventType")
     private EventType eventType;
+
     @JsonProperty("scheduledDateTime")
     private ZonedDateTime scheduledDateTime;
+
     @JsonProperty("completed")
     private boolean completed;
+
     @JsonProperty("metricsCompleted")
     private boolean metricsCalculated;
 

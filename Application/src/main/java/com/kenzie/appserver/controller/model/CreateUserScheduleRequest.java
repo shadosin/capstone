@@ -2,17 +2,24 @@ package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 public class CreateUserScheduleRequest {
 
+    @NotEmpty
     @JsonProperty("userId")
     private String userId;
+
+    @NotEmpty
     @JsonProperty("start")
     private ZonedDateTime start;
+
+    @NotEmpty
     @JsonProperty("end")
     private ZonedDateTime end;
+
     @JsonProperty("scheduledEventIds")
     private List<CreateScheduledEventRequest> scheduledEvents;
 
