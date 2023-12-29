@@ -5,6 +5,7 @@ import java.util.Objects;
 public class HealthMetrics {
     private String userId;
     private double weight;
+    private WeightUnit weightUnit;
     private double totalCalorieIntake;
     private double totalCalorieExpenditure;
     private double carbs;
@@ -15,6 +16,7 @@ public class HealthMetrics {
 
     public HealthMetrics(String userId,
                          double weight,
+                         WeightUnit weightUnit,
                          double totalCalorieIntake,
                          double totalCalorieExpenditure,
                          double carbs,
@@ -22,6 +24,7 @@ public class HealthMetrics {
                          double protein) {
         this.userId = userId;
         this.weight = weight;
+        this.weightUnit = weightUnit;
         this.totalCalorieIntake = totalCalorieIntake;
         this.totalCalorieExpenditure = totalCalorieExpenditure;
         this.carbs = carbs;
@@ -43,6 +46,14 @@ public class HealthMetrics {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public WeightUnit getWeightUnit() {
+        return weightUnit;
+    }
+
+    public void setWeightUnit(WeightUnit weightUnit) {
+        this.weightUnit = weightUnit;
     }
 
     public double getTotalCalorieIntake() {
@@ -96,11 +107,12 @@ public class HealthMetrics {
                 Double.compare(carbs, that.carbs) == 0 &&
                 Double.compare(fats, that.fats) == 0 &&
                 Double.compare(protein, that.protein) == 0 &&
-                Objects.equals(userId, that.userId);
+                Objects.equals(userId, that.userId) &&
+                weightUnit == that.weightUnit;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, weight, totalCalorieIntake, totalCalorieExpenditure, carbs, fats, protein);
+        return Objects.hash(userId, weight, weightUnit, totalCalorieIntake, totalCalorieExpenditure, carbs, fats, protein);
     }
 }

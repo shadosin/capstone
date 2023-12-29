@@ -19,13 +19,11 @@ class UserServiceTest {
 
   private UserService userService;
 
-  private LambdaServiceClient lambdaServiceClient;
   
   @BeforeEach
   public void setUp() {
       userRepository = mock(UserRepository.class);
-        lambdaServiceClient = mock(LambdaServiceClient.class);
-        userService = new UserService(userRepository, lambdaServiceClient);
+      userService = new UserService(userRepository);
   }
 
   @Test
