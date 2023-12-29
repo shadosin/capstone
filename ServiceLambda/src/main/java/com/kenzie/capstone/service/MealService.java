@@ -7,6 +7,7 @@ import com.kenzie.capstone.service.model.MealRecord;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MealService {
     private final MealDao dao;
@@ -70,5 +71,26 @@ public class MealService {
                 fat,
                 glutenFree,
                 vegan);
+    }
+
+    public List<MealData> getMealDataFromAttributeValue(String attributeValue){
+        List<MealRecord> records = dao.getMealFromGSIByAttributeValue(attributeValue);
+        if(!records.isEmpty()){
+            return records.stream()
+                    .map(record -> new MealData(
+                            record.getMealId(),
+                            record.getName(),
+                            record.getDescription(),
+                            record.getRecipe(),
+                            record.getType(),
+                            record.getCalories(),
+                            record.getProtein(),
+                            record.getCarb(),
+                            record.getFat(),
+                            record.isGlutenFree(),
+                            record.isVegan()))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }

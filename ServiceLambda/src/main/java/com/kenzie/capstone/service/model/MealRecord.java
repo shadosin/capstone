@@ -1,9 +1,6 @@
 package com.kenzie.capstone.service.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 import java.util.Objects;
 @DynamoDBTable(tableName = "Meals")
@@ -62,7 +59,7 @@ public class MealRecord {
     public void setRecipe(String recipe) {
         this.recipe = recipe;
     }
-    @DynamoDBRangeKey(attributeName = "type")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "TypeIndex", attributeName = "type")
     public String getType() {
         return type;
     }

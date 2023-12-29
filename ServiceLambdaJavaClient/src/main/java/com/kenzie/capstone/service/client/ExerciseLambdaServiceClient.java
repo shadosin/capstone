@@ -24,13 +24,7 @@ public class ExerciseLambdaServiceClient {
         }
         return exerciseData;
     }
-    public ExerciseData setExerciseData(String exerciseId, String type,
-                                        String intensity, String exerciseName, int duration,
-                                        int reps, int sets, double distance, double METS,
-                                        String description){
-        String data = exerciseId + type + intensity + exerciseName + duration + reps
-                + sets + distance + METS + description;
-
+    public ExerciseData setExerciseData(String data){
         EndpointUtility endpointUtility = new EndpointUtility();
         String response = endpointUtility.postEndpoint(SET_EXERCISE_ENDPOINT, data);
         ExerciseData exerciseData;
