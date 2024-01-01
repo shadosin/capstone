@@ -1,52 +1,74 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-const {GenerateSW} = require("workbox-webpack-plugin");
-
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 module.exports = {
-  optimization: {
-    usedExports: true
-  },
+
+  mode: 'development',
   entry: {
+    bundle: path.resolve(__dirname, "src/index.js")
+
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+    filename: '[name][contenthash].js',
+    clean: true,
+    assetModuleFilename: '[name][ext]',
   },
+  devtool: 'source-map',
   devServer: {
-    https: false,
-    port: 8080,
-    open: true,
-    proxy: [
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+    },
+    port: 3030,
+    open: false,
+    hot: true,
+    compress: true,
+  },
+  module: {
+    rules: [
       {
-        context: [
-          '/example',
-        ],
-        target: 'http://localhost:5001'
-      }
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+          {
+            test: /\.(?:js|mjs|cjs)$/,
+            exclude: /node_modules/,
+            include: path.resolve(__dirname, 'pages'),
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  ['@babel/preset-react', { targets: "defaults" }]
+                ],
+              }
+            }
+          },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      title: 'VitaTrac',
       filename: 'index.html',
-      inject: false
+      template: 'src/index.html'
     }),
     new CopyPlugin({
       patterns: [
-        {
-          from: path.resolve('src/css'),
-          to: path.resolve("dist/css")
-        },
-        {from: 'src/manifest.json', to: 'dist'}
+        {from: path.resolve(__dirname, 'src', 'manifest.json'), to: path.resolve(__dirname, 'dist', 'manifest.json')},
+        {from: path.resolve(__dirname, 'src', 'icons'), to: path.resolve(__dirname, 'dist', 'icons')}
+        
       ]
     }),
-      new WorkboxWebpackPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-    }),
-    new CleanWebpackPlugin()
+    new WorkboxWebpackPlugin.InjectManifest({
+      swSrc: path.resolve(__dirname, 'src', 'service-worker.js'),
+      swDest: path.resolve(__dirname, 'dist', 'service-worker.js')
+    })
   ]
 }
+
+
+// need copy plugin syntax
