@@ -1,6 +1,12 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js')
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
+
+console.log(`⚙️ Service Worker`)
 
 workbox.routing.registerRoute(
     ({request}) => request.destination === 'image',
     new workbox.strategies.NetworkFirst()
 )
+
+workbox.skipWaiting();
+
+precacheAndRoute(self.__WB_MANIFEST);

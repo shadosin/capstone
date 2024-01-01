@@ -9,10 +9,15 @@ Resources:
         - AttributeName: "type"
           AttributeType: "S"
       KeySchema:
-        - "AttributeName": "exerciseId"
-          "KeyType": "HASH"
-        - "AttributeName": "type"
-          "KeyType": "RANGE"
+        - AttributeName: "exerciseId"
+          KeyType: "HASH"
+      GlobalSecondaryIndexes:
+        - IndexName: "TypeIndex"  # Name of the GSI
+          KeySchema:
+            - AttributeName: "type"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"  # You can change this to include specific attributes
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: false
       BillingMode: PAY_PER_REQUEST

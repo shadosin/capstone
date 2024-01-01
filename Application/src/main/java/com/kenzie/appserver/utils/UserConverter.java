@@ -5,6 +5,7 @@ import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class UserConverter {
@@ -14,7 +15,7 @@ public class UserConverter {
   }
   public static UserRecord responseToRecord(UserResponse userResponse) {
     UserRecord userRecord = new UserRecord();
-    userRecord.setUsername(userResponse.getUserName());
+    userRecord.setUsername(userResponse.getUsername());
     userRecord.setEmail(userResponse.getEmail());
     userRecord.setDateJoined(userResponse.getDateJoined());
     userRecord.setAddress(userResponse.getAddress());
@@ -28,7 +29,7 @@ public class UserConverter {
 
   public static UserResponse recordToResponse(UserRecord userRecord) {
     UserResponse userResponse = new UserResponse();
-    userResponse.setUserName(userRecord.getUsername());
+    userResponse.setUsername(userRecord.getUsername());
     userResponse.setEmail(userRecord.getEmail());
     userResponse.setDateJoined(userRecord.getDateJoined());
     userResponse.setAddress(userRecord.getAddress());
@@ -39,13 +40,13 @@ public class UserConverter {
     userResponse.setUserScheduleIds(userRecord.getUserScheduleIds());
     return userResponse;
   }
-  //todo any time we have a createUserRequest we need a UUID
-  public static UserRecord requestToUserRecord(CreateUserRequest createUserRequest) {
+
+  public static UserRecord createRequestToUserRecord(CreateUserRequest createUserRequest) {
     UserRecord userRecord = new UserRecord();
-    userRecord.setUserId(UUID.randomUUID().toString());
+    userRecord.setUserId(UUID.randomUUID().toString()); //sets UUID upon creation
     userRecord.setUsername(createUserRequest.getUserName());
     userRecord.setEmail(createUserRequest.getEmail());
-    userRecord.setDateJoined(createUserRequest.getDateJoined());
+    userRecord.setDateJoined(ZonedDateTime.now()); //sets date upon creation
     userRecord.setAddress(createUserRequest.getAddress());
     userRecord.setFirstName(createUserRequest.getFirstName());
     userRecord.setLastName(createUserRequest.getLastName());
@@ -81,4 +82,5 @@ public class UserConverter {
 
     return updateRequest;
   }
+
 }
