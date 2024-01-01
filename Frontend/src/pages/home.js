@@ -1,26 +1,26 @@
-export default function home () {
-  return 
-    `<section>
-      <div class="grid">
-        <div class="container card">
-          <header class="card-header">
-            <h5> Track your meals</h5>
-          </header>
-          <div class="card-content">
-            Track your meals with VitaTrac. You can add your own meals or use
-            the ones we provide.
-          </div>
-        </div>
+import createCard from "../components/createCard";
 
-        <div class="container card">
-          <header class="card-header">
-            <h5>Track your exercises</h5>
-          </header>
-          <div class="card-content">
-            Track your exercises with VitaTrac. You can add your own exercises
-            or use the ones we provide.
-          </div>
-        </div>
-      </div>
-    </section>`
+
+function home () {
+const section = document.querySelector("section")
+// Create the grid div
+const grid = document.createElement('div');
+grid.className = 'grid';
+
+
+
+// Create the first card
+const card1 = createCard('Track your meals', 'Track your meals with VitaTrac. You can add your own meals or use the ones we provide.');
+
+// Create the second card
+const card2 = createCard('Track your exercises', 'Track your exercises with VitaTrac. You can add your own exercises or use the ones we provide.');
+
+// Append cards to the grid
+grid.append(card1, card2);
+
+// Append the grid to the document body or a specific container
+section.append(grid); // or append it to a specific container
+
 };
+
+export default home;
