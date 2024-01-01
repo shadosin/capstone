@@ -6,6 +6,8 @@ import com.kenzie.capstone.service.model.MealRecord;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MealService {
     private final MealDao dao;
@@ -17,21 +19,78 @@ public class MealService {
 
     public MealData getMealData(String mealId){
         List<MealRecord> records = dao.findMealData(mealId);
-        if(records.size() > 0){
-            return new MealData(records.get(0).getMealId(), records.get(0).getType(), records.get(0).getRecipe(),
-                    records.get(0).getName(), records.get(0).getDescription(), records.get(0).getFat(), records.get(0).getProtein(),
-                    records.get(0).getCarb(),records.get(0).isGlutenFree(), records.get(0).isVegan());
+        if(!records.isEmpty()){
+            return new MealData(records.get(0).getMealId(),
+                    records.get(0).getName(),
+                    records.get(0).getDescription(),
+                    records.get(0).getRecipe(),
+                    records.get(0).getType(),
+                    records.get(0).getCalories(),
+                    records.get(0).getProtein(),
+                    records.get(0).getCarb(),
+                    records.get(0).getFat(),
+                    records.get(0).isGlutenFree(),
+                    records.get(0).isVegan());
         }
         return null;
     }
 
-    public MealData setData(String mealId, String type,
-                            String recipe, String name, String description, double fat,
-                            double protein, double carb, boolean glutenFree, boolean vegan) {
-        MealRecord record = dao.setMealRecord(mealId, type, recipe, name, description,
-                fat, protein, carb, glutenFree, vegan);
+    public MealData setData(String name,
+                            String description,
+                            String recipe,
+                            String type,
+                            double calories,
+                            double protein,
+                            double carb,
+                            double fat,
+                            boolean glutenFree,
+                            boolean vegan) {
 
-        return new MealData(mealId, type, recipe, name, description,
-                fat, protein, carb, glutenFree, vegan);
+        String mealId = UUID.randomUUID().toString();
+
+        MealRecord record = dao.setMealRecord(mealId,
+                name,
+                description,
+                recipe,
+                type,
+                calories,
+                protein,
+                carb,
+                fat,
+                glutenFree,
+                vegan);
+
+        return new MealData(mealId,
+                name,
+                description,
+                recipe,
+                type,
+                calories,
+                protein,
+                carb,
+                fat,
+                glutenFree,
+                vegan);
+    }
+
+    public List<MealData> getMealDataFromAttributeValue(String attributeValue){
+        List<MealRecord> records = dao.getMealFromGSIByAttributeValue(attributeValue);
+        if(!records.isEmpty()){
+            return records.stream()
+                    .map(record -> new MealData(
+                            record.getMealId(),
+                            record.getName(),
+                            record.getDescription(),
+                            record.getRecipe(),
+                            record.getType(),
+                            record.getCalories(),
+                            record.getProtein(),
+                            record.getCarb(),
+                            record.getFat(),
+                            record.isGlutenFree(),
+                            record.isVegan()))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }

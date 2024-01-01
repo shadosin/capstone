@@ -6,22 +6,18 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.google.common.collect.ImmutableMap;
-import com.kenzie.capstone.service.model.ExerciseData;
-import com.kenzie.capstone.service.model.ExerciseRecord;
 import com.kenzie.capstone.service.model.MealData;
 import com.kenzie.capstone.service.model.MealRecord;
 
 import java.util.List;
 
 public class MealDao {
-    private DynamoDBMapper mapper;
+    private final DynamoDBMapper mapper;
 
     public MealDao(DynamoDBMapper mapper){
         this.mapper = mapper;
     }
-    public MealRecord addMealRecord(){
-        return new MealRecord();
-    }
+
     public MealData addMealData(MealData mealData){
         try{
             mapper.save(mealData, new DynamoDBSaveExpression()
@@ -47,6 +43,7 @@ public class MealDao {
                                     String description,
                                     String recipe,
                                     String type,
+                                    double calories,
                                     double protein,
                                     double carb,
                                     double fat,
@@ -59,12 +56,36 @@ public class MealDao {
         record.setDescription(description);
         record.setRecipe(recipe);
         record.setType(type);
+        record.setCalories(calories);
         record.setProtein(protein);
         record.setCarb(carb);
         record.setFat(fat);
         record.setGlutenFree(glutenFree);
         record.setVegan(vegan);
+
+        try {
+            mapper.save(record, new DynamoDBSaveExpression()
+                    .withExpected(ImmutableMap.of(
+                            "mealId",
+                            new ExpectedAttributeValue().withExists(false)
+                    )));
+        } catch (ConditionalCheckFailedException e) {
+            throw new IllegalArgumentException("mealId already exists");
+        }
         return record;
+    }
+
+    public List<MealRecord> getMealFromGSIByAttributeValue(String attributeValue) {
+
+        MealRecord record = new MealRecord();
+        record.setType(attributeValue);
+
+        DynamoDBQueryExpression<MealRecord> query = new DynamoDBQueryExpression<MealRecord>()
+                .withIndexName("TypeIndex")
+                .withHashKeyValues(record)
+                .withConsistentRead(false);
+
+        return mapper.query(MealRecord.class, query);
     }
 
 }

@@ -18,8 +18,16 @@ public class ExerciseData {
     private double METS;
     private String description;
 
-    public ExerciseData(String exerciseId, String type, String intensity, String exerciseName, int duration, int reps,
-                    int sets, double distance, double METS, String description){
+    public ExerciseData(String exerciseId,
+                        String type,
+                        String intensity,
+                        String exerciseName,
+                        int duration,
+                        int reps,
+                        int sets,
+                        double distance,
+                        double METS,
+                        String description){
         this.exerciseId = exerciseId;
         this.type = type;
         this.intensity = intensity;

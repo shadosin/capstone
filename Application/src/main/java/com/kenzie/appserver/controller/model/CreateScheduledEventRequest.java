@@ -3,20 +3,32 @@ package com.kenzie.appserver.controller.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.service.model.EventType;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.ZonedDateTime;
 
 public class CreateScheduledEventRequest {
 
+    @NotEmpty
+    @JsonProperty("userId")
+    private String userId;
+
     @JsonProperty("mealId")
     private String mealId;
+
     @JsonProperty("exerciseId")
     private String exerciseId;
+
+    @NotEmpty
     @JsonProperty("eventType")
     private EventType eventType;
+
+    @NotEmpty
     @JsonProperty("scheduledDateTime")
     private ZonedDateTime scheduledDateTime;
+
     @JsonProperty("completed")
     private boolean completed;
+
     @JsonProperty("metricsCompleted")
     private boolean metricsCalculated;
 
@@ -66,5 +78,13 @@ public class CreateScheduledEventRequest {
 
     public void setExerciseId(String exerciseId) {
         this.exerciseId = exerciseId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

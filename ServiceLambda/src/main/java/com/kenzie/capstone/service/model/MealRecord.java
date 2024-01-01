@@ -1,9 +1,6 @@
 package com.kenzie.capstone.service.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 import java.util.Objects;
 @DynamoDBTable(tableName = "Meals")
@@ -18,6 +15,8 @@ public class MealRecord {
     private String recipe;
 
     private String type;
+
+    private double calories;
 
     private double protein;
 
@@ -60,7 +59,7 @@ public class MealRecord {
     public void setRecipe(String recipe) {
         this.recipe = recipe;
     }
-    @DynamoDBRangeKey(attributeName = "type")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "TypeIndex", attributeName = "type")
     public String getType() {
         return type;
     }
@@ -109,6 +108,15 @@ public class MealRecord {
         this.vegan = vegan;
     }
 
+    @DynamoDBAttribute(attributeName = "calories")
+    public double getCalories() {
+        return calories;
+    }
+
+    public void setCalories(double calories) {
+        this.calories = calories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,12 +125,13 @@ public class MealRecord {
         return protein == that.protein &&
                 carb == that.carb &&
                 fat == that.fat &&
+                calories == that.calories &&
                 Objects.equals(mealId, that.mealId) &&
                 Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mealId, type, protein, carb, fat);
+        return Objects.hash(mealId, type, calories, protein, carb, fat);
     }
 }

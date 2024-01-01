@@ -11,6 +11,7 @@ import java.util.Objects;
 public class ScheduledEventRecord {
 
     private String eventId;
+    private String userId;
     private String mealId;
     private String exerciseId;
     private EventType eventType;
@@ -21,6 +22,11 @@ public class ScheduledEventRecord {
     @DynamoDBHashKey(attributeName = "eventId")
     public String getEventId() {
         return eventId;
+    }
+
+    @DynamoDBHashKey(attributeName = "userId")
+    public String getUserId() {
+        return userId;
     }
 
     @DynamoDBAttribute(attributeName = "mealId")
@@ -79,6 +85,10 @@ public class ScheduledEventRecord {
         this.exerciseId = exerciseId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,6 +97,7 @@ public class ScheduledEventRecord {
         return completed == that.completed &&
                 metricsCalculated == that.metricsCalculated &&
                 Objects.equals(eventId, that.eventId) &&
+                Objects.equals(userId, that.userId) &&
                 Objects.equals(mealId, that.mealId) &&
                 Objects.equals(exerciseId, that.exerciseId) &&
                 eventType == that.eventType &&
@@ -95,6 +106,6 @@ public class ScheduledEventRecord {
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId, mealId, exerciseId, eventType, scheduledDateTime, completed, metricsCalculated);
+        return Objects.hash(eventId, userId, mealId, exerciseId, eventType, scheduledDateTime, completed, metricsCalculated);
     }
 }
