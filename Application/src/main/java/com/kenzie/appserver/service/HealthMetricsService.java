@@ -4,12 +4,10 @@ import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.HealthMetricsRepository;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
-import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
-import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 import com.kenzie.appserver.service.model.EventType;
+import com.kenzie.appserver.service.model.HealthMetrics;
+import com.kenzie.appserver.service.model.ScheduledEvent;
 import com.kenzie.appserver.service.model.WeightUnit;
-import com.kenzie.appserver.utils.ScheduledEventConverter;
-import com.kenzie.appserver.utils.UserScheduleConverter;
 import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
 import com.kenzie.capstone.service.client.MealLambdaServiceClient;
 import com.kenzie.capstone.service.model.ExerciseData;
@@ -59,31 +57,39 @@ public class HealthMetricsService {
 
     @Transactional
     public HealthMetricsResponse updateHealthMetrics(HealthMetricsUpdateRequest request) {
-        HealthMetricsRecord metricsRecord = getHealthMetrics(request.getUserId());
+        HealthMetricsRecord oldRecord = getHealthMetrics(request.getUserId());
+        HealthMetrics healthMetrics = healthMetricsFromRecord(oldRecord);
 
-        double weightInKg = request.getWeightUnit().equals(WeightUnit.LBS)
-                ? convertPoundsToKilograms(request.getWeight())
-                : request.getWeight();
+        if (request.getWeight() != null) {
+            healthMetrics.setWeight(request.getWeight());
+        }
+        if (request.getWeightUnit() != null && !request.getWeightUnit().equals(healthMetrics.getWeightUnit())) {
+            healthMetrics.setWeightUnit(request.getWeightUnit());
+        }
 
-        UserScheduleRecord currentSchedule = UserScheduleConverter.convertToRecordFromResponse(userScheduleService.findCurrentSchedule(request.getUserId()));
+        double weightInKg = healthMetrics.getWeightUnit().equals(WeightUnit.LBS)
+                ? convertPoundsToKilograms(healthMetrics.getWeight())
+                : healthMetrics.getWeight();
+
+        UserScheduleResponse currentSchedule = userScheduleService.findCurrentSchedule(request.getUserId());
         for (String eventId : currentSchedule.getScheduledEventIds()) {
-            ScheduledEventRecord scheduledEvent = ScheduledEventConverter.createRecordFromResponse(scheduledEventService.findById(eventId));
+            ScheduledEventResponse scheduledEvent = scheduledEventService.findById(eventId);
             if (scheduledEvent.isCompleted() && !scheduledEvent.isMetricsCalculated()) {
 
                 //calculate calories burned via exercise
-                if (scheduledEvent.getEventType() == EventType.EXERCISE) {
+                if (scheduledEvent.getEventType() == EventType.EXERCISE && scheduledEvent.getExerciseId() != null) {
                     ExerciseData exerciseData = exerciseLambdaServiceClient.findExerciseData(scheduledEvent.getExerciseId());
                     double caloriesBurned = calculateCaloriesBurned(exerciseData.getMETS(), weightInKg, exerciseData.getDuration());
-                    metricsRecord.setTotalCalorieExpenditure(metricsRecord.getTotalCalorieExpenditure() + caloriesBurned);
+                    healthMetrics.setTotalCalorieExpenditure(healthMetrics.getTotalCalorieExpenditure() + caloriesBurned);
                 }
 
                 //add calories and macros from meal intake
-                if (scheduledEvent.getEventType() == EventType.MEAL) {
-                    MealData mealData = mealLambdaServiceClient.getMealData(scheduledEvent.getEventId());
-                    metricsRecord.setTotalCalorieIntake(metricsRecord.getTotalCalorieIntake() + mealData.getCalories());
-                    metricsRecord.setCarbs(metricsRecord.getCarbs() + mealData.getCarb());
-                    metricsRecord.setFats(metricsRecord.getFats() + mealData.getFat());
-                    metricsRecord.setProtein(metricsRecord.getProtein() + mealData.getProtein());
+                if (scheduledEvent.getEventType() == EventType.MEAL && scheduledEvent.getMealId() != null) {
+                    MealData mealData = mealLambdaServiceClient.getMealData(scheduledEvent.getMealId());
+                    healthMetrics.setTotalCalorieIntake(healthMetrics.getTotalCalorieIntake() + mealData.getCalories());
+                    healthMetrics.setCarbs(healthMetrics.getCarbs() + mealData.getCarb());
+                    healthMetrics.setFats(healthMetrics.getFats() + mealData.getFat());
+                    healthMetrics.setProtein(healthMetrics.getProtein() + mealData.getProtein());
                 }
                 scheduledEvent.setMetricsCalculated(true);
 
@@ -94,34 +100,38 @@ public class HealthMetricsService {
                 scheduledEventService.updateScheduledEvent(scheduledEvent.getEventId(), updateRequest);
             }
         }
-        HealthMetricsRecord updatedRecord = healthMetricsRepository.save(metricsRecord);
+        HealthMetricsRecord updatedRecord = healthMetricsRepository.save(recordFromHealthMetrics(healthMetrics));
 
         cacheStore.put(request.getUserId(), updatedRecord);
 
         return new HealthMetricsResponse(updatedRecord);
     }
 
-    public void updateMetricsBasedOnEvent(String userId, ScheduledEventRecord event) {
-        HealthMetricsRecord metricsRecord = getHealthMetrics(userId);
-        double weightInKg = convertWeightToKg(metricsRecord.getWeight(), metricsRecord.getWeightUnit());
+    //This method is used only when a specific event is updated
+    public void updateMetricsBasedOnEvent(String userId, ScheduledEvent event) {
+        HealthMetrics metrics = healthMetricsFromRecord(getHealthMetrics(userId));
+
+        double weightInKg = metrics.getWeightUnit().equals(WeightUnit.LBS)
+                ? convertPoundsToKilograms(metrics.getWeight())
+                : metrics.getWeight();
 
         //calculate calories burned via exercise
         if (event.getEventType() == EventType.EXERCISE && event.getExerciseId() != null) {
             ExerciseData exerciseData = exerciseLambdaServiceClient.findExerciseData(event.getExerciseId());
             double caloriesBurned = calculateCaloriesBurned(exerciseData.getMETS(), weightInKg, exerciseData.getDuration());
-            metricsRecord.setTotalCalorieExpenditure(metricsRecord.getTotalCalorieExpenditure() + caloriesBurned);
+            metrics.setTotalCalorieExpenditure(metrics.getTotalCalorieExpenditure() + caloriesBurned);
         }
 
         //add calories and macros from meal intake
         if (event.getEventType() == EventType.MEAL && event.getMealId() != null) {
             MealData mealData = mealLambdaServiceClient.getMealData(event.getMealId());
-            metricsRecord.setTotalCalorieIntake(metricsRecord.getTotalCalorieIntake() + mealData.getCalories());
-            metricsRecord.setCarbs(metricsRecord.getCarbs() + mealData.getCarb());
-            metricsRecord.setFats(metricsRecord.getFats() + mealData.getFat());
-            metricsRecord.setProtein(metricsRecord.getProtein() + mealData.getProtein());
+            metrics.setTotalCalorieIntake(metrics.getTotalCalorieIntake() + mealData.getCalories());
+            metrics.setCarbs(metrics.getCarbs() + mealData.getCarb());
+            metrics.setFats(metrics.getFats() + mealData.getFat());
+            metrics.setProtein(metrics.getProtein() + mealData.getProtein());
         }
 
-        HealthMetricsRecord updatedRecord = healthMetricsRepository.save(metricsRecord);
+        HealthMetricsRecord updatedRecord = healthMetricsRepository.save(recordFromHealthMetrics(metrics));
 
         cacheStore.put(userId, updatedRecord);
     }
@@ -131,7 +141,7 @@ public class HealthMetricsService {
             healthMetricsRepository.deleteById(userId);
             cacheStore.invalidate(userId);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid user ID");
+            throw new IllegalArgumentException("Invalid user ID: " + userId);
         }
     }
 
@@ -140,6 +150,7 @@ public class HealthMetricsService {
             // Any new HealthMetricsRecord created using JUST a userId will have default values set to 0.0
             HealthMetricsRecord metricsRecord = new HealthMetricsRecord(userId);
             metricsRecord = healthMetricsRepository.save(metricsRecord);
+            cacheStore.invalidate(userId);
             cacheStore.put(userId, metricsRecord);
         } catch (Exception e) {
             throw new IllegalArgumentException("Unexpected error occurred");
@@ -149,10 +160,6 @@ public class HealthMetricsService {
     private double convertPoundsToKilograms(double pounds) {
         // conversion is 1 kg = 2.20462 lbs
         return pounds / 2.20462;
-    }
-
-    private double convertWeightToKg(double weight, WeightUnit weightUnit) {
-        return weightUnit.equals(WeightUnit.LBS) ? convertPoundsToKilograms(weight) : weight;
     }
 
     private double calculateCaloriesBurned(double MET, double weightKg, int duration) {
@@ -166,16 +173,34 @@ public class HealthMetricsService {
 
     private HealthMetricsRecord retrieveMetricsFromRepository(String userId) {
         Optional<HealthMetricsRecord> optionalRecord = healthMetricsRepository.findById(userId);
-        HealthMetricsRecord metricsRecord = optionalRecord.orElseGet(() -> {
-            HealthMetricsRecord newRecord = new HealthMetricsRecord(userId);
-
-            return newRecord;
-        });
+        HealthMetricsRecord metricsRecord = optionalRecord.orElseGet(() -> new HealthMetricsRecord(userId));
         cacheStore.put(userId, metricsRecord);
         return metricsRecord;
     }
 
-    public void invalidateCache(String userId) {
-        cacheStore.invalidate(userId);
+    private HealthMetrics healthMetricsFromRecord(HealthMetricsRecord record) {
+        HealthMetrics metrics = new HealthMetrics();
+        metrics.setUserId(record.getUserId());
+        metrics.setWeight(record.getWeight());
+        metrics.setWeightUnit(record.getWeightUnit());
+        metrics.setTotalCalorieIntake(record.getTotalCalorieIntake());
+        metrics.setTotalCalorieExpenditure(record.getTotalCalorieExpenditure());
+        metrics.setCarbs(record.getCarbs());
+        metrics.setFats(record.getFats());
+        metrics.setProtein(record.getProtein());
+        return metrics;
+    }
+
+    private HealthMetricsRecord recordFromHealthMetrics(HealthMetrics metrics) {
+        HealthMetricsRecord record = new HealthMetricsRecord();
+        record.setUserId(metrics.getUserId());
+        record.setWeight(metrics.getWeight());
+        record.setWeightUnit(metrics.getWeightUnit());
+        record.setTotalCalorieIntake(metrics.getTotalCalorieIntake());
+        record.setTotalCalorieExpenditure(metrics.getTotalCalorieExpenditure());
+        record.setCarbs(metrics.getCarbs());
+        record.setFats(metrics.getFats());
+        record.setProtein(metrics.getProtein());
+        return record;
     }
 }

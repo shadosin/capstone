@@ -1,47 +1,41 @@
-package com.kenzie.appserver.controller.model;
+package com.kenzie.appserver.service.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kenzie.appserver.repositories.model.UserRecord;
-
-import javax.validation.constraints.NotEmpty;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResponse {
-    @NotEmpty
-    @JsonProperty("userId")
+public class User {
+
     private String userId;
-    @JsonProperty("username")
     private String username;
-    @JsonProperty("firstName")
     private String firstName;
-    @JsonProperty("lastName")
     private String lastName;
-    @JsonProperty("address")
     private String address;
-    @JsonProperty("phoneNum")
     private String phoneNum;
-    @JsonProperty("email")
     private String email;
-    @JsonProperty("dateJoined")
     private ZonedDateTime dateJoined;
-    @JsonProperty("scheduleIdList")
     private List<String> userScheduleIds;
 
-    public UserResponse() {}
+    public User() {}
 
-    public UserResponse(UserRecord userRecord) {
-        this.userId = userRecord.getUserId();
-        this.username = userRecord.getUsername();
-        this.firstName = userRecord.getFirstName();
-        this.lastName = userRecord.getLastName();
-        this.address = userRecord.getAddress();
-        this.phoneNum = userRecord.getPhoneNum();
-        this.email = userRecord.getEmail();
-        this.dateJoined = userRecord.getDateJoined();
-        this.userScheduleIds = userRecord.getUserScheduleIds();
+    public User(String userId,
+                String username,
+                String firstName,
+                String lastName,
+                String address,
+                String phoneNum,
+                String email,
+                ZonedDateTime dateJoined,
+                List<String> userScheduleIds) {
+        this.userId = userId;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.email = email;
+        this.dateJoined = dateJoined;
+        this.userScheduleIds = userScheduleIds;
     }
 
     public String getUserId() {
@@ -114,5 +108,26 @@ public class UserResponse {
 
     public void setUserScheduleIds(List<String> userScheduleIds) {
         this.userScheduleIds = userScheduleIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(phoneNum, user.phoneNum) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(dateJoined, user.dateJoined) &&
+                Objects.equals(userScheduleIds, user.userScheduleIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, username, firstName, lastName, address, phoneNum, email, dateJoined, userScheduleIds);
     }
 }
