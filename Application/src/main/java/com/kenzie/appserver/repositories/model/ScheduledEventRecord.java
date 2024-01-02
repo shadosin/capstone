@@ -24,7 +24,7 @@ public class ScheduledEventRecord {
         return eventId;
     }
 
-    @DynamoDBHashKey(attributeName = "userId")
+    @DynamoDBAttribute(attributeName = "userId")
     public String getUserId() {
         return userId;
     }
