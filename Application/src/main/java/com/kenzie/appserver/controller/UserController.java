@@ -1,6 +1,7 @@
 package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.controller.model.CreateUserRequest;
+import com.kenzie.appserver.controller.model.UserLoginRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
@@ -52,5 +53,11 @@ public class UserController {
       @PathVariable("userId") String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
       UserResponse response = userService.updateUser(userId, userUpdateRequest);
       return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<UserResponse> loginUser(@RequestBody UserLoginRequest loginRequest) {
+      UserResponse userResponse = userService.validateUser(loginRequest);
+      return ResponseEntity.ok(userResponse);
   }
 }

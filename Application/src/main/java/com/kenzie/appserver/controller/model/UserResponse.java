@@ -15,6 +15,8 @@ public class UserResponse {
     private String userId;
     @JsonProperty("username")
     private String username;
+    @JsonProperty("password")
+    private String password;
     @JsonProperty("firstName")
     private String firstName;
     @JsonProperty("lastName")
@@ -35,6 +37,7 @@ public class UserResponse {
     public UserResponse(UserRecord userRecord) {
         this.userId = userRecord.getUserId();
         this.username = userRecord.getUsername();
+        this.password = userRecord.getPassword();
         this.firstName = userRecord.getFirstName();
         this.lastName = userRecord.getLastName();
         this.address = userRecord.getAddress();
@@ -58,6 +61,14 @@ public class UserResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {

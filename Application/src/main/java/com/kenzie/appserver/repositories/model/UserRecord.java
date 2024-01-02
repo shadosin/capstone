@@ -11,6 +11,7 @@ import java.util.Objects;
 public class UserRecord {
   private String userId;
   private String username;
+  private String password;
   private String firstName;
   private String lastName;
   private String address;
@@ -29,13 +30,22 @@ public class UserRecord {
     this.userId = userId;
   }
 
-  @DynamoDBAttribute(attributeName = "username")
+  @DynamoDBIndexHashKey(globalSecondaryIndexName = "UserIndex", attributeName = "username")
   public String getUsername() {
     return username;
   }
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  @DynamoDBAttribute(attributeName = "password")
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   @DynamoDBAttribute(attributeName = "firstName")
@@ -107,19 +117,20 @@ public class UserRecord {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     UserRecord that = (UserRecord) o;
-    return Objects.equals(userId, that.userId)
-        && Objects.equals(username, that.username)
-        && Objects.equals(firstName, that.firstName)
-        && Objects.equals(lastName, that.lastName)
-        && Objects.equals(address, that.address)
-        && Objects.equals(phoneNum, that.phoneNum)
-        && Objects.equals(email, that.email)
-        && Objects.equals(dateJoined, that.dateJoined);
+    return Objects.equals(userId, that.userId) &&
+            Objects.equals(username, that.username) &&
+            Objects.equals(password, that.password) &&
+            Objects.equals(firstName, that.firstName) &&
+            Objects.equals(lastName, that.lastName) &&
+            Objects.equals(address, that.address) &&
+            Objects.equals(phoneNum, that.phoneNum) &&
+            Objects.equals(email, that.email) &&
+            Objects.equals(dateJoined, that.dateJoined) &&
+            Objects.equals(userScheduleIds, that.userScheduleIds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        userId, username, firstName, lastName, address, phoneNum, email, dateJoined);
+    return Objects.hash(userId, username, password, firstName, lastName, address, phoneNum, email, dateJoined, userScheduleIds);
   }
 }
