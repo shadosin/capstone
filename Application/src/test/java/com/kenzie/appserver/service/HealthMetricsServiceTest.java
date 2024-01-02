@@ -63,10 +63,15 @@ public class HealthMetricsServiceTest {
             scheduledEventRepository = mock(ScheduledEventRepository.class);
 
             userService = new UserService(userRepository);
-            userScheduleService = new UserScheduleService(userScheduleRepository, userService, scheduledEventService);
-            scheduledEventService = new ScheduledEventService(scheduledEventRepository, healthMetricsService);
+            userScheduleService = new UserScheduleService(userScheduleRepository, userService);
+            scheduledEventService = new ScheduledEventService(scheduledEventRepository);
             healthMetricsService = new HealthMetricsService(healthMetricsRepository, mealLambdaServiceClient,
-                    exerciseLambdaServiceClient, userScheduleService, scheduledEventService, cacheStore);
+                    exerciseLambdaServiceClient, userScheduleService, cacheStore);
+
+            // Setting dependencies via setter methods
+            userScheduleService.setScheduledEventService(scheduledEventService);
+            scheduledEventService.setHealthMetricsService(healthMetricsService);
+            healthMetricsService.setScheduledEventService(scheduledEventService);
         }
 
         @Test

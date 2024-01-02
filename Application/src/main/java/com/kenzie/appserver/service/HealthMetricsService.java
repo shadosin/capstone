@@ -25,22 +25,25 @@ public class HealthMetricsService {
     private final MealLambdaServiceClient mealLambdaServiceClient;
     private final ExerciseLambdaServiceClient exerciseLambdaServiceClient;
     private final UserScheduleService userScheduleService;
-    private final ScheduledEventService scheduledEventService;
     private final CacheStore<String, HealthMetricsRecord> cacheStore;
+    private ScheduledEventService scheduledEventService;
 
     @Autowired
     public HealthMetricsService(HealthMetricsRepository healthMetricsRepository,
                                 MealLambdaServiceClient mealLambdaServiceClient,
                                 ExerciseLambdaServiceClient exerciseLambdaServiceClient,
                                 UserScheduleService userScheduleService,
-                                ScheduledEventService scheduledEventService,
                                 CacheStore<String, HealthMetricsRecord> cacheStore) {
         this.healthMetricsRepository = healthMetricsRepository;
         this.mealLambdaServiceClient = mealLambdaServiceClient;
         this.exerciseLambdaServiceClient = exerciseLambdaServiceClient;
         this.userScheduleService = userScheduleService;
-        this.scheduledEventService = scheduledEventService;
         this.cacheStore = cacheStore;
+    }
+
+    @Autowired
+    public void setScheduledEventService(ScheduledEventService scheduledEventService) {
+        this.scheduledEventService = scheduledEventService;
     }
 
     public HealthMetricsRecord getHealthMetrics(String userId) {
