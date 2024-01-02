@@ -8,5 +8,3 @@ workbox.routing.registerRoute(
 )
 
 workbox.skipWaiting();
-
-precacheAndRoute(self.__WB_MANIFEST);

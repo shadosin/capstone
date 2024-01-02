@@ -11,17 +11,14 @@ function createUserButtons() {
     // Create the first li in the second ul with an a element
     const li2 = document.createElement("li");
     li2.setAttribute("role", "button");
-    li2.className = "outline primary";
+    li2.className = "outline";
     li2.textContent = "Register";
 
     // Create the second li in the second ul with an a element
     const li3 = document.createElement("li");
     li3.id = "login";
-    const a2 = document.createElement("a");
     li3.setAttribute("role", "button");
-    li3.setAttribute("data-navigo", "");
     li3.textContent = "Login";
-    li3.append(a2);
 
     // Append li elements to the second ul
     ul2.append(li2, li3);
