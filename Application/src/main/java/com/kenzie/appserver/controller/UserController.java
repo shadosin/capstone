@@ -4,11 +4,8 @@ import com.kenzie.appserver.controller.model.CreateUserRequest;
 import com.kenzie.appserver.controller.model.UserLoginRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
-import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.service.UserService;
-import com.kenzie.appserver.utils.UserConverter;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
