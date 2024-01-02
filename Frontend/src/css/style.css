@@ -2,8 +2,8 @@
   /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
   --primary-color: #a518e7;
   --secondary-color: #fff;
-  --background:hsla(190, 80%, 75%, 0.50);
-  --header:hsla(190, 80%, 75%, 1);
+  --background: hsla(190, 80%, 75%, 0.5);
+  --header: hsla(190, 80%, 75%, 1);
   --error-color: rgba(194, 0, 0, 0.71);
   /* background-color: black; */
   /* color: whitesmoke; */
@@ -22,18 +22,31 @@ main {
 .nav {
   box-shadow: rgb(23, 98, 148) inset 10px 5px 10px, rgb(23, 98, 148) 2px 2px 2px;
   border: 1px solid black;
-  padding: 0.75rem 1rem;
+  padding: 0.25rem 1rem;
   padding-right: 1rem;
   border-radius: 15px;
   margin-bottom: 1rem;
   background-color: var(--background);
 }
 
+.nav > ul > li > * , .nav > ul > li {
+  margin: 0;
+  padding: .2rem;
+}
 .navBtnGroup {
   display: flex;
   gap: 1rem;
   padding-right: 1rem;
 }
+
+.btnGroup {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  height: min-content;
+  width: min-content;
+}
+
 .hero {
   width: 100%;
   height: 100%;
@@ -56,6 +69,16 @@ main {
   background-color: var(--background);
 }
 
+.content-section {
+  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px, rgb(23, 98, 148) 2px 2px 2px;
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: var(--background);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .card-header {
   box-shadow: rgb(23, 98, 148) inset 5px 5px 5px;
   padding-top: 0.2rem;
@@ -72,4 +95,34 @@ main {
 }
 .card-content {
   padding: 0 1rem;
+}
+
+.page-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px;
+  padding-top: 0.2rem;
+  padding-left: 1rem;
+  /* width: calc(min-content + 2rem); */
+  border-radius: 15px;
+  padding-right: 1rem;
+  border-bottom: 1px solid blue;
+  border-right: 1px solid blue;
+  background-color: var(--header);
+}
+
+.page-heading > * {
+  margin: 0;
+}
+
+#pageContent {
+  display: flex;
+  width: min-content;
+}
+
+#pageContent > section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
