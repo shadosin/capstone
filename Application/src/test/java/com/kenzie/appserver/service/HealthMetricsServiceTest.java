@@ -63,10 +63,13 @@ public class HealthMetricsServiceTest {
             scheduledEventRepository = mock(ScheduledEventRepository.class);
 
             userService = new UserService(userRepository);
+            scheduledEventService = new ScheduledEventService(scheduledEventRepository);
             userScheduleService = new UserScheduleService(userScheduleRepository, userService, scheduledEventService);
-            scheduledEventService = new ScheduledEventService(scheduledEventRepository, healthMetricsService);
             healthMetricsService = new HealthMetricsService(healthMetricsRepository, mealLambdaServiceClient,
-                    exerciseLambdaServiceClient, userScheduleService, scheduledEventService, cacheStore);
+                    exerciseLambdaServiceClient, userScheduleService, cacheStore);
+
+            scheduledEventService.setHealthMetricsService(healthMetricsService);
+            healthMetricsService.setScheduledEventService(scheduledEventService);
         }
 
         @Test

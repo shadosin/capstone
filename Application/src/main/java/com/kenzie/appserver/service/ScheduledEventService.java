@@ -20,13 +20,16 @@ import java.util.stream.Collectors;
 public class ScheduledEventService {
 
     private final ScheduledEventRepository scheduledEventRepository;
-    private final HealthMetricsService healthMetricsService;
+    private HealthMetricsService healthMetricsService;
 
 
     @Autowired
-    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository,
-                                 HealthMetricsService healthMetricsService) {
+    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository) {
         this.scheduledEventRepository = scheduledEventRepository;
+    }
+
+    @Autowired
+    public void setHealthMetricsService(HealthMetricsService healthMetricsService) {
         this.healthMetricsService = healthMetricsService;
     }
 
