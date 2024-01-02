@@ -8,6 +8,7 @@ public class User {
 
     private String userId;
     private String username;
+    private String password;
     private String firstName;
     private String lastName;
     private String address;
@@ -20,6 +21,7 @@ public class User {
 
     public User(String userId,
                 String username,
+                String password,
                 String firstName,
                 String lastName,
                 String address,
@@ -29,6 +31,7 @@ public class User {
                 List<String> userScheduleIds) {
         this.userId = userId;
         this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -52,6 +55,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -117,6 +128,7 @@ public class User {
         User user = (User) o;
         return Objects.equals(userId, user.userId) &&
                 Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(address, user.address) &&
@@ -128,6 +140,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, firstName, lastName, address, phoneNum, email, dateJoined, userScheduleIds);
+        return Objects.hash(userId, username, password, firstName, lastName, address, phoneNum, email, dateJoined, userScheduleIds);
     }
 }

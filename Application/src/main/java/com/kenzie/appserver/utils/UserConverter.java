@@ -16,6 +16,7 @@ public class UserConverter {
   public static UserRecord responseToRecord(UserResponse userResponse) {
     UserRecord userRecord = new UserRecord();
     userRecord.setUsername(userResponse.getUsername());
+    userRecord.setPassword(userResponse.getPassword());
     userRecord.setEmail(userResponse.getEmail());
     userRecord.setDateJoined(userResponse.getDateJoined());
     userRecord.setAddress(userResponse.getAddress());
@@ -30,6 +31,7 @@ public class UserConverter {
   public static UserResponse recordToResponse(UserRecord userRecord) {
     UserResponse userResponse = new UserResponse();
     userResponse.setUsername(userRecord.getUsername());
+    userResponse.setPassword(userRecord.getPassword());
     userResponse.setEmail(userRecord.getEmail());
     userResponse.setDateJoined(userRecord.getDateJoined());
     userResponse.setAddress(userRecord.getAddress());
@@ -44,7 +46,8 @@ public class UserConverter {
   public static UserRecord createRequestToUserRecord(CreateUserRequest createUserRequest) {
     UserRecord userRecord = new UserRecord();
     userRecord.setUserId(UUID.randomUUID().toString()); //sets UUID upon creation
-    userRecord.setUsername(createUserRequest.getUserName());
+    userRecord.setUsername(createUserRequest.getUsername());
+    userRecord.setPassword(createUserRequest.getPassword());
     userRecord.setEmail(createUserRequest.getEmail());
     userRecord.setDateJoined(ZonedDateTime.now()); //sets date upon creation
     userRecord.setAddress(createUserRequest.getAddress());
@@ -57,7 +60,8 @@ public class UserConverter {
 
   public static UserRecord updateRequestToUserRecord(UserUpdateRequest userUpdateRequest) {
     UserRecord userRecord = new UserRecord();
-    userRecord.setUsername(userUpdateRequest.getUserName());
+    userRecord.setUsername(userUpdateRequest.getUsername());
+    userRecord.setPassword(userUpdateRequest.getPassword());
     userRecord.setEmail(userUpdateRequest.getEmail());
     userRecord.setDateJoined(userUpdateRequest.getDateJoined());
     userRecord.setAddress(userUpdateRequest.getAddress());
@@ -71,7 +75,8 @@ public class UserConverter {
   public static UserUpdateRequest recordToUpdateUserRequest(UserRecord userRecord){
     UserUpdateRequest updateRequest = new UserUpdateRequest();
     updateRequest.setUserId(userRecord.getUserId());
-    updateRequest.setUserName(userRecord.getUsername());
+    updateRequest.setUsername(userRecord.getUsername());
+    updateRequest.setPassword(userRecord.getPassword());
     updateRequest.setFirstName(userRecord.getFirstName());
     updateRequest.setLastName(userRecord.getLastName());
     updateRequest.setAddress(userRecord.getAddress());
