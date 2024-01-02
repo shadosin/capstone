@@ -8,6 +8,7 @@ import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
 import com.kenzie.appserver.service.model.EventType;
 import com.kenzie.appserver.service.model.ScheduledEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,13 +23,13 @@ public class ScheduledEventService {
     private final ScheduledEventRepository scheduledEventRepository;
     private HealthMetricsService healthMetricsService;
 
-
     @Autowired
     public ScheduledEventService(ScheduledEventRepository scheduledEventRepository) {
         this.scheduledEventRepository = scheduledEventRepository;
     }
 
     @Autowired
+    @Lazy
     public void setHealthMetricsService(HealthMetricsService healthMetricsService) {
         this.healthMetricsService = healthMetricsService;
     }

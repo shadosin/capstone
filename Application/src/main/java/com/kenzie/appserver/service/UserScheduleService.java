@@ -8,6 +8,7 @@ import com.kenzie.appserver.service.model.User;
 import com.kenzie.appserver.service.model.UserSchedule;
 import com.kenzie.appserver.utils.UserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -18,14 +19,18 @@ public class UserScheduleService {
 
     private final UserScheduleRepository userScheduleRepository;
     private final UserService userService;
-    private final ScheduledEventService scheduledEventService;
+    private ScheduledEventService scheduledEventService;
 
     @Autowired
     public UserScheduleService(UserScheduleRepository userScheduleRepository,
-                               UserService userService,
-                               ScheduledEventService scheduledEventService) {
+                               UserService userService) {
         this.userScheduleRepository = userScheduleRepository;
         this.userService = userService;
+    }
+
+    @Autowired
+    @Lazy
+    public void setScheduledEventService(ScheduledEventService scheduledEventService) {
         this.scheduledEventService = scheduledEventService;
     }
 
