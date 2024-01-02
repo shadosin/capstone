@@ -1,11 +1,10 @@
+import createPage from "../components/createPage";
+
 function registerPage() {
-  const section = document.querySelector("section");
-  const div = document.createElement("div");
-  div.classList.add("container-fluid", "card");
-  const pageHeading = document.createElement("h2");
-  pageHeading.innerText = `Register Page`;
-  div.append(pageHeading);
-  section.append(div);
+const app = document.querySelector("#app")
+
+createPage("Register")
+
 }
 
 export default registerPage;
