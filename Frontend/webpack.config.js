@@ -23,7 +23,7 @@ module.exports = {
     },
     port: 3030,
     open: false,
-    hot: true,
+    hot: false,
     compress: true,
     liveReload: false,
   },
@@ -58,9 +58,9 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        {
-          from: path.resolve(__dirname, "src", "manifest.json"),
-          to: path.resolve(__dirname, "dist", "manifest.json"),
+{
+          from: path.resolve(__dirname, "src", "assets"),
+          to: path.resolve(__dirname, "dist", "assets"),
         },
         {
           from: path.resolve(__dirname, "src", "icons"),
@@ -74,9 +74,3 @@ module.exports = {
     }),
   ],
 };
-
-//new WorkboxWebpackPlugin.InjectManifest({
-//  swSrc: path.resolve(__dirname, 'src', 'service-worker.js'),
-//  swDest: path.resolve(__dirname, 'dist', 'service-worker.js'),
-//  maximumFileSizeToCacheInBytes: 5000000,
-//})

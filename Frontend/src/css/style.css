@@ -21,7 +21,9 @@ main {
 }
 
 .nav {
-  box-shadow: rgb(23, 98, 148) inset 10px 5px 10px, rgb(23, 98, 148) 2px 2px 2px;
+  box-shadow:
+    rgb(23, 98, 148) inset 10px 5px 10px,
+    rgb(23, 98, 148) 2px 2px 2px;
   border: 1px solid black;
   padding: 0.25rem 1rem;
   padding-right: 1rem;
@@ -70,7 +72,9 @@ main {
 }
 
 .card {
-  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px, rgb(23, 98, 148) 2px 2px 2px;
+  box-shadow:
+    rgb(23, 98, 148) inset 5px 5px 5px,
+    rgb(23, 98, 148) 2px 2px 2px;
   border: 1px solid black;
   padding: 0;
   border-radius: 15px;
@@ -79,7 +83,9 @@ main {
 }
 
 .content-section {
-  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px, rgb(23, 98, 148) 2px 2px 2px;
+  box-shadow:
+    rgb(23, 98, 148) inset 5px 5px 5px,
+    rgb(23, 98, 148) 2px 2px 2px;
   border: 1px solid black;
   border-radius: 15px;
   background-color: var(--background);
@@ -139,15 +145,15 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;;
+  gap: 1rem;
 }
 
 .formArea {
- padding-top: .7rem;
+  padding-top: 0.7rem;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   column-gap: 1rem;
-  row-gap: .5rem;
+  row-gap: 0.5rem;
 }
 
 .formInput {
@@ -196,6 +202,8 @@ main {
   min-height: calc(vh - 20%);
 }
 
-.content-section, #app, #pageContent {
+.content-section,
+#app,
+#pageContent {
   min-height: 75vh;
 }

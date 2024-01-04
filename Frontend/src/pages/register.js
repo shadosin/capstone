@@ -1,8 +1,10 @@
 import axios from "axios";
 import createPage from "../components/createPage";
 import { DateTime } from "luxon";
+import ApiClient from "../api/apiClient";
 
 function registerPage() {
+  const client = new ApiClient();
   const app = document.querySelector("#app");
 
   createPage("Register");
@@ -11,7 +13,7 @@ function registerPage() {
   createUserForm.id = "createUserForm";
 
   const fields = document.createElement("div");
-  fields.classList.add('formArea')
+  fields.classList.add("formArea");
   function createInputField(id, label, type, isRequired) {
     const field = document.createElement("div");
     const labelElement = document.createElement("label");
@@ -23,20 +25,20 @@ function registerPage() {
     inputElement.id = id;
     inputElement.name = id;
     if (isRequired) inputElement.required = true;
-    
-    if (id === 'email') {
-      field.classList.add("emailAddressInput")
+
+    if (id === "email") {
+      field.classList.add("emailAddressInput");
     } else {
-      field.classList.add("formInput")
+      field.classList.add("formInput");
     }
     field.append(labelElement, inputElement);
     fields.append(field);
   }
 
-  createInputField("userName", "Username", "text", true);
+  createInputField("username", "Username", "text", true);
   createInputField("password", "Password", "password", true);
-  createInputField("firstName", "First Name", "text", false);
-  createInputField("lastName", "Last Name", "text", false);
+  createInputField("firstname", "First Name", "text", false);
+  createInputField("lastname", "Last Name", "text", false);
   createInputField("email", "Email", "email", false);
 
   const buttonGroup = document.createElement("div");
@@ -68,27 +70,14 @@ function registerPage() {
     formData.append("date_joined", now);
     formData.append("address", "");
     formData.append("phoneNum", "");
-    formData.append("scheduleIdList", JSON.stringify([]));
-
-    const formObject = Object.fromEntries(formData.entries());
-    try {
-      document.querySelector("form").nextSibling.innerHTML = "";
-      document.querySelector("form").nextSibling.classList.clear();
-    } catch {}
+    //formData.append("scheduleIdList", "[]");
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/user/create",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-      console.log(res.data);
-      window.sessionStorage.setItem("userInfo", JSON.stringify(res.data));
-      if (res.data) {
+      // document.querySelector("form").nextSibling.innerHTML = "";
+      // document.querySelector("form").nextSibling.classList.clear();
+      const response = await client.createUser(client.createPayload(formData));
+      if (response) {
+        window.sessionStorage.setItem("userInfo", JSON.stringify(response));
         window.location.href = "/";
       }
     } catch (error) {

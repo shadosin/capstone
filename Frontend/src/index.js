@@ -5,20 +5,24 @@ import logo from "./assets/vitatrac.png";
 import hero from "./assets/hero.png";
 import pico from "./css/pico.css";
 import styles from "./css/style.css";
-import Navigo from "navigo";
 
 import navbar from "./navbar";
 
 import home from "./pages/home";
-import login from "./pages/login";
 import dashboard from "./pages/dashboard";
+
+window.onstorage = (event) => {
+  console.log(event);
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log(`Document Loaded`);
   console.log(`Loading NavBar`);
   navbar();
 
-  const userInfo = JSON.parse(window.sessionStorage.getItem("userInfo"));
+  const userInfo =
+    JSON.parse(window.sessionStorage.getItem("userInfo")) ||
+    JSON.parse(window.localStorage.getItem("userInfo"));
 
   if (userInfo) {
     // load dashboard page
