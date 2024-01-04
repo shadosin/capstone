@@ -77,11 +77,12 @@ export default function navbar() {
   // Append img and li to the first ul
   ul1.append(img, li1);
 
-  const userInfo = JSON.parse(window.sessionStorage.getItem("userInfo")) || null;
+  const userInfo =
+    JSON.parse(window.sessionStorage.getItem("userInfo")) || null;
   const userButtons = createUserButtons();
 
   if (userInfo) {
-    const {username} = userInfo;
+    const { username } = userInfo;
     const ul = document.createElement("ul");
     const li = document.createElement("li");
     const text = document.createElement("h5");
@@ -101,6 +102,6 @@ export default function navbar() {
     console.log("home clicked");
     const section = document.querySelector("section");
     section.innerHTML = "";
-    window.location.href = '/'
+    window.location.href = "/";
   });
 }

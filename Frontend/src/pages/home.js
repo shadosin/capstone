@@ -1,7 +1,7 @@
 import createCard from "../components/createCard";
 
 function home() {
-  const section = document.querySelector('#app');
+  const section = document.querySelector("#app");
   // Create the grid div
   const grid = document.createElement("div");
   grid.className = "grid";
