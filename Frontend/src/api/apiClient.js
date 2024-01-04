@@ -39,8 +39,7 @@ export default class ApiClient extends BaseClass {
       },
     };
     try {
-      const response = await this.client.post(url, payload, config);
-      return response.data;
+      return await this.client.post(url, payload, config);
     } catch (error) {
       this.handleError("loginUser", error, errorCallback);
     }

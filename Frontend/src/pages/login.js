@@ -14,10 +14,10 @@ export default function login() {
         .loginUser(client.createPayload(formData))
         .then((res) => {
           console.log(`👍`);
-          window.sessionStorage.setItem("userInfo", JSON.stringify(res));
-          // window.localStorage.setItem("userInfo", JSON.stringify(res));
-        }).then(() => {
-        window.location.href = "/";
+          if (res.status === 200) {
+            window.sessionStorage.setItem("userInfo", JSON.stringify(res.data));
+            window.location.href = "/";
+          }
         });
     } catch (error) {
       console.error(error);

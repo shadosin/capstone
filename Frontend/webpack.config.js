@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+
 module.exports = {
   mode: "production",
   entry: {
@@ -32,17 +32,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.(?:js|mjs|cjs)$/,
-        exclude: /node_modules/,
-        include: path.resolve(__dirname, "pages"),
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [["@babel/preset-react", { targets: "defaults" }]],
-          },
-        },
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
