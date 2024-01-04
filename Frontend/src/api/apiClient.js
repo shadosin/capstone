@@ -39,8 +39,7 @@ export default class ApiClient extends BaseClass {
       },
     };
     try {
-      const response = await this.client.post(url, payload, config);
-      return response.data;
+      return await this.client.post(url, payload, config);
     } catch (error) {
       this.handleError("loginUser", error, errorCallback);
     }
@@ -60,6 +59,22 @@ export default class ApiClient extends BaseClass {
       return response.data;
     } catch (error) {
       this.handleError("createUser", error, errorCallback);
+    }
+  }
+
+  async editUser(data, errorCallback) {
+    const payload = data;
+    const url = `http://localhost:5001/user/${payload.userId}`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      let response = await this.client.put(url, payload, config);
+      return response.data;
+    } catch (error) {
+      this.handleError("editUser", error, errorCallback);
     }
   }
 

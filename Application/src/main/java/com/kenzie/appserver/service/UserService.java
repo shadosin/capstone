@@ -9,12 +9,11 @@ import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.service.model.User;
 import com.kenzie.appserver.utils.InvalidPasswordException;
 import com.kenzie.appserver.utils.UserConverter;
+import com.kenzie.appserver.utils.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.kenzie.appserver.utils.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,18 +52,18 @@ public class UserService {
   }
 
   public void deleteUser(String userId) {
-    Optional<UserRecord> record = userRepository.findById(userId);
-    if (record.isEmpty()) {
+    Optional<UserRecord> userRecord = userRepository.findById(userId);
+    if (userRecord.isEmpty()) {
       throw new IllegalArgumentException("User does not exist with given ID: " + userId);
     }
-    userRepository.deleteById(record.get().getUserId());
+    userRepository.deleteById(userRecord.get().getUserId());
   }
 
   public UserResponse updateUser(String userId, UserUpdateRequest userUpdateRequest) {
-    UserRecord record = userRepository.findById(userId).orElseThrow(() ->
+    UserRecord userRecord = userRepository.findById(userId).orElseThrow(() ->
             new IllegalArgumentException("User does not exist with given userId: " + userId));
 
-    User user = userFromUserRecord(record);
+    User user = userFromUserRecord(userRecord);
 
     if(userUpdateRequest.getUserId() != null){
       user.setUserId(userUpdateRequest.getUserId());
@@ -118,34 +117,34 @@ public class UserService {
     return new UserResponse(userRecord);
   }
 
-  public User userFromUserRecord(UserRecord record) {
+  public User userFromUserRecord(UserRecord userRecord) {
     User user = new User();
-    user.setUserId(record.getUserId());
-    user.setUsername(record.getUsername());
-    user.setPassword(record.getPassword());
-    user.setFirstName(record.getFirstName());
-    user.setLastName(record.getLastName());
-    user.setAddress(record.getAddress());
-    user.setPhoneNum(record.getPhoneNum());
-    user.setEmail(record.getEmail());
-    user.setDateJoined(record.getDateJoined());
-    user.setUserScheduleIds(record.getUserScheduleIds());
+    user.setUserId(userRecord.getUserId());
+    user.setUsername(userRecord.getUsername());
+    user.setPassword(userRecord.getPassword());
+    user.setFirstName(userRecord.getFirstName());
+    user.setLastName(userRecord.getLastName());
+    user.setAddress(userRecord.getAddress());
+    user.setPhoneNum(userRecord.getPhoneNum());
+    user.setEmail(userRecord.getEmail());
+    user.setDateJoined(userRecord.getDateJoined());
+    user.setUserScheduleIds(userRecord.getUserScheduleIds());
     return user;
   }
 
   public UserRecord userRecordFromUser(User user) {
-    UserRecord record = new UserRecord();
-    record.setUserId(user.getUserId());
-    record.setUsername(user.getUsername());
-    record.setPassword(user.getPassword());
-    record.setFirstName(user.getFirstName());
-    record.setLastName(user.getLastName());
-    record.setAddress(user.getAddress());
-    record.setPhoneNum(user.getPhoneNum());
-    record.setEmail(user.getEmail());
-    record.setDateJoined(user.getDateJoined());
-    record.setUserScheduleIds(user.getUserScheduleIds());
-    return record;
+    UserRecord userRecord = new UserRecord();
+    userRecord.setUserId(user.getUserId());
+    userRecord.setUsername(user.getUsername());
+    userRecord.setPassword(user.getPassword());
+    userRecord.setFirstName(user.getFirstName());
+    userRecord.setLastName(user.getLastName());
+    userRecord.setAddress(user.getAddress());
+    userRecord.setPhoneNum(user.getPhoneNum());
+    userRecord.setEmail(user.getEmail());
+    userRecord.setDateJoined(user.getDateJoined());
+    userRecord.setUserScheduleIds(user.getUserScheduleIds());
+    return userRecord;
   }
 
   public User userFromResponse(UserResponse response) {

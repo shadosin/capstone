@@ -11,7 +11,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,300;0,400;0,700;1,700&family=Rubik+Maps&display=swap");
 
 :root {
-  --font-family: "Kanit"
+  --font-family: "Kanit";
     /* --font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
     "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji"; */

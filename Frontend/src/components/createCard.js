@@ -11,7 +11,9 @@ export default function createCard(headerText, contentText) {
 
   const cardContent = document.createElement("div");
   cardContent.className = "card-content";
-  cardContent.textContent = contentText;
+  const p = document.createElement("p");
+  p.textContent = contentText;
+  cardContent.append(p);
 
   container.append(cardHeader, cardContent);
   return container;

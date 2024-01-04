@@ -1,7 +1,6 @@
-// import manifest from './manifest.json';
-// import serviceWorker from './service-worker';
 
 import logo from "./assets/vitatrac.png";
+import vegetables from "./assets/vegetables.jpg";
 import hero from "./assets/hero.png";
 import pico from "./css/pico.css";
 import styles from "./css/style.css";
@@ -31,10 +30,3 @@ document.addEventListener("DOMContentLoaded", () => {
     home();
   }
 });
-
-if (window.sessionStorage.getItem("userInfo")) {
-  console.log(JSON.parse(window.sessionStorage.getItem("userInfo")));
-}
-
-// const loginBtn = document.querySelector('#login')
-// loginBtn.addEventListener("click", () => router.navigate("login"))
