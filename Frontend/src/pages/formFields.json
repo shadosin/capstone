@@ -1,0 +1,42 @@
+[
+  {
+    "id": "username",
+    "label": "Username",
+    "type": "text",
+    "placeholder": "UserName",
+    "isRequired": true
+  },
+  {
+  "id": "userId",
+    "label": "User Id",
+    "type": "text",
+    "placeholder": "User Id"
+},
+  {
+    "id": "firstName",
+    "label": "First Name",
+    "type": "text",
+    "placeholder": "First Name",
+    "isRequired": false
+  },
+  {
+    "id": "lastName",
+    "label": "Last Name",
+    "type": "text",
+    "placeholder": "Last Name",
+    "isRequired": false
+  },
+  {
+    "id": "phoneNum",
+    "label": "Phone Number",
+    "type": "tel",
+    "placeholder": "Phone Number"
+  },
+  {
+    "id": "email",
+    "label": "Email",
+    "type": "email",
+    "placeholder": "Email Address",
+    "isRequired": false
+  }
+]

@@ -1,6 +1,6 @@
-import home from "./pages/home";
 import login from "./pages/login";
 import registerPage from "./pages/register";
+import editUser from "./pages/editUser";
 
 function createUserButtons() {
   console.log(`creating user buttons`);
@@ -39,6 +39,18 @@ function createUserButtons() {
     const userBtnGroup = document.createElement("ul");
     userBtnGroup.className = "navBtnGroup";
 
+    const editProfileBtn = document.createElement("li");
+    editProfileBtn.setAttribute("role", "button");
+    editProfileBtn.className = "outline";
+    editProfileBtn.textContent = "Edit Profile";
+
+    editProfileBtn.addEventListener("click", () => {
+      console.log("edit profile clicked");
+      const section = document.querySelector("section");
+      section.innerHTML = "";
+      editUser();
+    });
+
     const logoutBtn = document.createElement("li");
     logoutBtn.setAttribute("role", "button");
     logoutBtn.className = "outline primary";
@@ -48,7 +60,7 @@ function createUserButtons() {
       window.sessionStorage.removeItem("userInfo");
       window.location.href = "/";
     });
-    userBtnGroup.append(logoutBtn);
+    userBtnGroup.append(editProfileBtn, logoutBtn);
 
     return userBtnGroup;
   }

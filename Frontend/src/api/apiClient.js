@@ -63,6 +63,22 @@ export default class ApiClient extends BaseClass {
     }
   }
 
+  async editUser(data, errorCallback) {
+    const payload = data;
+    const url = `http://localhost:5001/user/${payload.userId}`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      let response = await this.client.put(url, payload, config);
+      return response.data;
+    } catch (error) {
+      this.handleError("editUser", error, errorCallback);
+    }
+  }
+
   handleError(method, error, errorCallback) {
     console.error(method + " failed - " + error);
     if (error.response.data.message !== undefined) {
