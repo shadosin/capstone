@@ -28,20 +28,21 @@ public class UserService {
   }
 
   public UserResponse findById(String userId) {
-    return UserConverter.recordToResponse(userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("User with id " + userId + " does not exist")));
+    return UserConverter.recordToResponse(
+        userRepository
+            .findById(userId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("User with id " + userId + " does not exist")));
   }
 
   public List<UserResponse> getAllUsers() {
     List<UserRecord> records = new ArrayList<>();
     userRepository.findAll().forEach(records::add);
-    return records.stream()
-            .map(UserResponse::new)
-            .collect(Collectors.toList());
+    return records.stream().map(UserResponse::new).collect(Collectors.toList());
   }
 
   public UserResponse createUser(CreateUserRequest createUserRequest) {
-    if(createUserRequest == null){
+    if (createUserRequest == null) {
       throw new IllegalArgumentException("Request was null");
     }
     isUsernameUnique(createUserRequest.getUsername());
@@ -49,6 +50,13 @@ public class UserService {
     UserRecord userRecord = UserConverter.createRequestToUserRecord(createUserRequest);
     userRecord = userRepository.save(userRecord);
     return new UserResponse(userRecord);
+  }
+
+  private boolean isUsernameUnique(String username) {
+    if (userRepository.findByUsername(username).isPresent()) {
+      throw new IllegalArgumentException("User already exists with username: " + username);
+    }
+    return true;
   }
 
   public void deleteUser(String userId) {
@@ -60,16 +68,24 @@ public class UserService {
   }
 
   public UserResponse updateUser(String userId, UserUpdateRequest userUpdateRequest) {
-    UserRecord userRecord = userRepository.findById(userId).orElseThrow(() ->
-            new IllegalArgumentException("User does not exist with given userId: " + userId));
+    UserRecord userRecord =
+        userRepository
+            .findById(userId)
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "User does not exist with given userId: " + userId));
 
     User user = userFromUserRecord(userRecord);
 
-    if(userUpdateRequest.getUserId() != null){
+    if (userUpdateRequest.getUserId() != null) {
       user.setUserId(userUpdateRequest.getUserId());
     }
-    if (userUpdateRequest.getUsername() != null && isUsernameUnique(userUpdateRequest.getUsername())) {
-      user.setUsername(userUpdateRequest.getUsername());
+    if (userUpdateRequest.getUsername() != null
+        && !userUpdateRequest.getUsername().equals(user.getUsername())) {
+      if (isUsernameUnique(userUpdateRequest.getUsername())) {
+        user.setUsername(userUpdateRequest.getUsername());
+      }
     }
     if (userUpdateRequest.getPassword() != null) {
       user.setPassword(userUpdateRequest.getPassword());
@@ -98,23 +114,6 @@ public class UserService {
 
     UserRecord updatedUserRecord = userRepository.save(userRecordFromUser(user));
     return new UserResponse(updatedUserRecord);
-  }
-
-  private boolean isUsernameUnique(String username) {
-    if (userRepository.findByUsername(username).isPresent()) {
-      throw new IllegalArgumentException("User already exists with username: " + username);
-    }
-    return true;
-  }
-
-  public UserResponse validateUser(UserLoginRequest loginRequest) {
-    UserRecord userRecord = userRepository.findByUsername(loginRequest.getUsername())
-            .orElseThrow(() -> new UserNotFoundException("User not found with username: " + loginRequest.getUsername()));
-
-    if (!userRecord.getPassword().equals(loginRequest.getPassword())) {
-      throw new InvalidPasswordException("The password provided does not match the password for username: " + loginRequest.getUsername());
-    }
-    return new UserResponse(userRecord);
   }
 
   public User userFromUserRecord(UserRecord userRecord) {
@@ -147,6 +146,23 @@ public class UserService {
     return userRecord;
   }
 
+  public UserResponse validateUser(UserLoginRequest loginRequest) {
+    UserRecord userRecord =
+        userRepository
+            .findByUsername(loginRequest.getUsername())
+            .orElseThrow(
+                () ->
+                    new UserNotFoundException(
+                        "User not found with username: " + loginRequest.getUsername()));
+
+    if (!userRecord.getPassword().equals(loginRequest.getPassword())) {
+      throw new InvalidPasswordException(
+          "The password provided does not match the password for username: "
+              + loginRequest.getUsername());
+    }
+    return new UserResponse(userRecord);
+  }
+
   public User userFromResponse(UserResponse response) {
     User user = new User();
     user.setUserId(response.getUserId());
@@ -161,5 +177,4 @@ public class UserService {
     user.setUserScheduleIds(response.getUserScheduleIds());
     return user;
   }
-
 }

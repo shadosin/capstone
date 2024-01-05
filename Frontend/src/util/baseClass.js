@@ -6,9 +6,19 @@ export default class BaseClass {
    * @param methods The name of each method to bind.
    * @param classInstance The instance of the class to bind the methods to.
    */
+  // bindClassMethods(methods, classInstance) {
+  //   methods.forEach((method) => {
+  //     classInstance[method] = classInstance[method].bind(classInstance);
+  //   });
+  // }
+
   bindClassMethods(methods, classInstance) {
     methods.forEach((method) => {
-      classInstance[method] = classInstance[method].bind(classInstance);
+      if (typeof classInstance[method] === "function") {
+        classInstance[method] = classInstance[method].bind(classInstance);
+      } else {
+        throw new Error(`Method ${method} does not exist on class instance`);
+      }
     });
   }
 

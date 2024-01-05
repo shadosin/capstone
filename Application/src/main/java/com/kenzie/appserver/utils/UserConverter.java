@@ -4,8 +4,8 @@ import com.kenzie.appserver.controller.model.CreateUserRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.model.UserRecord;
-
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class UserConverter {
@@ -54,7 +54,11 @@ public class UserConverter {
     userRecord.setFirstName(createUserRequest.getFirstName());
     userRecord.setLastName(createUserRequest.getLastName());
     userRecord.setPhoneNum(createUserRequest.getPhoneNum());
-    userRecord.setUserScheduleIds(createUserRequest.getUserScheduleIds());
+    if(createUserRequest.getUserScheduleIds() == null){
+      userRecord.setUserScheduleIds(new ArrayList<>());
+    } else {
+      userRecord.setUserScheduleIds(createUserRequest.getUserScheduleIds());
+    }
     return userRecord;
   }
 
