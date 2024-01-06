@@ -87,6 +87,10 @@ public class UserScheduleService {
         UserResponse userResponse = userService.findById(userId);
         List<String> userScheduleIds = userResponse.getUserScheduleIds();
 
+        if (userScheduleIds == null || userScheduleIds.isEmpty()) {
+            throw new IllegalArgumentException(String.format("User with Id: %s does not have a current schedule", userId));
+        }
+
         ZonedDateTime now = ZonedDateTime.now();
 
         Optional<UserScheduleResponse> optionalResponse = userScheduleIds.stream()
