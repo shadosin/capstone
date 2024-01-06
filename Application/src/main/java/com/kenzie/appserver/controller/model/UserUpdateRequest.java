@@ -1,6 +1,7 @@
 package com.kenzie.appserver.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kenzie.appserver.service.model.User;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.ZonedDateTime;
@@ -28,6 +29,21 @@ public class UserUpdateRequest {
     private ZonedDateTime dateJoined;
     @JsonProperty("scheduleIdList")
     private List<String> userScheduleIds;
+
+    public UserUpdateRequest() {}
+
+    public UserUpdateRequest(User user) {
+        this.userId = user.getUserId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.address = user.getAddress();
+        this.phoneNum = user.getPhoneNum();
+        this.email = user.getEmail();
+        this.dateJoined = user.getDateJoined();
+        this.userScheduleIds = user.getUserScheduleIds();
+    }
 
     public String getUserId() {
         return userId;
