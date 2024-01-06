@@ -35,11 +35,10 @@ public class ScheduledEventService {
     }
 
     public ScheduledEventResponse findById(String eventId) {
-        Optional<ScheduledEventRecord> record = scheduledEventRepository.findById(eventId);
-        if (record.isEmpty()) {
-            throw new IllegalArgumentException("Event does not exist with given ID:" + eventId);
-        }
-        return new ScheduledEventResponse(record.get());
+        ScheduledEventRecord record = scheduledEventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event does not exist with given ID:" + eventId));
+
+        return new ScheduledEventResponse(record);
     }
 
     public ScheduledEventResponse createScheduledEvent(CreateScheduledEventRequest request) {
