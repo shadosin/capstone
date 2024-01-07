@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserScheduleService {
@@ -44,14 +45,22 @@ public class UserScheduleService {
         scheduleRecord.setUserId(request.getUserId());
         scheduleRecord.setStart(request.getStart());
         scheduleRecord.setEnd(request.getEnd());
-        scheduleRecord.setScheduledEventIds(new ArrayList<>());
-        if(request.getScheduledEvents() != null){
-        for (CreateScheduledEventRequest eventRequest : request.getScheduledEvents()) {
-            ScheduledEventResponse scheduledEvent = scheduledEventService.createScheduledEvent(eventRequest);
-            scheduleRecord.getScheduledEventIds().add(scheduledEvent.getEventId());
+
+        List<ScheduledEventResponse> scheduledEvents = new ArrayList<>();
+        if(request.getScheduledEvents() != null) {
+            for (CreateScheduledEventRequest eventRequest : request.getScheduledEvents()) {
+                ScheduledEventResponse scheduledEvent = scheduledEventService.createScheduledEvent(eventRequest);
+                scheduledEvents.add(scheduledEvent);
+            }
         }
-        }
+
+        List<String> eventIds = scheduledEvents.stream()
+                .map(ScheduledEventResponse::getEventId)
+                .collect(Collectors.toList());
+        scheduleRecord.setScheduledEventIds(eventIds);
+
         scheduleRecord = userScheduleRepository.save(scheduleRecord);
+
         user.getUserScheduleIds().add(scheduleRecord.getScheduleId());
 
         if (user.getUserScheduleIds().size() > 12) {
