@@ -8,6 +8,8 @@ import com.kenzie.appserver.service.model.EventType;
 import com.kenzie.appserver.service.model.ScheduledEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,20 +28,16 @@ public class ScheduleEventServiceTest {
 
     private ScheduledEventService scheduledEventService;
 
+    @Mock
     private ScheduledEventRepository scheduledEventRepository;
 
-    private HealthMetricsService healthMetricsService;
+    @Mock
+    private EventPublisher eventPublisher;
 
     @BeforeEach
     public void setUp() {
-        scheduledEventRepository = mock(ScheduledEventRepository.class);
-        healthMetricsService = mock(HealthMetricsService.class);
-
-        scheduledEventService = new ScheduledEventService(scheduledEventRepository);
-
-        // Setting dependencies via setter method
-        scheduledEventService.setHealthMetricsService(healthMetricsService);
-
+        MockitoAnnotations.initMocks(this);
+        scheduledEventService = new ScheduledEventService(scheduledEventRepository, eventPublisher);
     }
 
     @Test
