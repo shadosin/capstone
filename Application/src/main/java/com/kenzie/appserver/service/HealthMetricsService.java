@@ -60,6 +60,7 @@ public class HealthMetricsService {
         HealthMetrics healthMetrics = healthMetricsFromRecord(oldRecord);
 
         updateWeightAndUnit(request, healthMetrics);
+
         double weightInKg = calculateWeightInKg(healthMetrics);
 
         HealthMetricsRecord updatedRecord = healthMetricsRepository.save(recordFromHealthMetrics(healthMetrics));
@@ -156,24 +157,6 @@ public class HealthMetricsService {
             metrics.setCarbs(metrics.getCarbs() + mealData.getCarb());
             metrics.setFats(metrics.getFats() + mealData.getFat());
             metrics.setProtein(metrics.getProtein() + mealData.getProtein());
-        }
-    }
-
-    private void updateMetricsForExercise(HealthMetrics healthMetrics, ScheduledEventResponse scheduledEvent, double weightInKg) {
-        if (scheduledEvent.getExerciseId() != null) {
-            ExerciseData exerciseData = exerciseLambdaServiceClient.findExerciseData(scheduledEvent.getExerciseId());
-            double caloriesBurned = calculateCaloriesBurned(exerciseData.getMETS(), weightInKg, exerciseData.getDuration());
-            healthMetrics.setTotalCalorieExpenditure(healthMetrics.getTotalCalorieExpenditure() + caloriesBurned);
-        }
-    }
-
-    private void updateMetricsForMeal(HealthMetrics healthMetrics, ScheduledEventResponse scheduledEvent) {
-        if (scheduledEvent.getMealId() != null) {
-            MealData mealData = mealLambdaServiceClient.getMealData(scheduledEvent.getMealId());
-            healthMetrics.setTotalCalorieIntake(healthMetrics.getTotalCalorieIntake() + mealData.getCalories());
-            healthMetrics.setCarbs(healthMetrics.getCarbs() + mealData.getCarb());
-            healthMetrics.setFats(healthMetrics.getFats() + mealData.getFat());
-            healthMetrics.setProtein(healthMetrics.getProtein() + mealData.getProtein());
         }
     }
 
