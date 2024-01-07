@@ -5,7 +5,6 @@ import com.kenzie.appserver.controller.model.ScheduledEventResponse;
 import com.kenzie.appserver.controller.model.ScheduledEventUpdateRequest;
 import com.kenzie.appserver.repositories.ScheduledEventRepository;
 import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
-import com.kenzie.appserver.service.model.EventPublisher;
 import com.kenzie.appserver.service.model.EventType;
 import com.kenzie.appserver.service.model.ScheduledEvent;
 import org.springframework.beans.factory.annotation.Autowired;

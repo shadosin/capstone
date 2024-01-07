@@ -2,6 +2,7 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.controller.model.*;
+import com.kenzie.appserver.events.ScheduledEventUpdateEvent;
 import com.kenzie.appserver.repositories.HealthMetricsRepository;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
 import com.kenzie.appserver.service.model.*;
@@ -61,7 +62,7 @@ public class HealthMetricsService {
 
         updateWeightAndUnit(request, healthMetrics);
 
-        double weightInKg = calculateWeightInKg(healthMetrics);
+        calculateWeightInKg(healthMetrics);
 
         HealthMetricsRecord updatedRecord = healthMetricsRepository.save(recordFromHealthMetrics(healthMetrics));
 

@@ -1,5 +1,6 @@
-package com.kenzie.appserver.service.model;
+package com.kenzie.appserver.events;
 
+import com.kenzie.appserver.service.model.ScheduledEvent;
 import org.springframework.context.ApplicationEvent;
 
 public class ScheduledEventUpdateEvent extends ApplicationEvent {

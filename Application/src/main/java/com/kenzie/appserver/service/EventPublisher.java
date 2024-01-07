@@ -1,5 +1,7 @@
-package com.kenzie.appserver.service.model;
+package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.service.model.ScheduledEvent;
+import com.kenzie.appserver.events.ScheduledEventUpdateEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
