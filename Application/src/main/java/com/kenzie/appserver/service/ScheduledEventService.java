@@ -5,6 +5,7 @@ import com.kenzie.appserver.controller.model.ScheduledEventResponse;
 import com.kenzie.appserver.controller.model.ScheduledEventUpdateRequest;
 import com.kenzie.appserver.repositories.ScheduledEventRepository;
 import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
+import com.kenzie.appserver.service.model.EventPublisher;
 import com.kenzie.appserver.service.model.EventType;
 import com.kenzie.appserver.service.model.ScheduledEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,12 @@ import java.util.stream.Collectors;
 public class ScheduledEventService {
 
     private final ScheduledEventRepository scheduledEventRepository;
-    private HealthMetricsService healthMetricsService;
+    private final EventPublisher eventPublisher;
 
     @Autowired
-    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository) {
+    public ScheduledEventService(ScheduledEventRepository scheduledEventRepository, EventPublisher eventPublisher) {
         this.scheduledEventRepository = scheduledEventRepository;
-    }
-
-    @Autowired
-    @Lazy
-    public void setHealthMetricsService(HealthMetricsService healthMetricsService) {
-        this.healthMetricsService = healthMetricsService;
+        this.eventPublisher = eventPublisher;
     }
 
     public ScheduledEventResponse findById(String eventId) {
@@ -83,8 +79,7 @@ public class ScheduledEventService {
         event.setMetricsCalculated(request.isMetricsCalculated());
 
         if (event.isCompleted() && !event.isMetricsCalculated()) {
-            String userId = event.getUserId();
-            healthMetricsService.updateMetricsBasedOnEvent(userId, event);
+            eventPublisher.publishScheduledEventUpdate(event.getUserId(), event);
             event.setMetricsCalculated(true);
         }
 
