@@ -62,8 +62,6 @@ public class HealthMetricsService {
 
         updateWeightAndUnit(request, healthMetrics);
 
-        calculateWeightInKg(healthMetrics);
-
         HealthMetricsRecord updatedRecord = healthMetricsRepository.save(recordFromHealthMetrics(healthMetrics));
 
         cacheStore.put(request.getUserId(), updatedRecord);
@@ -74,9 +72,7 @@ public class HealthMetricsService {
     public void updateMetricsBasedOnEvent(String userId, ScheduledEvent event) {
         HealthMetrics metrics = healthMetricsFromRecord(getHealthMetrics(userId));
 
-        double weightInKg = metrics.getWeightUnit().equals(WeightUnit.LBS)
-                ? convertPoundsToKilograms(metrics.getWeight())
-                : metrics.getWeight();
+        double weightInKg = calculateWeightInKg(metrics);
 
         // Updating metrics based on the event type
         updateMetricsForEventType(metrics, event, weightInKg);
