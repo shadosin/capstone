@@ -2,11 +2,9 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.UserScheduleRepository;
-import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 import com.kenzie.appserver.service.model.User;
 import com.kenzie.appserver.service.model.UserSchedule;
-import com.kenzie.appserver.utils.UserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -59,8 +57,8 @@ public class UserScheduleService {
         if (user.getUserScheduleIds().size() > 12) {
             manageUserScheduleLimit(user);
         }
-        UserRecord userRecord = userService.userRecordFromUser(user);
-         userService.updateUser(user.getUserId(), UserConverter.recordToUpdateUserRequest(userRecord));
+
+        userService.updateUser(user.getUserId(), new UserUpdateRequest(user));
 
         return new UserScheduleResponse(scheduleRecord);
     }
@@ -89,6 +87,10 @@ public class UserScheduleService {
         UserResponse userResponse = userService.findById(userId);
         List<String> userScheduleIds = userResponse.getUserScheduleIds();
 
+        if (userScheduleIds == null || userScheduleIds.isEmpty()) {
+            throw new IllegalArgumentException(String.format("User with Id: %s does not have a current schedule", userId));
+        }
+
         ZonedDateTime now = ZonedDateTime.now();
 
         Optional<UserScheduleResponse> optionalResponse = userScheduleIds.stream()
@@ -107,13 +109,12 @@ public class UserScheduleService {
         UserScheduleResponse userScheduleResponse = this.findById(scheduleId);
 
         String userId = userScheduleResponse.getUserId();
-        UserResponse userResponse = userService.findById(userId);
+        User user = userService.userFromResponse(userService.findById(userId));
 
-        List<String> userScheduleIds = userResponse.getUserScheduleIds();
+        List<String> userScheduleIds = user.getUserScheduleIds();
         userScheduleIds.remove(scheduleId);
-        UserRecord record = UserConverter.responseToRecord(userResponse);
 
-        userService.updateUser(userId, UserConverter.recordToUpdateUserRequest(record));
+        userService.updateUser(userId, new UserUpdateRequest(user));
         userScheduleRepository.deleteById(scheduleId);
     }
 
