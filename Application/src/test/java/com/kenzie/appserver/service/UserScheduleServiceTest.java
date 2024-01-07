@@ -1,0 +1,253 @@
+package com.kenzie.appserver.service;
+
+import com.kenzie.appserver.controller.model.*;
+import com.kenzie.appserver.repositories.ScheduledEventRepository;
+import com.kenzie.appserver.repositories.UserRepository;
+import com.kenzie.appserver.repositories.UserScheduleRepository;
+import com.kenzie.appserver.repositories.model.UserScheduleRecord;
+import com.kenzie.appserver.service.model.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.ZonedDateTime;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+public class UserScheduleServiceTest {
+
+    private UserScheduleRepository userScheduleRepository;
+    private UserService userService;
+    private ScheduledEventService scheduledEventService;
+
+    private UserScheduleService userScheduleService;
+
+    private final ZonedDateTime START_TIME = ZonedDateTime.now();
+
+    private final ZonedDateTime END_TIME = START_TIME.plusHours(4);
+
+    private ScheduledEventRepository scheduledEventRepository;
+
+    private UserRepository userRepository;
+
+
+    @BeforeEach
+    public void setup() {
+        userRepository = mock(UserRepository.class);
+        scheduledEventRepository = mock(ScheduledEventRepository.class);
+        userScheduleRepository = mock(UserScheduleRepository.class);
+        userService = mock(UserService.class);
+        scheduledEventService = mock(ScheduledEventService.class);
+        userScheduleService = new UserScheduleService(userScheduleRepository, userService);
+        userScheduleService.setScheduledEventService(scheduledEventService);
+    }
+    @Test
+    public void findById_validId_returnsResponse(){
+        //GIVEN
+        String scheduleId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
+        List<String> eventIds = new ArrayList<>();
+        eventIds.add(UUID.randomUUID().toString());
+
+        UserScheduleRecord userScheduleRecord1 = new UserScheduleRecord();
+        userScheduleRecord1.setScheduleId(scheduleId);
+        userScheduleRecord1.setStart(START_TIME);
+        userScheduleRecord1.setEnd(END_TIME);
+        userScheduleRecord1.setScheduledEventIds(eventIds);
+        userScheduleRecord1.setUserId(userId);
+
+        when(userScheduleRepository.findById(scheduleId)).thenReturn(Optional.of(userScheduleRecord1));
+
+        //WHEN
+        Optional<UserScheduleRecord> userScheduleRecord = userScheduleRepository.findById(scheduleId);
+        //THEN
+        assertEquals(userScheduleRecord1.getScheduleId(), userScheduleRecord.get().getScheduleId());
+    }
+    @Test
+    public void findById_invalidId_throwsIllegalArgumentException(){
+        String scheduleId = UUID.randomUUID().toString();
+
+        when(userScheduleRepository.findById(scheduleId)).thenReturn(Optional.empty());
+
+        //WHEN
+        //THEN
+        assertThrows(IllegalArgumentException.class, () -> userScheduleService.findById(scheduleId));
+
+    }
+    @Test
+    public void createUserSchedule_validRequest_returnsResponse(){
+        String userId = UUID.randomUUID().toString();
+        CreateUserScheduleRequest request = new CreateUserScheduleRequest();
+        request.setUserId(userId);
+        request.setStart(START_TIME);
+        request.setEnd(END_TIME);
+        request.setScheduledEvents(new ArrayList<>());
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(userId);
+
+        when(userService.findById(userId)).thenReturn(userResponse);
+
+        User user = new User();
+        user.setUserId(userId);
+        user.setUserScheduleIds(new ArrayList<>());
+
+        when(userService.userFromResponse(userResponse)).thenReturn(user);
+
+        UserScheduleRecord scheduleRecord = new UserScheduleRecord();
+        scheduleRecord.setUserId(userId);
+        scheduleRecord.setStart(request.getStart());
+        scheduleRecord.setEnd(request.getEnd());
+
+        when(userScheduleRepository.save(any(UserScheduleRecord.class))).thenReturn(scheduleRecord);
+
+        UserScheduleResponse response = userScheduleService.createUserSchedule(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(request.getUserId(), response.getUserId());
+        assertEquals(request.getStart(), response.getStart());
+        assertEquals(request.getEnd(), response.getEnd());
+    }
+    @Test
+    public void createUserSchedule_nullRequest_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void createUserSchedule_idDoesNotExist_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void createUserSchedule_badEventRequest_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void createUserSchedule_nullRecordToSave_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void findCurrentSchedule_validInfo_returnsUserScheduleResponse(){
+        String userId = UUID.randomUUID().toString();
+        String scheduleId = UUID.randomUUID().toString();
+        ZonedDateTime now = ZonedDateTime.now();
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(userId);
+        userResponse.setUserScheduleIds(Arrays.asList(scheduleId));
+
+        UserScheduleRecord scheduleRecord = new UserScheduleRecord();
+        scheduleRecord.setScheduleId(scheduleId);
+        scheduleRecord.setUserId(userId);
+        scheduleRecord.setStart(now.minusHours(1)); // Schedule started an hour ago
+        scheduleRecord.setEnd(now.plusHours(1)); // Schedule ends in an hour
+
+        when(userService.findById(userId)).thenReturn(userResponse);
+        when(userScheduleRepository.findById(scheduleId)).thenReturn(Optional.of(scheduleRecord));
+
+        UserScheduleResponse result = userScheduleService.findCurrentSchedule(userId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(scheduleId, result.getScheduleId());
+        assertEquals(userId, result.getUserId());
+        assertTrue(result.getStart().isBefore(now));
+        assertTrue(result.getEnd().isAfter(now));
+    }
+    @Test
+    public void findCurrentSchedule_invalidUserId_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void findCurrentSchedule_emptyUserScheduleId_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void deleteUserScheduleById_scheduleExist_scheduleDeleted(){
+        String scheduleId = "mock-schedule-id";
+        String userId = "mock-user-id";
+        List<String> userScheduleIds = new ArrayList<>();
+        userScheduleIds.add(scheduleId);
+
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+        mockUser.setUserScheduleIds(userScheduleIds); // Initialize with non-null list
+
+        UserScheduleRecord mockScheduleRecord = new UserScheduleRecord();
+
+        when(userScheduleRepository.findById(scheduleId)).thenReturn(Optional.of(mockScheduleRecord));
+        when(userService.userFromResponse(userService.findById(userId))).thenReturn(mockUser);
+
+        userScheduleService.deleteUserScheduleById(scheduleId);
+
+        // Assert
+        verify(userScheduleRepository).deleteById(scheduleId);
+        assertFalse(mockUser.getUserScheduleIds().contains(scheduleId)); // Verify that the ID was removed
+    }
+    @Test
+    public void deleteUserScheduleById_invalidScheduleId_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void deleteUserScheduleById_userDoesNotExist_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void updateUserSchedule_validInfo_scheduleUpdated(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void updateUserSchedule_invalidScheduleId_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void manageUserScheduleLimit_validInfo_oldestScheduleRemoved(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void manageUserScheduleLimit_scheduleLowerThan12_noSchedulesRemoved(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void manageUserScheduleLimit_invalidUser_throwsIllegalStateException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void manageUserScheduleLimit_nullScheduleId_throwsNullPointerException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+    @Test
+    public void manageUserScheduleLimit_nullScheduleIdForDelete_throwsIllegalArgumentException(){
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+}
