@@ -174,6 +174,25 @@ export default class ApiClient extends BaseClass {
     }
   }
 
+  async getUserMetrics(userId) {
+    const url = `${ApiClient.baseUrl}/healthMetrics/${userId}`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await this.client.get(url, config);
+      console.log(response);
+      return response.data; // Return the data directly
+    } catch (error) {
+      console.error("Error in getUserMetrics:", error);
+      return null; // Return null or a custom error object
+    }
+  }
+
+
   handleError(method, error, errorCallback) {
     console.error(method + " failed - " + error);
     if (error.response?.data && error.response.data.message !== undefined) {

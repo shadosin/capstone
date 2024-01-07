@@ -7,8 +7,10 @@
     --secondary-accent: hsla(200, 200%, 70%, 1);
     --header: var(--primary-color);
     --error-color: rgba(194, 0, 0, 0.71);
-    /* background-color: black; */
-    /* color: whitesmoke; */
+}
+
+body {
+    overflow: hidden;
 }
 
 main {
@@ -27,10 +29,8 @@ main {
     rgb(23, 98, 148) 2px 2px 2px;
     border: 1px solid black;
     padding: 0.25rem 1rem;
-    padding-right: 1rem;
     border-radius: 15px;
     margin-bottom: 1rem;
-    /*text-shadow: rebeccapurple .5px .5px 4px;*/
     background-color: var(--background);
 }
 
@@ -44,11 +44,29 @@ main {
 .navBtnGroup {
     display: flex;
     gap: 0.5rem;
-    padding: 0.4rem 0.3rem;
     align-items: center;
     justify-content: flex-end;
     text-align: center;
-    padding-right: 1rem;
+    padding: 0.4rem 1rem 0.4rem 0.3rem;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.4rem 0.3rem;
+    align-items: stretch;
+    text-align: center;
+    align-content: center;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.btn-group > ul > li {
+    list-style-type: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0.3rem;
+    text-align: center;
 }
 
 .btnGroup {
@@ -87,10 +105,9 @@ main {
 .content-section {
     box-shadow: rgb(23, 98, 148) inset 5px 5px 5px,
     rgb(23, 98, 148) 2px 2px 2px;
-    border: 1px solid black;
     border-radius: 15px;
     background-color: var(--background);
-    padding-top: 1rem;
+    padding: 1rem 0 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -102,11 +119,8 @@ main {
 
 .card-header {
     box-shadow: rgb(23, 98, 148) inset 5px 5px 5px;
-    padding-top: 0.2rem;
-    padding-left: 1rem;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    padding-right: 1rem;
     border-bottom: 1px solid blue;
     background-color: var(--header);
     padding: 1rem 1.25rem;
@@ -114,17 +128,18 @@ main {
 
 .card-header > h5 {
     font-size: xxx-large;
-    color: rebeccapurple;
+    color: #1f2d38;
 
 }
 
-h1,h2,h3,h4,h5,h6 {
-font-family: "iMWritingDuo Nerd Font Propo", sans-serif;
-    color: rebeccapurple;
+h1, h2, h3, h4, h5, h6 {
+    font-family: "iMWritingDuo Nerd Font Propo", sans-serif;
+    color: #1f2d38;
     opacity: 1;
     text-shadow: hsla(245, 81%, 17%, 0.8) 1px 1px 35px;
     margin: 0;
 }
+
 .card-header > * {
     margin: 0;
 }
@@ -144,15 +159,20 @@ font-family: "iMWritingDuo Nerd Font Propo", sans-serif;
 }
 
 #pageContent {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    align-items: flex-start;
+    display: grid;
+    grid-gap: .5rem;
+    grid-template-columns: repeat(5, 1fr) repeat(4, 2fr);
+    grid-template-rows: auto;
+    grid-template-areas: "schedules schedules days events events metrics metrics metrics metrics"
+                         "schedules schedules days events events metrics metrics metrics metrics"
+                         "schedules schedules days events events metrics metrics metrics metrics"
+                         "schedules schedules days events events metrics metrics metrics metrics"
+                         "schedules schedules days events events metrics metrics metrics metrics";
     text-align: center;
     margin-left: 0;
     margin-right: 0;
     padding-top: 1rem;
-    border-radius: 0px 0px 15px 15px;
+    border-radius: 0 0 15px 15px;
     margin-bottom: 0;
     background-color: hsla(0, 0%, 100%, 0.8);
     border-top: 0.15rem var(--background) solid;
@@ -175,7 +195,7 @@ font-family: "iMWritingDuo Nerd Font Propo", sans-serif;
     text-align: left;
 }
 
-.formInput {;
+.formInput {
     grid-column-start: 2;
     grid-column-end: 5;
 }
@@ -187,6 +207,25 @@ font-family: "iMWritingDuo Nerd Font Propo", sans-serif;
 
 input {
     background-color: white;
+}
+
+#createUserForm {
+    grid-column-start: 4;
+    grid-column-end: 8;
+}
+
+#editUserForm {
+    grid-column-start: 4;
+    grid-column-end: 8;
+}
+
+#loginForm {
+    grid-column-start: 4;
+    grid-column-end: 6;
+}
+.grid {
+    grid-column-start: 3;
+    grid-column-end: 9;
 }
 
 #createUserForm,
@@ -206,28 +245,12 @@ input {
     align-items: center;
 }
 
-.warningBox {
-    padding: ".5rem";
-    background-color: var(--error-color);
-    box-shadow: "";
-    border-radius: "5px";
-    text-align: center;
-}
-
 .secondary {
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    color: ghostwhite;
+    border: 3px solid ghostwhite;
+    background-color: var(--secondary-color);
 }
 
-#loginForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#app {
-    min-height: calc(vh - 20%);
-}
 
 .content-section,
 #app,
@@ -235,9 +258,25 @@ input {
     min-height: 75vh;
 }
 
+
 #veggies, #kettlebell {
     border: .5rem solid var(--background);
     border-radius: 15px;
     margin: .4rem;
     width: 20rem;
+}
+
+#app {
+    min-height: calc(1vh - 20%);
+    display: flex;
+    justify-content: center;
+    min-width: calc(1vw - 20%);
+}
+
+ul > li {
+    color: #1f2d3d;
+}
+
+.eventSection-hidden {
+    visibility: hidden;
 }
