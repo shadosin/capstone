@@ -55,7 +55,6 @@ public class HealthMetricsService {
         }
     }
 
-    @Transactional
     public HealthMetricsResponse updateHealthMetrics(HealthMetricsUpdateRequest request) {
         HealthMetricsRecord oldRecord = getHealthMetrics(request.getUserId());
         HealthMetrics healthMetrics = healthMetricsFromRecord(oldRecord);
