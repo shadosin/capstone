@@ -1,9 +1,9 @@
-import axios from "axios";
 import createPage from "../components/createPage";
 import { DateTime } from "luxon";
+import ApiClient from "../api/apiClient";
 
 function registerPage() {
-  const app = document.querySelector("#app");
+  const client = new ApiClient();
 
   createPage("Register");
 
@@ -11,8 +11,9 @@ function registerPage() {
   createUserForm.id = "createUserForm";
 
   const fields = document.createElement("div");
-  fields.classList.add('formArea')
-  function createInputField(id, label, type, isRequired) {
+  fields.classList.add("formArea");
+
+  function createInputField(id, label, type, placeholder, isRequired) {
     const field = document.createElement("div");
     const labelElement = document.createElement("label");
     labelElement.htmlFor = id;
@@ -22,22 +23,23 @@ function registerPage() {
     inputElement.type = type;
     inputElement.id = id;
     inputElement.name = id;
+    inputElement.placeholder = placeholder;
     if (isRequired) inputElement.required = true;
-    
-    if (id === 'email') {
-      field.classList.add("emailAddressInput")
+
+    if (id === "email") {
+      field.classList.add("emailAddressInput");
     } else {
-      field.classList.add("formInput")
+      field.classList.add("formInput");
     }
     field.append(labelElement, inputElement);
     fields.append(field);
   }
 
-  createInputField("userName", "Username", "text", true);
-  createInputField("password", "Password", "password", true);
-  createInputField("firstName", "First Name", "text", false);
-  createInputField("lastName", "Last Name", "text", false);
-  createInputField("email", "Email", "email", false);
+  createInputField("username", "Username", "text", "UserName", true);
+  createInputField("password", "Password", "password", "Password", true);
+  createInputField("firstname", "First Name", "text", "First Name", false);
+  createInputField("lastname", "Last Name", "text", "Last Name", false);
+  createInputField("email", "Email", "email", "Email Addres", false);
 
   const buttonGroup = document.createElement("div");
   buttonGroup.classList.add("btnGroup");
@@ -50,7 +52,6 @@ function registerPage() {
   });
   const submitBtn = document.createElement("input");
   submitBtn.setAttribute("type", "submit");
-  //   submitBtn.innerText = `Submit`;
 
   buttonGroup.append(canceltBtn, submitBtn);
 
@@ -68,27 +69,12 @@ function registerPage() {
     formData.append("date_joined", now);
     formData.append("address", "");
     formData.append("phoneNum", "");
-    formData.append("scheduleIdList", JSON.stringify([]));
-
-    const formObject = Object.fromEntries(formData.entries());
-    try {
-      document.querySelector("form").nextSibling.innerHTML = "";
-      document.querySelector("form").nextSibling.classList.clear();
-    } catch {}
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/user/create",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-      console.log(res.data);
-      window.sessionStorage.setItem("userInfo", JSON.stringify(res.data));
-      if (res.data) {
+
+      const response = await client.createUser(client.createPayload(formData));
+      if (response) {
+        window.sessionStorage.setItem("userInfo", JSON.stringify(response));
         window.location.href = "/";
       }
     } catch (error) {
@@ -100,6 +86,7 @@ function registerPage() {
       form.after(div);
     }
   }
+
   const pageContent = document.querySelector("#pageContent");
   pageContent.append(createUserForm);
 }

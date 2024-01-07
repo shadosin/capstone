@@ -41,3 +41,7 @@ qodana*
 # Ignore env variables
 .env
 */.env
+
+# Ignore Logs
+debugrunlog.txt
+runlog.txt

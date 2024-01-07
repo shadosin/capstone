@@ -1,201 +1,243 @@
 :root {
-  /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
-  --primary-color: hsla(200, 80%, 75%, 1);
-  --secondary-color: hsla(40, 100%, 50%, 0.75);
-  --background: hsla(200, 80%, 75%, 0.35);
-  --accent: hsla(200, 80%, 75%, 1);
-  --header: var(--primary-color);
-  --error-color: rgba(194, 0, 0, 0.71);
-  /* background-color: black; */
-  /* color: whitesmoke; */
+    /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
+    --primary-color: hsla(200, 80%, 75%, 1);
+    --secondary-color: hsla(40, 100%, 50%, 0.75);
+    --background: hsla(200, 80%, 75%, 0.35);
+    --accent: hsla(200, 80%, 75%, 1);
+    --secondary-accent: hsla(200, 200%, 70%, 1);
+    --header: var(--primary-color);
+    --error-color: rgba(194, 0, 0, 0.71);
+    /* background-color: black; */
+    /* color: whitesmoke; */
 }
 
 main {
-  margin-top: 0.5rem;
-  padding-top: 0;
+    margin-top: 0.5rem;
+    padding-top: 0;
 }
+
 .logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 20px;
 }
 
 .nav {
-  box-shadow: rgb(23, 98, 148) inset 10px 5px 10px, rgb(23, 98, 148) 2px 2px 2px;
-  border: 1px solid black;
-  padding: 0.25rem 1rem;
-  padding-right: 1rem;
-  border-radius: 15px;
-  margin-bottom: 1rem;
-  background-color: var(--background);
+    box-shadow: rgb(23, 98, 148) inset 10px 5px 10px,
+    rgb(23, 98, 148) 2px 2px 2px;
+    border: 1px solid black;
+    padding: 0.25rem 1rem;
+    padding-right: 1rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    /*text-shadow: rebeccapurple .5px .5px 4px;*/
+    background-color: var(--background);
 }
 
 .nav > ul > li > *,
 .nav > ul > li {
-  margin: 0;
-  padding: 0.3rem;
-  text-align: center;
+    margin: 0;
+    padding: 0.3rem;
+    text-align: center;
 }
+
 .navBtnGroup {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.4rem 0.3rem;
-  align-items: center;
-  justify-content: flex-end;
-  text-align: center;
-  padding-right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.4rem 0.3rem;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding-right: 1rem;
 }
 
 .btnGroup {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  height: min-content;
-  width: min-content;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: min-content;
+    width: min-content;
 }
 
 .hero {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  border: 0;
-  padding: 0;
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  opacity: 0.25;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    opacity: 0.25;
 }
 
 .card {
-  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px, rgb(23, 98, 148) 2px 2px 2px;
-  border: 1px solid black;
-  padding: 0;
-  border-radius: 15px;
-  margin-bottom: 1rem;
-  background-color: var(--background);
+    box-shadow: rgb(23, 98, 148) inset 5px 5px 5px,
+    rgb(23, 98, 148) 2px 2px 2px;
+    border: 1px solid black;
+    padding: 0;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    background-color: var(--background);
 }
 
 .content-section {
-  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px, rgb(23, 98, 148) 2px 2px 2px;
-  border: 1px solid black;
-  border-radius: 15px;
-  background-color: var(--background);
-  padding-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-}
-.card-header {
-  box-shadow: rgb(23, 98, 148) inset 5px 5px 5px;
-  padding-top: 0.2rem;
-  padding-left: 1rem;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  padding-right: 1rem;
-  border-bottom: 1px solid blue;
-  background-color: var(--header);
+    box-shadow: rgb(23, 98, 148) inset 5px 5px 5px,
+    rgb(23, 98, 148) 2px 2px 2px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: var(--background);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
 }
 
-.card-header > * {
-  margin: 0;
+.card-header {
+    box-shadow: rgb(23, 98, 148) inset 5px 5px 5px;
+    padding-top: 0.2rem;
+    padding-left: 1rem;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding-right: 1rem;
+    border-bottom: 1px solid blue;
+    background-color: var(--header);
+    padding: 1rem 1.25rem;
 }
+
+.card-header > h5 {
+    font-size: xxx-large;
+    color: rebeccapurple;
+
+}
+
+h1,h2,h3,h4,h5,h6 {
+font-family: "iMWritingDuo Nerd Font Propo", sans-serif;
+    color: rebeccapurple;
+    opacity: 1;
+    text-shadow: hsla(245, 81%, 17%, 0.8) 1px 1px 35px;
+    margin: 0;
+}
+.card-header > * {
+    margin: 0;
+}
+
 .card-content {
-  padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 .page-heading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .page-heading > * {
-  margin: 0;
+    margin: 0;
 }
 
 #pageContent {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  align-items: flex-start;
-  text-align: center;
-  margin-left: 0;
-  margin-right: 0;
-  padding-top: 1rem;
-  border-radius: 0px 0px 15px 15px;
-  margin-bottom: 0;
-  background-color: hsla(0, 0%, 100%, 0.8);
-  border-top: 0.15rem var(--background) solid;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: flex-start;
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 1rem;
+    border-radius: 0px 0px 15px 15px;
+    margin-bottom: 0;
+    background-color: hsla(0, 0%, 100%, 0.8);
+    border-top: 0.15rem var(--background) solid;
 }
 
 #pageContent > section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .formArea {
- padding-top: .7rem;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  column-gap: 1rem;
-  row-gap: .5rem;
+    padding-top: 0.7rem;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    grid-auto-rows: auto;
+    text-align: left;
 }
 
-.formInput {
-  grid-column: span 3;
+.formInput {;
+    grid-column-start: 2;
+    grid-column-end: 5;
 }
 
 .emailAddressInput {
-  grid-column: span 6;
+    grid-column-start: 2;
+    grid-column-end: 6;
+}
+
+input {
+    background-color: white;
 }
 
 #createUserForm,
+#editUserForm,
 #loginForm {
-  background-color: hsla(0, 50%, 100%, 1);
-  padding: 0.5rem 1rem;
-  box-shadow: 5px 5px 5px var(--accent);
-  border-top: 0.1rem solid var(--accent);
-  border-left: 0.1rem solid var(--accent);
-  text-align: left;
-  text-size-adjust: 1.5rem;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    box-shadow: rgb(23, 98, 148) inset 2px 2px 2px,
+    5px 5px 5px var(--accent);
+    background-color: var(--background);
+    padding: 0.5rem 1rem;
+    border-top: 0.1rem solid var(--accent);
+    border-left: 0.1rem solid var(--accent);
+    text-align: left;
+    text-size-adjust: 1.5rem;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .warningBox {
-  padding: ". 5rem";
-  background-color: var(--error-color);
-  box-shadow: "";
-  border-radius: "5px";
-  text-align: center;
+    padding: ".5rem";
+    background-color: var(--error-color);
+    box-shadow: "";
+    border-radius: "5px";
+    text-align: center;
 }
 
 .secondary {
-  color: var(--secondary-color);
-  border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
 }
 
 #loginForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #app {
-  min-height: calc(vh - 20%);
+    min-height: calc(vh - 20%);
 }
 
-.content-section, #app, #pageContent {
-  min-height: 75vh;
+.content-section,
+#app,
+#pageContent {
+    min-height: 75vh;
+}
+
+#veggies, #kettlebell {
+    border: .5rem solid var(--background);
+    border-radius: 15px;
+    margin: .4rem;
+    width: 20rem;
 }

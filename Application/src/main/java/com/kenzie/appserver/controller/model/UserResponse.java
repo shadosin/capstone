@@ -1,14 +1,15 @@
 package com.kenzie.appserver.controller.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kenzie.appserver.repositories.model.UserRecord;
-
-import javax.validation.constraints.NotEmpty;
 import java.time.ZonedDateTime;
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"password"})
 public class UserResponse {
     @NotEmpty
     @JsonProperty("userId")

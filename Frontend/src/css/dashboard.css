@@ -1,0 +1,49 @@
+
+.dashboard-container {
+    display: grid;
+}
+
+.schedule-day-list, .schedule-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-list-item:hover, .schedule-day-list-item:hover {
+    background-color: rebeccapurple;
+    color: white;
+    transform: scale(1.15);
+}
+
+.schedule-day-list-item, .schedule-list-item {
+    background-color: var(--header);
+    list-style-type: none;
+    padding: .5rem;
+    margin: .25rem;
+}
+
+.schedule-day-list-item:focus, .schedule-day-list-item:active {
+    transform: scale(1.05);
+    background-color: rebeccapurple;
+    color: white;
+}
+
+#pageContent {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+#pageContent > article {
+    margin: .25rem;
+    padding: .5rem;
+}
+
+#Schedules > ul, #Days > ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#Days {
+    min-width: 150px;
+ }
