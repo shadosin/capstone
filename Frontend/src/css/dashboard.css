@@ -9,8 +9,8 @@
 }
 
 .schedule-list-item:hover, .schedule-day-list-item:hover {
-    background-color: rebeccapurple;
-    color: white;
+    background-color: #1f2d38;
+    color: var(--accent);
     transform: scale(1.15);
 }
 
@@ -23,20 +23,17 @@
 
 .schedule-day-list-item:focus, .schedule-day-list-item:active {
     transform: scale(1.05);
-    background-color: rebeccapurple;
-    color: white;
+    background-color: #1f2d38;
+    color: var(--accent);
 }
 
-#pageContent {
-    justify-content: flex-start;
-    align-items: flex-start;
-}
+
 #pageContent > article {
     margin: .25rem;
     padding: .5rem;
 }
 
-#Schedules > ul, #Days > ul {
+#Schedules > article > ul, #Days > article > ul, #Events > article > ul, #Metrics > article > ul {
     display: flex;
     flex-direction: column;
     list-style-type: none;
@@ -44,6 +41,111 @@
     margin: 0;
 }
 
+#Schedules > article, #Days > article, #Events > article, #Metrics > article {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+    margin: .25rem;
+}
+
+#Schedules {
+    grid-area: schedules;
+}
+
 #Days {
-    min-width: 150px;
- }
+    grid-area: days;
+}
+
+#Events {
+    grid-area: events;
+}
+
+#Metrics {
+    grid-area: metrics;
+}
+
+
+#modal-add-event > article > p {
+
+    padding: .25rem;
+    margin: .25rem;
+}
+
+#modal-add-event > article > footer {
+    padding: .25rem;
+    padding-top: .5rem;
+    margin: .25rem;
+}
+
+#modal-add-event > article > h3 {
+    margin: 0;
+    padding: .25rem;
+}
+
+dialog > article {
+    padding: .5rem .25rem;
+    margin: .25rem;
+}
+
+dialog > article > .close {
+    margin-top: calc(var(--block-spacing-vertical) * -.80);
+}
+
+.btn {
+    background-color: var(--accent);
+    color: #1f2d38;
+    border: 1px solid #1f2d38;
+    padding: .25rem;
+    margin: 0;
+}
+
+.btn-group > input {
+    background-color: var(--accent);
+    color: #1f2d38;
+    border: 1px solid #1f2d38
+}
+
+dialog > footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: .5rem;
+    margin: .25rem;
+}
+
+.btn-group > input {
+    background-color: var(--accent);
+    color: #1f2d38;
+    border: 1px solid #1f2d38
+}
+
+.btnGroup li:hover, .secondary:hover, .btn:hover, .btn-group > input:hover {
+    background-color: #1f2d38;
+    color: var(--accent);
+    border: 1px solid var(--accent)
+}
+
+.btnGroup li:active, .secondary:active, .btn:active, .btn-group > input:active {
+    background-color: #1f2d38;
+    color: var(--accent);
+    border: 1px solid var(--accent)
+}
+
+.btnGroup li:focus, .secondary:focus, .btn:focus, .btn-group > input:focus {
+    background-color: #1f2d38;
+    color: var(--accent);
+    border: 1px solid var(--accent)
+}
+ul > li > p {
+    margin: 0;
+    padding: 0
+}
+
+ul > li > p:hover {
+    color: var(--accent);
+    margin: 0;
+    padding: 0;
+}
+.btn-group > ul > .btn {
+    margin: 0;
+}
+
