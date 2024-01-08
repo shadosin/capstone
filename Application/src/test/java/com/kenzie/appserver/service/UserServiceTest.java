@@ -9,10 +9,13 @@ import static org.mockito.Mockito.*;
 import com.kenzie.appserver.controller.model.CreateUserRequest;
 import com.kenzie.appserver.controller.model.UserLoginRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
+import com.kenzie.appserver.controller.model.UserUpdateRequest;
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.UserRecord;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -204,7 +207,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldConvertUserRecordToUser() {
+    void userRecordToUser_shouldConvert() {
         // GIVEN
         UserRecord testUserRecord = new UserRecord();
         testUserRecord.setUserId("testUserId");
@@ -226,7 +229,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldConvertUserToUserRecord() {
+    void userToUserRecord_shouldConvert() {
         // GIVEN
         User testUser = new User();
         testUser.setUserId("testUserId");
@@ -248,7 +251,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldConvertUserResponseToUser() {
+    void UserResponseToUser_shouldConvert() {
         // GIVEN
         UserResponse testUserResponse = new UserResponse();
         testUserResponse.setUserId("testUserId");
@@ -269,4 +272,56 @@ class UserServiceTest {
         assertEquals(testUserResponse.getLastName(), convertedUser.getLastName(), "Last name should match");
     }
 
+    @Test
+    void updateUser_shouldUpdateUser() {
+        // GIVEN
+        String testUserId = "testUserId";
+        UserRecord testUserRecord = new UserRecord();
+        testUserRecord.setUserId(testUserId);
+
+        UserUpdateRequest updateRequest = new UserUpdateRequest();
+        updateRequest.setUserId(testUserId);
+        updateRequest.setUsername("newUsername");
+        updateRequest.setPassword("newPassword");
+        updateRequest.setFirstName("newFirstName");
+        updateRequest.setLastName("newLastName");
+        updateRequest.setAddress("newAddress");
+        updateRequest.setPhoneNum("newPhoneNum");
+        updateRequest.setEmail("newEmail");
+        updateRequest.setDateJoined(ZonedDateTime.now());
+        updateRequest.setUserScheduleIds(Arrays.asList("id1", "id2"));
+
+        // WHEN
+        when(userRepository.findById(testUserId)).thenReturn(Optional.of(testUserRecord));
+        when(userRepository.findByUsername(updateRequest.getUsername())).thenReturn(Optional.empty());
+        when(userRepository.save(any())).thenReturn(testUserRecord);
+
+        // THEN
+        UserResponse updatedUser = userService.updateUser(testUserId, updateRequest);
+        assertNotNull(updatedUser, "Updated user should not be null");
+        assertEquals(testUserRecord.getUserId(), updatedUser.getUserId(), "Returned User ID should match test User ID");
+    }
+
+    @Test
+    void updateUser_shouldUpdateUsernameWhenUnique() {
+        // GIVEN
+        String testUserId = "testUserId";
+        UserRecord testUserRecord = new UserRecord();
+        testUserRecord.setUserId(testUserId);
+        testUserRecord.setUsername("existingUsername");
+
+        UserUpdateRequest updateRequest = new UserUpdateRequest();
+        updateRequest.setUserId(testUserId);
+        updateRequest.setUsername("newUniqueUsername");
+
+        // WHEN
+        when(userRepository.findById(testUserId)).thenReturn(Optional.of(testUserRecord));
+        when(userRepository.findByUsername(updateRequest.getUsername())).thenReturn(Optional.empty());
+        when(userRepository.save(any())).thenReturn(testUserRecord);
+
+        // THEN
+        UserResponse updatedUser = userService.updateUser(testUserId, updateRequest);
+        assertNotNull(updatedUser, "Updated user should not be null");
+        assertEquals(testUserRecord.getUserId(), updatedUser.getUserId(), "Returned User ID should match test User ID");
+    }
 }
