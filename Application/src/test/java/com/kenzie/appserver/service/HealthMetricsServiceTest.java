@@ -5,6 +5,7 @@ import com.kenzie.appserver.repositories.HealthMetricsRepository;
 import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
 import com.kenzie.capstone.service.client.MealLambdaServiceClient;
 import com.kenzie.capstone.service.model.ExerciseData;
+import com.kenzie.capstone.service.model.MealData;
 import org.junit.jupiter.api.BeforeEach;
 import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
@@ -166,16 +167,63 @@ public class HealthMetricsServiceTest {
 
     @Test
     public void updateMetricsBasedOnEvent_UpdatesMetricsForMealEvent() {
+        String userId = "testUserId";
+        double initialWeight = 70.0; // weightInKg
+
+        String mealId = "testMealId";
+
+        ScheduledEvent mealEvent = new ScheduledEvent();
+        mealEvent.setEventType(EventType.MEAL);
+        mealEvent.setEventId(mealId);
+        mealEvent.setCompleted(true);
+
+        MealData mealData = new MealData();
+
+
+        HealthMetricsRecord existingRecord = new HealthMetricsRecord();
+        existingRecord.setUserId(userId);
+        existingRecord.setWeight(initialWeight);
+        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setTotalCalorieIntake(1000.0);
+        existingRecord.setTotalCalorieExpenditure(0.0);
+        existingRecord.setCarbs(50.0);
+        existingRecord.setFats(70.0);
+        existingRecord.setProtein(90.0);
+
+        when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(existingRecord));
+        when(mealLambdaServiceClient.getMealData(mealId)).thenReturn(mealData);
+
+        healthMetricsService.updateMetricsBasedOnEvent(userId, mealEvent);
+        ArgumentCaptor<HealthMetricsRecord> recordCaptor = ArgumentCaptor.forClass(HealthMetricsRecord.class);
+        verify(healthMetricsRepository).save(recordCaptor.capture());
 
     }
 
     @Test
     public void getHealthMetrics_ReturnsCachedValue() {
+        String userId = "testUserId";
+        HealthMetricsRecord cachedRecord = new HealthMetricsRecord(userId);
+        cachedRecord.setWeight(70.0);
 
+        when(cacheStore.get(userId)).thenReturn(cachedRecord);
+
+        HealthMetricsRecord result = healthMetricsService.getHealthMetrics(userId);
+
+        assertNotNull(result);
+        assertSame(cachedRecord, result);
+        verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
     }
 
     @Test
     public void getHealthMetrics_ThrowsException() {
+        String userId = "testUserId";
 
+        when(cacheStore.get(userId)).thenThrow(new RuntimeException("Simulating cache retrieval failure"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            healthMetricsService.getHealthMetrics(userId);
+        });
+
+        verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
     }
 }
