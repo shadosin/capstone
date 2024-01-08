@@ -8,9 +8,18 @@ const client = new ApiClient();
 // Get scrollbar width
 
 export function renderEvents() {
+  try {
+    const eventsArea = document.querySelectorAll(".eventSection");
+    if (eventsArea) {
+      for (const element of eventsArea) element.remove();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const eventsArea = document.querySelector("#Events");
   const articleEvents = document.createElement("article");
-  articleEvents.classList.add("eventSection", "eventSection-hidden");
+  articleEvents.classList.add("eventSection");
   const buttonGrp = createBtnGroup();
   eventsArea.append(buttonGrp, articleEvents);
   const addEventBtn = document.querySelector("#addEventBtn");
@@ -20,7 +29,7 @@ export function renderEvents() {
 
 export function createBtnGroup() {
   const btnGroup = document.createElement("article");
-  btnGroup.classList.add("btn-group", "eventSection", "eventSection-hidden");
+  btnGroup.classList.add("btn-group", "eventSection");
   const ul = document.createElement("ul");
   const li = document.createElement("li");
   const button = document.createElement("button");

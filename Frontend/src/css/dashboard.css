@@ -11,7 +11,6 @@
 .schedule-list-item:hover, .schedule-day-list-item:hover {
     background-color: #1f2d38;
     color: var(--accent);
-    transform: scale(1.15);
 }
 
 .schedule-day-list-item, .schedule-list-item {
@@ -65,19 +64,18 @@
 }
 
 
-#modal-add-event > article > p {
+#modal-add-schedule> article > p, #modal-add-event > article > p {
 
     padding: .25rem;
     margin: .25rem;
 }
 
-#modal-add-event > article > footer {
-    padding: .25rem;
-    padding-top: .5rem;
+#modal-add-schedule> article > footer, #modal-add-event > article > footer {
+    padding: .5rem .25rem .25rem;
     margin: .25rem;
 }
 
-#modal-add-event > article > h3 {
+#modal-add-schedule> article > h3, #modal-add-event > article > h3 {
     margin: 0;
     padding: .25rem;
 }
@@ -124,7 +122,7 @@ dialog > footer {
     border: 1px solid var(--accent)
 }
 
-.btnGroup li:active, .secondary:active, .btn:active, .btn-group > input:active {
+.btnGroup li.active, .secondary.active, .btn.active, .btn-group > input.active {
     background-color: #1f2d38;
     color: var(--accent);
     border: 1px solid var(--accent)
@@ -149,3 +147,6 @@ ul > li > p:hover {
     margin: 0;
 }
 
+#metricChartCanvas {
+    align-self: center;
+}

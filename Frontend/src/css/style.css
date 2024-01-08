@@ -256,6 +256,8 @@ input {
 #app,
 #pageContent {
     min-height: 75vh;
+    max-width: 2140px;
+    align-self: center;
 }
 
 
@@ -271,6 +273,8 @@ input {
     display: flex;
     justify-content: center;
     min-width: calc(1vw - 20%);
+    align-self: center;
+
 }
 
 ul > li {
@@ -279,4 +283,8 @@ ul > li {
 
 .eventSection-hidden {
     visibility: hidden;
+}
+
+main .container-fluid:first-child {
+ display: flex;
 }
