@@ -41,7 +41,7 @@ function createUserButtons() {
 
     const editProfileBtn = document.createElement("li");
     editProfileBtn.setAttribute("role", "button");
-    editProfileBtn.className = "outline";
+    editProfileBtn.className = "btn secondary";
     editProfileBtn.textContent = "Edit Profile";
 
     editProfileBtn.addEventListener("click", () => {
@@ -53,11 +53,12 @@ function createUserButtons() {
 
     const logoutBtn = document.createElement("li");
     logoutBtn.setAttribute("role", "button");
-    logoutBtn.className = "outline primary";
+    logoutBtn.className = "btn";
     logoutBtn.textContent = "Logout";
 
     logoutBtn.addEventListener("click", () => {
-      window.sessionStorage.removeItem("userInfo");
+      window.sessionStorage.clear();
+      window.localStorage.clear();
       window.location.href = "/";
     });
     userBtnGroup.append(editProfileBtn, logoutBtn);

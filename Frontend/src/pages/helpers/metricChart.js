@@ -1,4 +1,7 @@
 import Chart from "chart.js/auto";
+import ApiClient from "../../api/apiClient";
+
+const client = new ApiClient();
 
 function getLabel(metric) {
   switch (metric) {
@@ -20,17 +23,26 @@ function getLabel(metric) {
 }
 
 function getData() {
-  const metrics = JSON.parse(window.localStorage.getItem("metrics"));
+  const userId = JSON.parse(window.sessionStorage.getItem("userInfo")).userId;
 
+  const metrics =
+    JSON.parse(window.localStorage.getItem("metrics")) ||
+    client
+      .getUserMetrics(userId)
+      .then((r) => {
+        window.localStorage.setItem("metrics", JSON.stringify(r));
+      })
+      .then((r) => {
+        return r;
+      });
   delete metrics.userId;
   delete metrics["weightUnit"];
-  metrics.weight = 200;
-  metrics.protein = 50;
-  metrics.fats = 100;
-  metrics.carbs = 200;
-  metrics.totalCalorieExpenditure = 300;
-  metrics.totalCalorieIntake = 400;
-
+  // metrics.weight = 200;
+  // metrics.protein = 50;
+  // metrics.fats = 100;
+  // metrics.carbs = 200;
+  // metrics.totalCalorieExpenditure = 300;
+  // metrics.totalCalorieIntake = 400;
 
   let output = [];
 
