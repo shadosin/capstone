@@ -1,10 +1,11 @@
 function createPage(pageTitle) {
   const section = document.querySelector("section");
   const page = document.createElement("div");
-  page.classList.add("container", "content-section");
+  page.classList.add("container-fluid", "content-section");
 
   const pageHeading = document.createElement("header");
   pageHeading.classList.add("page-heading");
+
 
   const headingText = document.createElement("h2");
   headingText.innerText = `${pageTitle}`;
@@ -12,7 +13,7 @@ function createPage(pageTitle) {
 
   const pageContent = document.createElement("div");
   pageContent.setAttribute("id", "pageContent");
-  pageContent.classList.add("container");
+  pageContent.classList.add("container-fluid" ,"page-content");
 
   page.append(pageHeading, pageContent);
   section.append(page);

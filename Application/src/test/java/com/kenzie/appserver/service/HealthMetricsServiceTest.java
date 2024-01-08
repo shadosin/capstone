@@ -2,32 +2,15 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.HealthMetricsRepository;
-import com.kenzie.appserver.repositories.UserRepository;
-import com.kenzie.appserver.repositories.model.UserRecord;
-import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
 import com.kenzie.capstone.service.client.MealLambdaServiceClient;
 import org.junit.jupiter.api.BeforeEach;
 import com.kenzie.appserver.config.CacheStore;
-import com.kenzie.appserver.repositories.HealthMetricsRepository;
-import com.kenzie.appserver.repositories.ScheduledEventRepository;
-import com.kenzie.appserver.repositories.UserRepository;
-import com.kenzie.appserver.repositories.UserScheduleRepository;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
-import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
-import com.kenzie.appserver.service.*;
 import com.kenzie.appserver.service.model.*;
-import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
-import com.kenzie.capstone.service.client.LambdaServiceClient;
-import com.kenzie.capstone.service.client.MealLambdaServiceClient;
-import com.kenzie.capstone.service.model.ExerciseData;
-import com.kenzie.capstone.service.model.MealData;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,95 +18,106 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 
 public class HealthMetricsServiceTest {
+    private HealthMetricsRepository healthMetricsRepository;
+    private MealLambdaServiceClient mealLambdaServiceClient;
+    private ExerciseLambdaServiceClient exerciseLambdaServiceClient;
+    private CacheStore<String, HealthMetricsRecord> cacheStore;
+    private HealthMetricsService healthMetricsService;
 
+    @BeforeEach
+    public void setup() {
+        healthMetricsRepository = mock(HealthMetricsRepository.class);
+        mealLambdaServiceClient = mock(MealLambdaServiceClient.class);
+        exerciseLambdaServiceClient = mock(ExerciseLambdaServiceClient.class);
+        cacheStore = mock(CacheStore.class);
 
+        healthMetricsService = new HealthMetricsService(healthMetricsRepository, mealLambdaServiceClient,
+                exerciseLambdaServiceClient, cacheStore);
+    }
 
-        private HealthMetricsRepository healthMetricsRepository;
-        private MealLambdaServiceClient mealLambdaServiceClient;
-        private ExerciseLambdaServiceClient exerciseLambdaServiceClient;
-        private UserRepository userRepository;
-        private LambdaServiceClient lambdaServiceClient;
-        private UserService userService;
-        private UserScheduleService userScheduleService;
-        private ScheduledEventService scheduledEventService;
-        private CacheStore<String, HealthMetricsRecord> cacheStore;
-        private HealthMetricsService healthMetricsService;
-        private UserScheduleRepository userScheduleRepository;
-        private ScheduledEventRepository scheduledEventRepository;
+    @Test
+    public void testGetHealthMetrics() {
 
-        @BeforeEach
-        public void setup(){
-            healthMetricsRepository = mock(HealthMetricsRepository.class);
-            mealLambdaServiceClient = mock(MealLambdaServiceClient.class);
-            exerciseLambdaServiceClient = mock(ExerciseLambdaServiceClient.class);
-            userRepository = mock(UserRepository.class);
-            lambdaServiceClient = mock(LambdaServiceClient.class);
-            cacheStore = mock(CacheStore.class);
-            userScheduleRepository = mock(UserScheduleRepository.class);
-            scheduledEventRepository = mock(ScheduledEventRepository.class);
+        String userId = "testUserId";
+        HealthMetricsRecord mockMetricsRecord = new HealthMetricsRecord(userId);
 
-            userService = new UserService(userRepository);
-            userScheduleService = new UserScheduleService(userScheduleRepository, userService);
-            scheduledEventService = new ScheduledEventService(scheduledEventRepository);
-            healthMetricsService = new HealthMetricsService(healthMetricsRepository, mealLambdaServiceClient,
-                    exerciseLambdaServiceClient, userScheduleService, cacheStore);
+        when(cacheStore.get(userId)).thenReturn(null);
 
-            // Setting dependencies via setter methods
-            userScheduleService.setScheduledEventService(scheduledEventService);
-            scheduledEventService.setHealthMetricsService(healthMetricsService);
-            healthMetricsService.setScheduledEventService(scheduledEventService);
-        }
+        when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(mockMetricsRecord));
 
-        @Test
-        public void testGetHealthMetrics() {
+        HealthMetricsRecord result = healthMetricsService.getHealthMetrics(userId);
 
-            String userId = "testUserId";
-            HealthMetricsRecord mockMetricsRecord = new HealthMetricsRecord(userId);
+        assertNotNull(result);
+        assertSame(mockMetricsRecord, result);
+        Mockito.verify(cacheStore, times(1)).put(userId, mockMetricsRecord);
+    }
 
+    @Test
+    public void testDeleteHealthMetrics() {
+        String userId = "testUserId";
 
-            when(cacheStore.get(userId)).thenReturn(null);
+        healthMetricsService.deleteHealthMetrics(userId);
 
+        Mockito.verify(healthMetricsRepository).deleteById(userId);
+        Mockito.verify(cacheStore).invalidate(userId);
+    }
 
-            when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(mockMetricsRecord));
+    @Test
+    public void testResetHealthMetrics() {
+        String userId = "testUserId";
+        HealthMetricsRecord mockMetricsRecord = new HealthMetricsRecord(userId);
 
+        when(healthMetricsRepository.save(any(HealthMetricsRecord.class))).thenReturn(mockMetricsRecord);
 
-            HealthMetricsRecord result = healthMetricsService.getHealthMetrics(userId);
+        healthMetricsService.resetHealthMetrics(userId);
 
+        Mockito.verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
+        Mockito.verify(cacheStore).put(eq(userId), any(HealthMetricsRecord.class));
+    }
 
-            assertNotNull(result);
-            assertSame(mockMetricsRecord, result);
-            Mockito.verify(cacheStore, times(1)).put(userId, mockMetricsRecord);
-        }
+    @Test
+    public void updateHealthMetrics_UpdatesMetricsSuccessfully() {
+        String userId = "testUserId";
+        HealthMetricsUpdateRequest updateRequest = new HealthMetricsUpdateRequest();
+        updateRequest.setUserId(userId);
+        updateRequest.setWeight(75.0);
+        updateRequest.setWeightUnit(WeightUnit.KG);
 
-        @Test
-        public void testDeleteHealthMetrics() {
+        HealthMetricsRecord existingRecord = new HealthMetricsRecord();
+        existingRecord.setUserId(userId);
+        existingRecord.setWeight(70.0);
+        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setTotalCalorieIntake(2000.0);
+        existingRecord.setTotalCalorieExpenditure(1800.0);
+        existingRecord.setCarbs(250.0);
+        existingRecord.setFats(50.0);
+        existingRecord.setProtein(75.0);
 
-            String userId = "testUserId";
+        when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(existingRecord));
 
+        HealthMetricsRecord updatedRecord = new HealthMetricsRecord();
+        updatedRecord.setUserId(userId);
+        updatedRecord.setWeight(75.0);
+        updatedRecord.setWeightUnit(WeightUnit.KG);
+        updatedRecord.setTotalCalorieIntake(2000.0);
+        updatedRecord.setTotalCalorieExpenditure(1800.0);
+        updatedRecord.setCarbs(250.0);
+        updatedRecord.setFats(50.0);
+        updatedRecord.setProtein(75.0);
 
-            healthMetricsService.deleteHealthMetrics(userId);
+        when(healthMetricsRepository.save(any(HealthMetricsRecord.class))).thenReturn(updatedRecord);
 
+        HealthMetricsResponse response = healthMetricsService.updateHealthMetrics(updateRequest);
 
-            Mockito.verify(healthMetricsRepository).deleteById(userId);
-            Mockito.verify(cacheStore).invalidate(userId);
-        }
+        // Assert and Verify
+        assertNotNull(response);
+        assertEquals(userId, response.getUserId());
+        assertEquals(75.0, response.getWeight());
+        assertEquals(WeightUnit.KG, response.getWeightUnit());
 
-        @Test
-        public void testResetHealthMetrics() {
-
-            String userId = "testUserId";
-            HealthMetricsRecord mockMetricsRecord = new HealthMetricsRecord(userId);
-
-
-            when(healthMetricsRepository.save(any(HealthMetricsRecord.class))).thenReturn(mockMetricsRecord);
-
-
-            healthMetricsService.resetHealthMetrics(userId);
-
-
-            Mockito.verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
-            Mockito.verify(cacheStore).put(eq(userId), any(HealthMetricsRecord.class));
-        }
+        verify(healthMetricsRepository).findById(userId);
+        verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
+    }
 
 
 }
