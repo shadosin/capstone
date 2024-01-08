@@ -178,6 +178,17 @@ public class HealthMetricsServiceTest {
         mealEvent.setCompleted(true);
 
         MealData mealData = new MealData();
+        mealData.setCarb(50.0);
+        mealData.setMealId(mealId);
+        mealData.setFat(70.0);
+        mealData.setCalories(100.0);
+        mealData.setVegan(false);
+        mealData.setName("food");
+        mealData.setRecipe("cook");
+        mealData.setDescription("cooked food");
+        mealData.setGlutenFree(false);
+        mealData.setProtein(90.0);
+        mealData.setType("stuff");
 
 
         HealthMetricsRecord existingRecord = new HealthMetricsRecord();
@@ -224,6 +235,35 @@ public class HealthMetricsServiceTest {
             healthMetricsService.getHealthMetrics(userId);
         });
 
+        verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
+    }
+    @Test
+    public void deleteHealthMetrics_ThrowsException(){
+        String invalidUserId = "invalidUserId";
+
+        doThrow(new IllegalArgumentException("Invalid user ID: " + invalidUserId))
+                .when(healthMetricsRepository).deleteById(invalidUserId);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            healthMetricsService.deleteHealthMetrics(invalidUserId);
+        });
+
+        verify(healthMetricsRepository).deleteById(invalidUserId);
+        verify(cacheStore, times(0)).invalidate(invalidUserId);
+    }
+    @Test
+    public void resetHealthMetrics_ThrowsExceptionForUnexpectedError() {
+        String userId = "testUserId";
+
+        doThrow(new IllegalArgumentException("Unexpected error occurred"))
+                .when(healthMetricsRepository).save(any(HealthMetricsRecord.class));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            healthMetricsService.resetHealthMetrics(userId);
+        });
+
+        verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
+        verify(cacheStore, times(0)).invalidate(userId);
         verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
     }
 }
