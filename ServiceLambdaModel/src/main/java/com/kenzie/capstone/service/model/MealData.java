@@ -26,6 +26,8 @@ public class MealData {
 
     private boolean vegan;
 
+    public MealData() {}
+
     public MealData(String mealId,
                     String name,
                     String description,
