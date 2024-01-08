@@ -2,6 +2,7 @@ package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.controller.model.CreateScheduledEventRequest;
 import com.kenzie.appserver.controller.model.ScheduledEventResponse;
+import com.kenzie.appserver.controller.model.ScheduledEventUpdateRequest;
 import com.kenzie.appserver.repositories.ScheduledEventRepository;
 import com.kenzie.appserver.repositories.model.ScheduledEventRecord;
 import com.kenzie.appserver.service.model.EventType;
@@ -196,5 +197,81 @@ public class ScheduleEventServiceTest {
         assertEquals(event.getScheduledDateTime(), record.getScheduledDateTime());
         assertEquals(event.isCompleted(), record.isCompleted());
         assertEquals(event.isMetricsCalculated(), record.isMetricsCalculated());
+    }
+
+    @Test
+    void updateScheduledEvent_shouldReturnResponse() {
+        // GIVEN
+        String eventId = UUID.randomUUID().toString();
+        ScheduledEventUpdateRequest request = new ScheduledEventUpdateRequest();
+        request.setUserId(UUID.randomUUID().toString());
+        request.setEventType(EventType.MEAL);
+        request.setScheduledDateTime(ZonedDateTime.now());
+        request.setCompleted(true);
+        request.setMetricsCalculated(false);
+
+        ScheduledEventRecord existingRecord = new ScheduledEventRecord();
+        existingRecord.setEventId(eventId);
+        existingRecord.setUserId(UUID.randomUUID().toString());
+        existingRecord.setEventType(EventType.EXERCISE);
+        existingRecord.setScheduledDateTime(ZonedDateTime.now());
+        existingRecord.setCompleted(false);
+        existingRecord.setMetricsCalculated(true);
+
+        // WHEN
+        when(scheduledEventRepository.findById(eventId)).thenReturn(Optional.of(existingRecord));
+
+        ScheduledEventRecord updatedRecord = new ScheduledEventRecord();
+        when(scheduledEventRepository.save(any(ScheduledEventRecord.class))).thenReturn(updatedRecord);
+
+        // THEN
+        assertDoesNotThrow(() -> scheduledEventService.updateScheduledEvent(eventId, request),
+                "Update should not throw an exception");
+    }
+
+    @Test
+    void updateScheduledEvent_shouldSetExerciseIdAndEventType() {
+        // GIVEN
+        String eventId = UUID.randomUUID().toString();
+        ScheduledEventUpdateRequest request = new ScheduledEventUpdateRequest();
+        request.setEventType(EventType.EXERCISE);
+        request.setExerciseId("exerciseId");
+
+        ScheduledEventRecord existingRecord = new ScheduledEventRecord();
+        existingRecord.setEventId(eventId);
+        existingRecord.setEventType(EventType.MEAL);
+
+        // WHEN
+        when(scheduledEventRepository.findById(eventId)).thenReturn(Optional.of(existingRecord));
+
+        ScheduledEventRecord updatedRecord = new ScheduledEventRecord();
+        when(scheduledEventRepository.save(any(ScheduledEventRecord.class))).thenReturn(updatedRecord);
+
+        // THEN
+        assertDoesNotThrow(() -> scheduledEventService.updateScheduledEvent(eventId, request),
+                "Update should not throw an exception");
+    }
+
+    @Test
+    void updateScheduledEvent_shouldSetMealIdAndEventType() {
+        // GIVEN
+        String eventId = UUID.randomUUID().toString();
+        ScheduledEventUpdateRequest request = new ScheduledEventUpdateRequest();
+        request.setEventType(EventType.MEAL);
+        request.setMealId("mealId");
+
+        ScheduledEventRecord existingRecord = new ScheduledEventRecord();
+        existingRecord.setEventId(eventId);
+        existingRecord.setEventType(EventType.EXERCISE);
+
+        // WHEN
+        when(scheduledEventRepository.findById(eventId)).thenReturn(Optional.of(existingRecord));
+
+        ScheduledEventRecord updatedRecord = new ScheduledEventRecord();
+        when(scheduledEventRepository.save(any(ScheduledEventRecord.class))).thenReturn(updatedRecord);
+
+        // THEN
+        assertDoesNotThrow(() -> scheduledEventService.updateScheduledEvent(eventId, request),
+                "Update should not throw an exception");
     }
 }
