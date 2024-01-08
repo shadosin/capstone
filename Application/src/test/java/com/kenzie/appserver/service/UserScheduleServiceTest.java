@@ -112,27 +112,24 @@ public class UserScheduleServiceTest {
     }
     @Test
     public void createUserSchedule_nullRequest_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
+        CreateUserScheduleRequest request = null;
+        assertThrows(IllegalArgumentException.class, () -> userScheduleService.createUserSchedule(request));
     }
     @Test
     public void createUserSchedule_idDoesNotExist_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void createUserSchedule_badEventRequest_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void createUserSchedule_nullRecordToSave_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
+        String userId = "123";
+
+        CreateUserScheduleRequest request = new CreateUserScheduleRequest();
+        request.setUserId(userId);
+        request.setStart(START_TIME);
+        request.setEnd(END_TIME);
+        request.setScheduledEvents(new ArrayList<>());
+
+        when(userService.findById(userId)).thenThrow(IllegalArgumentException.class);
+
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> userScheduleService.createUserSchedule(request));
+        verifyZeroInteractions(scheduledEventService);
     }
     @Test
     public void findCurrentSchedule_validInfo_returnsUserScheduleResponse(){
@@ -211,41 +208,12 @@ public class UserScheduleServiceTest {
     @Test
     public void updateUserSchedule_validInfo_scheduleUpdated(){
         //GIVEN
+
         //WHEN
         //THEN
     }
     @Test
     public void updateUserSchedule_invalidScheduleId_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void manageUserScheduleLimit_validInfo_oldestScheduleRemoved(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void manageUserScheduleLimit_scheduleLowerThan12_noSchedulesRemoved(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void manageUserScheduleLimit_invalidUser_throwsIllegalStateException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void manageUserScheduleLimit_nullScheduleId_throwsNullPointerException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void manageUserScheduleLimit_nullScheduleIdForDelete_throwsIllegalArgumentException(){
         //GIVEN
         //WHEN
         //THEN
