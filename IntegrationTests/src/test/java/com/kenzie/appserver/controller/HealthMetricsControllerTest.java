@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kenzie.appserver.IntegrationTest;
 import com.kenzie.appserver.controller.model.HealthMetricsResponse;
 import com.kenzie.appserver.controller.model.HealthMetricsUpdateRequest;
+import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
 import com.kenzie.appserver.service.HealthMetricsService;
 import com.kenzie.appserver.service.model.HealthMetrics;
+import com.kenzie.appserver.service.model.WeightUnit;
 import net.andreinc.mockneat.MockNeat;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -48,9 +50,14 @@ public class HealthMetricsControllerTest {
     @Test
     public void testUpdateHealthMetrics() throws Exception {
         String userId = mockNeat.strings().valStr();
+        metricsService.resetHealthMetrics(userId);
+
         HealthMetricsUpdateRequest request = new HealthMetricsUpdateRequest();
         request.setUserId(userId);
-        HealthMetricsResponse response = new HealthMetricsResponse();
+        request.setWeight(75.0);
+        request.setWeightUnit(WeightUnit.KG);
+
+        HealthMetricsResponse response = metricsService.updateHealthMetrics(request);
         when(metricsService.updateHealthMetrics(request)).thenReturn(response);
 
         mvc.perform(post("/healthMetrics/update")
@@ -62,6 +69,8 @@ public class HealthMetricsControllerTest {
     @Test
     public void testDeleteHealthMetrics() throws Exception {
         String userId = "testUserId";
+        metricsService.resetHealthMetrics(userId);
+
         mvc.perform(delete("/healthMetrics/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -71,6 +80,8 @@ public class HealthMetricsControllerTest {
     @Test
     public void testResetHealthMetrics() throws Exception {
         String userId = "testUserId";
+        metricsService.resetHealthMetrics(userId);
+
         mvc.perform(post("/healthMetrics/reset/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
