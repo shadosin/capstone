@@ -61,17 +61,6 @@ export function createArea(area) {
   return article;
 }
 
-export function getCurrentWeek() {
-  const dt = DateTime.now();
-  const dateFromStr = dt.startOf("week");
-  const dateToStr = dt.endOf("week");
-
-  return {
-    start: dateFromStr,
-    end: dateToStr,
-  };
-}
-
 export async function getScheduleData() {
   const userSessionData = window.sessionStorage.getItem("userInfo");
   let data = {};
@@ -88,19 +77,11 @@ export async function getScheduleData() {
         .then(() => {
           window.localStorage.setItem("scheduleData", JSON.stringify(data));
         })
-        .then(() => {
-          const element = document.querySelector("#Schedules");
-          // element
-          //   .querySelector("article:last-child")
-          //   .setAttribute("aria-busy", "false");
+        .catch((error) => {
+          console.log(error);
         });
     }
   }
 }
 
-export async function daysEventsList(day) {
-  const scheduleId = "1";
-  const dayId = "1";
-  const dayEventsList = createList(dayEvents, "day-events-list-item", "");
-  return dayEventsList;
-}
+
