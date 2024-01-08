@@ -4,11 +4,13 @@ import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.HealthMetricsRepository;
 import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
 import com.kenzie.capstone.service.client.MealLambdaServiceClient;
+import com.kenzie.capstone.service.model.ExerciseData;
 import org.junit.jupiter.api.BeforeEach;
 import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
 import com.kenzie.appserver.service.model.*;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.Optional;
@@ -119,5 +121,45 @@ public class HealthMetricsServiceTest {
         verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
     }
 
+    @Test
+    public void updateMetricsBasedOnEvent_UpdatesMetricsForExerciseEvent() {
+        // Given
+        String userId = "testUserId";
+        double initialWeight = 70.0; // weightInKg
 
+        String exerciseId = "testExerciseId";
+        int exerciseDuration = 30;
+        double MET = 8.0;
+        double expectedCaloriesBurned = ((MET * initialWeight * 3.5) / 200) * exerciseDuration; // logic the calculateCaloriesBurned private method does
+
+        ScheduledEvent exerciseEvent = new ScheduledEvent();
+        exerciseEvent.setEventType(EventType.EXERCISE);
+        exerciseEvent.setExerciseId(exerciseId);
+        exerciseEvent.setCompleted(true);
+
+        ExerciseData exerciseData = new ExerciseData();
+        exerciseData.setExerciseId(exerciseId);
+        exerciseData.setMETS(MET);
+        exerciseData.setDuration(exerciseDuration);
+
+        HealthMetricsRecord existingRecord = new HealthMetricsRecord();
+        existingRecord.setUserId(userId);
+        existingRecord.setWeight(initialWeight);
+        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setTotalCalorieIntake(1000.0);
+        existingRecord.setTotalCalorieExpenditure(0.0);
+        existingRecord.setCarbs(50.0);
+        existingRecord.setFats(70.0);
+        existingRecord.setProtein(90.0);
+
+        when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(existingRecord));
+        when(exerciseLambdaServiceClient.findExerciseData(exerciseId)).thenReturn(exerciseData);
+
+        healthMetricsService.updateMetricsBasedOnEvent(userId, exerciseEvent);
+
+        ArgumentCaptor<HealthMetricsRecord> recordCaptor = ArgumentCaptor.forClass(HealthMetricsRecord.class);
+        verify(healthMetricsRepository).save(recordCaptor.capture());
+        HealthMetricsRecord capturedRecord = recordCaptor.getValue();
+        assertEquals(expectedCaloriesBurned, capturedRecord.getTotalCalorieExpenditure());
+    }
 }
