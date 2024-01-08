@@ -130,7 +130,8 @@ public class HealthMetricsServiceTest {
         String exerciseId = "testExerciseId";
         int exerciseDuration = 30;
         double MET = 8.0;
-        double expectedCaloriesBurned = ((MET * initialWeight * 3.5) / 200) * exerciseDuration; // logic the calculateCaloriesBurned private method does
+        // logic the calculateCaloriesBurned private method performs
+        double expectedCaloriesBurned = ((MET * initialWeight * 3.5) / 200) * exerciseDuration;
 
         ScheduledEvent exerciseEvent = new ScheduledEvent();
         exerciseEvent.setEventType(EventType.EXERCISE);
@@ -161,5 +162,20 @@ public class HealthMetricsServiceTest {
         verify(healthMetricsRepository).save(recordCaptor.capture());
         HealthMetricsRecord capturedRecord = recordCaptor.getValue();
         assertEquals(expectedCaloriesBurned, capturedRecord.getTotalCalorieExpenditure());
+    }
+
+    @Test
+    public void updateMetricsBasedOnEvent_UpdatesMetricsForMealEvent() {
+
+    }
+
+    @Test
+    public void getHealthMetrics_ReturnsCachedValue() {
+
+    }
+
+    @Test
+    public void getHealthMetrics_ThrowsException() {
+
     }
 }
