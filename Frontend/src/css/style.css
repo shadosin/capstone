@@ -223,6 +223,7 @@ input {
     grid-column-start: 4;
     grid-column-end: 6;
 }
+
 .grid {
     grid-column-start: 3;
     grid-column-end: 9;
@@ -286,5 +287,156 @@ ul > li {
 }
 
 main .container-fluid:first-child {
- display: flex;
+    display: flex;
+}
+
+
+.dashboard-container {
+    display: grid;
+}
+
+.schedule-day-list, .schedule-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-list-item:hover, .schedule-day-list-item:hover {
+    background-color: #1f2d38;
+    color: var(--accent);
+}
+
+.schedule-day-list-item, .schedule-list-item {
+    background-color: var(--header);
+    list-style-type: none;
+    padding: .5rem;
+    margin: .25rem;
+}
+
+.schedule-day-list-item:focus, .schedule-day-list-item:active {
+    transform: scale(1.05);
+    background-color: #1f2d38;
+    color: var(--accent);
+}
+
+
+#pageContent > article {
+    margin: .25rem;
+    padding: .5rem;
+}
+
+#Schedules > article > ul, #Days > article > ul, #Events > article > ul, #Metrics > article > ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#Schedules > article, #Days > article, #Events > article, #Metrics > article {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+    margin: .25rem;
+}
+
+#Schedules {
+    grid-area: schedules;
+}
+
+#Days {
+    grid-area: days;
+}
+
+#Events {
+    grid-area: events;
+}
+
+#Metrics {
+    grid-area: metrics;
+}
+
+
+#modal-add-schedule > article > p, #modal-add-event > article > p {
+
+    padding: .25rem;
+    margin: .25rem;
+}
+
+#modal-add-schedule > article > footer, #modal-add-event > article > footer {
+    padding: .5rem .25rem .25rem;
+    margin: .25rem;
+}
+
+#modal-add-schedule > article > h3, #modal-add-event > article > h3 {
+    margin: 0;
+    padding: .25rem;
+}
+
+dialog > article {
+    padding: .5rem .25rem;
+    margin: .25rem;
+}
+
+dialog > article > .close {
+    margin-top: calc(var(--block-spacing-vertical) * -.80);
+}
+
+.btn {
+    background-color: var(--accent);
+    color: #1f2d38;
+    border: 1px solid #1f2d38;
+    padding: .25rem;
+    margin: 0;
+}
+
+.btn-group > input {
+    background-color: var(--accent);
+    color: #1f2d38;
+    border: 1px solid #1f2d38
+
+}
+
+dialog > footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: .5rem;
+    margin: .25rem;
+}
+
+
+.btnGroup li:hover, .secondary:hover, .btn:hover, .btn-group > input:hover {
+    background-color: #1f2d38;
+    color: var(--accent);
+    border: 1px solid var(--accent)
+}
+
+.btnGroup li.active, .secondary.active, .btn.active, .btn-group > input.active {
+    background-color: #1f2d38;
+    color: var(--accent);
+    border: 1px solid var(--accent)
+}
+
+.btnGroup li:focus, .secondary:focus, .btn:focus, .btn-group > input:focus {
+    background-color: #1f2d38;
+    color: var(--accent);
+    border: 1px solid var(--accent)
+}
+
+ul > li > p {
+    margin: 0;
+    padding: 0
+}
+
+ul > li > p:hover {
+    color: var(--accent);
+    margin: 0;
+    padding: 0;
+}
+
+.btn-group > ul > .btn {
+    margin: 0;
+}
+
+#metricChartCanvas {
+    align-self: center;
 }
