@@ -88,7 +88,7 @@ public class HealthMetricsServiceTest {
         HealthMetricsRecord existingRecord = new HealthMetricsRecord();
         existingRecord.setUserId(userId);
         existingRecord.setWeight(70.0);
-        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setWeightUnit(WeightUnit.LBS);
         existingRecord.setTotalCalorieIntake(2000.0);
         existingRecord.setTotalCalorieExpenditure(1800.0);
         existingRecord.setCarbs(250.0);
