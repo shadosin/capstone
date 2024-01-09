@@ -18,5 +18,5 @@ aws cloudformation delete-stack --stack-name $CAPSTONE_SERVICE_STACK_DEV
 aws cloudformation wait stack-delete-complete --stack-name $CAPSTONE_SERVICE_STACK_DEV
 
 aws cloudformation package --template-file $VITATRACSERVICETEMPLATE --s3-bucket $CAPSTONE_ARTIFACT_BUCKET --output-template-file $VITATRACSERVICETEMPLATE-development.yml
-aws cloudformation deploy --template-file $VITATRACSERVICETEMPLATE --stack-name $CAPSTONE_SERVICE_STACK_DEV --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation deploy --template-file $VITATRACSERVICETEMPLATE-development.yml --stack-name $CAPSTONE_SERVICE_STACK_DEV --capabilities CAPABILITY_NAMED_IAM
 
