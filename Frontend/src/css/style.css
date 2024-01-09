@@ -7,6 +7,9 @@
     --secondary-accent: hsla(200, 200%, 70%, 1);
     --header: var(--primary-color);
     --error-color: rgba(194, 0, 0, 0.71);
+    --background-dialog: hsla(0, 0%, 100%, 0.8);
+    --new-accent: #1f2d38;
+
 }
 
 body {
@@ -246,6 +249,31 @@ input {
     align-items: center;
 }
 
+#addScheduleForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+color: var(--new-accent);
+}
+
+#modal-add-schedule > article {
+    padding: 0;
+    margin: 0;
+}
+
+.dialogContent {
+    background-color: var(--background-dialog);
+    border: 3px solid var(--new-accent);
+    border-radius: 15px;
+    color: var(--new-accent);
+}
+dialog {
+    min-width: 60vw;
+    min-height: 60vh;
+}
 .secondary {
     color: ghostwhite;
     border: 3px solid ghostwhite;

@@ -7,6 +7,8 @@ let visibleModal = null;
 // Toggle modal
 export const toggleModal = (event) => {
   event.preventDefault();
+  console.log(event.currentTarget)
+  document.getElementById("addScheduleBtn").removeEventListener("click", toggleModal);
   const modalName = event.currentTarget.getAttribute("data-target");
   const modal = document.getElementById(modalName);
   typeof modal != "undefined" && modal != null && isModalOpen(modal)
@@ -71,16 +73,7 @@ export const getScrollbarWidth = () => {
 export const isScrollbarVisible = () => {
   return document.body.scrollHeight > screen.height;
 };
-// Close with a click outside
-document.addEventListener("click", (event) => {
-  if (visibleModal != null) {
-    const modalContent = visibleModal.querySelector("article");
-    const isClickInside = modalContent.contains(event.target);
-    !isClickInside && closeModal(visibleModal);
-  }
-});
 
-// Close with Esc key
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && visibleModal != null) {
     closeModal(visibleModal);
