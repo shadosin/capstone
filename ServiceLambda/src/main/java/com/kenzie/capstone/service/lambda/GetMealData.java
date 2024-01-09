@@ -34,9 +34,9 @@ public class GetMealData implements RequestHandler<APIGatewayProxyRequestEvent, 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-        String id = input.getPathParameters().get("id");
+        String id = input.getPathParameters().get("mealId");
 
-        if (id == null || id.length() == 0) {
+        if (id == null || id.isEmpty()) {
             return response
                     .withStatusCode(400)
                     .withBody("Id is invalid");

@@ -30,15 +30,15 @@ public class FindExerciseData implements RequestHandler<APIGatewayProxyRequestEv
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-        String data = input.getBody();
-        if(data == null || data.length() == 0){
+        String id = input.getPathParameters().get("exerciseId");
+        if(id == null || id.isEmpty()){
             return response
                     .withStatusCode(400)
-                    .withBody("No such exercise exists");
+                    .withBody("Id is invalid");
         }
 
         try{
-            ExerciseData exerciseData = service.getExerciseData(data);
+            ExerciseData exerciseData = service.getExerciseData(id);
             String output = gson.toJson(exerciseData);
 
             return response.withStatusCode(200).withBody(output);
