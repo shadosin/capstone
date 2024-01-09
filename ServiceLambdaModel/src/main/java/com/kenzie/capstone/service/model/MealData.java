@@ -26,6 +26,8 @@ public class MealData {
 
     private boolean vegan;
 
+    public MealData() {}
+
     public MealData(String mealId,
                     String name,
                     String description,
@@ -92,6 +94,50 @@ public class MealData {
 
     public boolean isVegan() {
         return vegan;
+    }
+
+    public void setMealId(String mealId) {
+        this.mealId = mealId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setRecipe(String recipe) {
+        this.recipe = recipe;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCalories(double calories) {
+        this.calories = calories;
+    }
+
+    public void setProtein(double protein) {
+        this.protein = protein;
+    }
+
+    public void setCarb(double carb) {
+        this.carb = carb;
+    }
+
+    public void setFat(double fat) {
+        this.fat = fat;
+    }
+
+    public void setGlutenFree(boolean glutenFree) {
+        this.glutenFree = glutenFree;
+    }
+
+    public void setVegan(boolean vegan) {
+        this.vegan = vegan;
     }
 
     @Override

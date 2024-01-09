@@ -34,7 +34,9 @@ export async function renderMetrics() {
   const canvas = document.createElement("canvas");
   canvas.setAttribute("id", "metricChartCanvas");
   articleMetrics.append(canvas);
+  document.getElementById("metricChartCanvas").setAttribute("aria-busy", "true");
   await getMetrics().then(() => {
     metricChart();
+    document.getElementById("metricChartCanvas").setAttribute("aria-busy", "false");
   })
 }

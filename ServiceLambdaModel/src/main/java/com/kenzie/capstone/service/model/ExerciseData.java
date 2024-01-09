@@ -18,6 +18,8 @@ public class ExerciseData {
     private double METS;
     private String description;
 
+    public ExerciseData() {}
+
     public ExerciseData(String exerciseId,
                         String type,
                         String intensity,

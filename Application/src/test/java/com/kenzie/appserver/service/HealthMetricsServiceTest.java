@@ -4,11 +4,14 @@ import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.HealthMetricsRepository;
 import com.kenzie.capstone.service.client.ExerciseLambdaServiceClient;
 import com.kenzie.capstone.service.client.MealLambdaServiceClient;
+import com.kenzie.capstone.service.model.ExerciseData;
+import com.kenzie.capstone.service.model.MealData;
 import org.junit.jupiter.api.BeforeEach;
 import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.repositories.model.HealthMetricsRecord;
 import com.kenzie.appserver.service.model.*;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.Optional;
@@ -86,7 +89,7 @@ public class HealthMetricsServiceTest {
         HealthMetricsRecord existingRecord = new HealthMetricsRecord();
         existingRecord.setUserId(userId);
         existingRecord.setWeight(70.0);
-        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setWeightUnit(WeightUnit.LBS);
         existingRecord.setTotalCalorieIntake(2000.0);
         existingRecord.setTotalCalorieExpenditure(1800.0);
         existingRecord.setCarbs(250.0);
@@ -119,5 +122,148 @@ public class HealthMetricsServiceTest {
         verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
     }
 
+    @Test
+    public void updateMetricsBasedOnEvent_UpdatesMetricsForExerciseEvent() {
+        // Given
+        String userId = "testUserId";
+        double initialWeight = 70.0; // weightInKg
 
+        String exerciseId = "testExerciseId";
+        int exerciseDuration = 30;
+        double MET = 8.0;
+        // logic the calculateCaloriesBurned private method performs
+        double expectedCaloriesBurned = ((MET * initialWeight * 3.5) / 200) * exerciseDuration;
+
+        ScheduledEvent exerciseEvent = new ScheduledEvent();
+        exerciseEvent.setEventType(EventType.EXERCISE);
+        exerciseEvent.setExerciseId(exerciseId);
+        exerciseEvent.setCompleted(true);
+
+        ExerciseData exerciseData = new ExerciseData();
+        exerciseData.setExerciseId(exerciseId);
+        exerciseData.setMETS(MET);
+        exerciseData.setDuration(exerciseDuration);
+
+        HealthMetricsRecord existingRecord = new HealthMetricsRecord();
+        existingRecord.setUserId(userId);
+        existingRecord.setWeight(initialWeight);
+        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setTotalCalorieIntake(1000.0);
+        existingRecord.setTotalCalorieExpenditure(0.0);
+        existingRecord.setCarbs(50.0);
+        existingRecord.setFats(70.0);
+        existingRecord.setProtein(90.0);
+
+        when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(existingRecord));
+        when(exerciseLambdaServiceClient.findExerciseData(exerciseId)).thenReturn(exerciseData);
+
+        healthMetricsService.updateMetricsBasedOnEvent(userId, exerciseEvent);
+
+        ArgumentCaptor<HealthMetricsRecord> recordCaptor = ArgumentCaptor.forClass(HealthMetricsRecord.class);
+        verify(healthMetricsRepository).save(recordCaptor.capture());
+        HealthMetricsRecord capturedRecord = recordCaptor.getValue();
+        assertEquals(expectedCaloriesBurned, capturedRecord.getTotalCalorieExpenditure());
+    }
+
+    @Test
+    public void updateMetricsBasedOnEvent_UpdatesMetricsForMealEvent() {
+        String userId = "testUserId";
+        double initialWeight = 70.0; // weightInKg
+
+        String mealId = "testMealId";
+
+        ScheduledEvent mealEvent = new ScheduledEvent();
+        mealEvent.setEventType(EventType.MEAL);
+        mealEvent.setEventId(mealId);
+        mealEvent.setCompleted(true);
+
+        MealData mealData = new MealData();
+        mealData.setCarb(50.0);
+        mealData.setMealId(mealId);
+        mealData.setFat(70.0);
+        mealData.setCalories(100.0);
+        mealData.setVegan(false);
+        mealData.setName("food");
+        mealData.setRecipe("cook");
+        mealData.setDescription("cooked food");
+        mealData.setGlutenFree(false);
+        mealData.setProtein(90.0);
+        mealData.setType("stuff");
+
+
+        HealthMetricsRecord existingRecord = new HealthMetricsRecord();
+        existingRecord.setUserId(userId);
+        existingRecord.setWeight(initialWeight);
+        existingRecord.setWeightUnit(WeightUnit.KG);
+        existingRecord.setTotalCalorieIntake(1000.0);
+        existingRecord.setTotalCalorieExpenditure(0.0);
+        existingRecord.setCarbs(50.0);
+        existingRecord.setFats(70.0);
+        existingRecord.setProtein(90.0);
+
+        when(healthMetricsRepository.findById(userId)).thenReturn(Optional.of(existingRecord));
+        when(mealLambdaServiceClient.getMealData(mealId)).thenReturn(mealData);
+
+        healthMetricsService.updateMetricsBasedOnEvent(userId, mealEvent);
+        ArgumentCaptor<HealthMetricsRecord> recordCaptor = ArgumentCaptor.forClass(HealthMetricsRecord.class);
+        verify(healthMetricsRepository).save(recordCaptor.capture());
+
+    }
+
+    @Test
+    public void getHealthMetrics_ReturnsCachedValue() {
+        String userId = "testUserId";
+        HealthMetricsRecord cachedRecord = new HealthMetricsRecord(userId);
+        cachedRecord.setWeight(70.0);
+
+        when(cacheStore.get(userId)).thenReturn(cachedRecord);
+
+        HealthMetricsRecord result = healthMetricsService.getHealthMetrics(userId);
+
+        assertNotNull(result);
+        assertSame(cachedRecord, result);
+        verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
+    }
+
+    @Test
+    public void getHealthMetrics_ThrowsException() {
+        String userId = "testUserId";
+
+        when(cacheStore.get(userId)).thenThrow(new RuntimeException("Simulating cache retrieval failure"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            healthMetricsService.getHealthMetrics(userId);
+        });
+
+        verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
+    }
+    @Test
+    public void deleteHealthMetrics_ThrowsException(){
+        String invalidUserId = "invalidUserId";
+
+        doThrow(new IllegalArgumentException("Invalid user ID: " + invalidUserId))
+                .when(healthMetricsRepository).deleteById(invalidUserId);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            healthMetricsService.deleteHealthMetrics(invalidUserId);
+        });
+
+        verify(healthMetricsRepository).deleteById(invalidUserId);
+        verify(cacheStore, times(0)).invalidate(invalidUserId);
+    }
+    @Test
+    public void resetHealthMetrics_ThrowsExceptionForUnexpectedError() {
+        String userId = "testUserId";
+
+        doThrow(new IllegalArgumentException("Unexpected error occurred"))
+                .when(healthMetricsRepository).save(any(HealthMetricsRecord.class));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            healthMetricsService.resetHealthMetrics(userId);
+        });
+
+        verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
+        verify(cacheStore, times(0)).invalidate(userId);
+        verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
+    }
 }
