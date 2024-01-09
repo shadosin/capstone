@@ -30,7 +30,7 @@ public class GetMealDataUsingGSI implements RequestHandler<APIGatewayProxyReques
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-        String attributeValue = input.getPathParameters().get("type");
+        String attributeValue = input.getPathParameters().get("value");
 
         if(attributeValue == null || attributeValue.isEmpty()){
             return response

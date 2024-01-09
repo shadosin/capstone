@@ -184,8 +184,7 @@ public class HealthMetricsServiceTest {
         mealData.setCalories(100.0);
         mealData.setVegan(false);
         mealData.setName("food");
-        mealData.setRecipe("cook");
-        mealData.setDescription("cooked food");
+        mealData.setUrl("www.url.com");
         mealData.setGlutenFree(false);
         mealData.setProtein(90.0);
         mealData.setType("stuff");
@@ -231,9 +230,7 @@ public class HealthMetricsServiceTest {
 
         when(cacheStore.get(userId)).thenThrow(new RuntimeException("Simulating cache retrieval failure"));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            healthMetricsService.getHealthMetrics(userId);
-        });
+        assertThrows(IllegalArgumentException.class, () -> healthMetricsService.getHealthMetrics(userId));
 
         verify(cacheStore, times(0)).put(eq(userId), any(HealthMetricsRecord.class));
     }
@@ -244,9 +241,7 @@ public class HealthMetricsServiceTest {
         doThrow(new IllegalArgumentException("Invalid user ID: " + invalidUserId))
                 .when(healthMetricsRepository).deleteById(invalidUserId);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            healthMetricsService.deleteHealthMetrics(invalidUserId);
-        });
+        assertThrows(IllegalArgumentException.class, () -> healthMetricsService.deleteHealthMetrics(invalidUserId));
 
         verify(healthMetricsRepository).deleteById(invalidUserId);
         verify(cacheStore, times(0)).invalidate(invalidUserId);
@@ -258,9 +253,7 @@ public class HealthMetricsServiceTest {
         doThrow(new IllegalArgumentException("Unexpected error occurred"))
                 .when(healthMetricsRepository).save(any(HealthMetricsRecord.class));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            healthMetricsService.resetHealthMetrics(userId);
-        });
+        assertThrows(IllegalArgumentException.class, () -> healthMetricsService.resetHealthMetrics(userId));
 
         verify(healthMetricsRepository).save(any(HealthMetricsRecord.class));
         verify(cacheStore, times(0)).invalidate(userId);
