@@ -70,8 +70,31 @@ export default class ApiClient extends BaseClass {
     }
   }
 
+  async updateUserMetrics(payload, errorCallback) {
+    const url = `${ApiClient.baseUrl}/healthMetrics/update`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      await this.client.post(url, payload, config).then((res) => {
+        window.localStorage.setItem("metrics", JSON.stringify(res.data));
+      })
+    } catch (error) {
+      this.handleError("updateUserMetrics", error, errorCallback);
+    }
+  }
   async editUser(data, errorCallback) {
     const payload = data;
+
+    const {userId, weight, weightUnit} = payload;
+    const metricUpdatePayload = {
+      userId,
+      weight,
+      weightUnit: weightUnit.toUpperCase()
+    }
+
     const url = `${ApiClient.baseUrl}/user/${payload.userId}`;
     const config = {
       headers: {
@@ -79,8 +102,12 @@ export default class ApiClient extends BaseClass {
       },
     };
     try {
-      let response = await this.client.put(url, payload, config);
-      return response.data;
+      await this.client.put(url, payload, config).then(async (res) => {
+        window.sessionStorage.setItem("userInfo", JSON.stringify(res.data));
+      }).then(async (res) => {
+          await this.updateUserMetrics(metricUpdatePayload)
+        }
+      )
     } catch (error) {
       this.handleError("editUser", error, errorCallback);
     }
@@ -191,7 +218,6 @@ export default class ApiClient extends BaseClass {
       return null; // Return null or a custom error object
     }
   }
-
 
   handleError(method, error, errorCallback) {
     console.error(method + " failed - " + error);

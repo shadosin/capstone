@@ -1,6 +1,6 @@
 import * as modal from "./modal.js";
 import { addScheduleForm } from "../addScheduleForm";
-import {onScheduleSubmit} from "../addScheduleForm.js";
+import { addEventForm } from "../addEventForm";
 const { toggleModal } = modal;
 
 export function createDialog(modalId, modalTitle, modalContent) {
@@ -18,7 +18,7 @@ export function createDialog(modalId, modalTitle, modalContent) {
   closeButton.ariaLabel = "Close";
   closeButton.classList.add("close");
   closeButton.dataset.target = `${modalId}`;
-  //closeButton.addEventListener("click", toggleModal);
+ //closeButton.addEventListener("click", toggleModal);
 
   // Create the heading
   const heading = document.createElement("h3");
@@ -31,7 +31,11 @@ export function createDialog(modalId, modalTitle, modalContent) {
 
   if (modalContent === "addScheduleForm") {
     modalContentArea.innerHTML = addScheduleForm();
-  } else {
+  }
+  if (modalContent === "addEventForm") {
+    modalContentArea.innerHTML = addEventForm();
+  }
+  else {
     modalContentArea.textContent = "No Content Provided.";
   }
 

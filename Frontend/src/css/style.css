@@ -11,11 +11,6 @@
     --new-accent: #1f2d38;
 
 }
-
-body {
-    overflow: hidden;
-}
-
 main {
     margin-top: 0.5rem;
     padding-top: 0;
