@@ -10,9 +10,7 @@ public class MealRecord {
 
     private String name;
 
-    private String description;
-
-    private String recipe;
+    private String url;
 
     private String type;
 
@@ -43,22 +41,15 @@ public class MealRecord {
     public void setName(String name) {
         this.name = name;
     }
-    @DynamoDBAttribute(attributeName = "description")
-    public String getDescription() {
-        return description;
+    @DynamoDBAttribute(attributeName = "url")
+    public String getUrl() {
+        return url;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    @DynamoDBAttribute(attributeName = "recipe")
-    public String getRecipe() {
-        return recipe;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public void setRecipe(String recipe) {
-        this.recipe = recipe;
-    }
     @DynamoDBIndexHashKey(globalSecondaryIndexName = "TypeIndex", attributeName = "type")
     public String getType() {
         return type;
@@ -75,7 +66,7 @@ public class MealRecord {
     public void setProtein(double protein) {
         this.protein = protein;
     }
-    @DynamoDBAttribute(attributeName = "carb")
+    @DynamoDBAttribute(attributeName = "carbs")
     public double getCarb() {
         return carb;
     }
@@ -91,7 +82,7 @@ public class MealRecord {
     public void setFat(double fat) {
         this.fat = fat;
     }
-    @DynamoDBAttribute(attributeName = "glutenFree")
+    @DynamoDBAttribute(attributeName = "gluten-free")
     public boolean isGlutenFree() {
         return glutenFree;
     }
@@ -99,7 +90,7 @@ public class MealRecord {
     public void setGlutenFree(boolean glutenFree) {
         this.glutenFree = glutenFree;
     }
-    @DynamoDBAttribute(attributeName = "glutenFree")
+    @DynamoDBAttribute(attributeName = "vegan")
     public boolean isVegan() {
         return vegan;
     }

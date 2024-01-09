@@ -40,8 +40,7 @@ public class MealDao {
     }
     public MealRecord setMealRecord(String mealId,
                                     String name,
-                                    String description,
-                                    String recipe,
+                                    String url,
                                     String type,
                                     double calories,
                                     double protein,
@@ -53,8 +52,7 @@ public class MealDao {
         MealRecord record = new MealRecord();
         record.setMealId(mealId);
         record.setName(name);
-        record.setDescription(description);
-        record.setRecipe(recipe);
+        record.setUrl(url);
         record.setType(type);
         record.setCalories(calories);
         record.setProtein(protein);

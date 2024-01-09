@@ -34,22 +34,21 @@ public class GetMealData implements RequestHandler<APIGatewayProxyRequestEvent, 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-        String id = input.getPathParameters().get("mealId");
+        String mealId = input.getPathParameters().get("mealId");
 
-        if (id == null || id.isEmpty()) {
+        if (mealId == null || mealId.isEmpty()) {
             return response
                     .withStatusCode(400)
                     .withBody("Id is invalid");
         }
 
         try {
-            MealData mealData = service.getMealData(id);
+            MealData mealData = service.getMealData(mealId);
             String output = gson.toJson(mealData);
 
             return response
                     .withStatusCode(200)
                     .withBody(output);
-
         } catch (Exception e) {
             return response
                     .withStatusCode(400)

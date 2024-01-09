@@ -55,7 +55,7 @@ public List<ExerciseRecord> findExerciseData(String exerciseId){
         try {
             mapper.save(record, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
-                            "id",
+                            "exerciseId",
                             new ExpectedAttributeValue().withExists(false)
                     )));
         } catch (ConditionalCheckFailedException e) {

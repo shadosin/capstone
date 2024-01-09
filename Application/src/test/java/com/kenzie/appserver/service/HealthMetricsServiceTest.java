@@ -184,8 +184,7 @@ public class HealthMetricsServiceTest {
         mealData.setCalories(100.0);
         mealData.setVegan(false);
         mealData.setName("food");
-        mealData.setRecipe("cook");
-        mealData.setDescription("cooked food");
+        mealData.setUrl("www.url.com");
         mealData.setGlutenFree(false);
         mealData.setProtein(90.0);
         mealData.setType("stuff");

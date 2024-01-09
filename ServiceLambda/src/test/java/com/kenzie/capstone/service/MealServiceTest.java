@@ -31,8 +31,7 @@ public class MealServiceTest {
     void setMealData() {
         ArgumentCaptor<String> mealIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> mealNameCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> descriptionCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> recipeCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> urlCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> typeCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Double> proteinCaptor = ArgumentCaptor.forClass(Double.class);
         ArgumentCaptor<Double> caloriesCaptor = ArgumentCaptor.forClass(Double.class);
@@ -41,17 +40,16 @@ public class MealServiceTest {
         ArgumentCaptor<Boolean> glutenFreeCaptor = ArgumentCaptor.forClass(Boolean.class);
         ArgumentCaptor<Boolean> veganCaptor = ArgumentCaptor.forClass(Boolean.class);
 
-        MealData response = this.mealService.setData("name", "description",
-                "recipe", "type", 1.4, 1.3, 1.2, 1.1, true, true);
+        MealData response = this.mealService.setData("name", "url", "type"
+                , 1.4, 1.3, 1.2, 1.1, true, true);
 
         verify(mealDao, times(1)).setMealRecord(mealIdCaptor.capture(), mealNameCaptor.capture(),
-                descriptionCaptor.capture(), recipeCaptor.capture(), typeCaptor.capture(), caloriesCaptor.capture(),
+                urlCaptor.capture(), typeCaptor.capture(), caloriesCaptor.capture(),
                 proteinCaptor.capture(), carbsCaptor.capture(), fatCaptor.capture(), glutenFreeCaptor.capture(), veganCaptor.capture());
 
         assertNotNull(mealIdCaptor.getValue(), "An ID is generated");
         assertNotNull(mealNameCaptor.getValue(), "A name is generated");
-        assertNotNull(descriptionCaptor.getValue(), "A description is generated");
-        assertNotNull(recipeCaptor.getValue(), "A recipe is generated");
+        assertNotNull(urlCaptor.getValue(), "A url is generated");
         assertNotNull(typeCaptor.getValue(), "A value is generated");
         assertNotNull(caloriesCaptor.getValue(), "Calories are generated");
         assertNotNull(proteinCaptor.getValue(), "Proteins are generated");
@@ -62,8 +60,7 @@ public class MealServiceTest {
 
         assertEquals(response.getMealId(), mealIdCaptor.getValue());
         assertEquals(response.getName(), mealNameCaptor.getValue());
-        assertEquals(response.getDescription(), descriptionCaptor.getValue());
-        assertEquals(response.getRecipe(), recipeCaptor.getValue());
+        assertEquals(response.getUrl(), urlCaptor.getValue());
         assertEquals(response.getType(), typeCaptor.getValue());
         assertEquals(response.getCalories(), caloriesCaptor.getValue());
         assertEquals(response.getProtein(), proteinCaptor.getValue());
@@ -81,8 +78,7 @@ public class MealServiceTest {
 
         String mealId = "id";
         String name = "name";
-        String description = "description";
-        String recipe = "recipe";
+        String url = "www.url.com";
         String type = "type";
         double calories = 1.4;
         double protein = 1.0;
@@ -94,8 +90,7 @@ public class MealServiceTest {
         MealRecord mealRecord = new MealRecord();
         mealRecord.setMealId(mealId);
         mealRecord.setName(name);
-        mealRecord.setDescription(description);
-        mealRecord.setRecipe(recipe);
+        mealRecord.setUrl(url);
         mealRecord.setType(type);
         mealRecord.setCalories(calories);
         mealRecord.setProtein(protein);
