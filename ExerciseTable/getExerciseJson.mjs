@@ -35,14 +35,14 @@ for (const value of values) {
   jsonArray.push(newObj)
 }
 
-let JsonObj = {"Exercise": []}
+let JsonObj = {"Exercises": []}
 
 for (const item of jsonArray) {
 
   if (item.type["S"] != "NO_TYPE") {
 
 
-    JsonObj.Exercise.push(
+    JsonObj.Exercises.push(
       {
         "PutRequest": {
           "Item": {
