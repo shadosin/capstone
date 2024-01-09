@@ -4,8 +4,10 @@ import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.repositories.ScheduledEventRepository;
 import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.UserScheduleRepository;
+import com.kenzie.appserver.repositories.model.UserRecord;
 import com.kenzie.appserver.repositories.model.UserScheduleRecord;
 import com.kenzie.appserver.service.model.User;
+import com.kenzie.appserver.service.model.UserSchedule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -84,23 +86,27 @@ public class UserScheduleServiceTest {
         request.setEnd(END_TIME);
         request.setScheduledEvents(new ArrayList<>());
 
+
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(userId);
-
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserRecord.class)));
         when(userService.findById(userId)).thenReturn(userResponse);
 
         User user = new User();
         user.setUserId(userId);
         user.setUserScheduleIds(new ArrayList<>());
 
-        when(userService.userFromResponse(userResponse)).thenReturn(user);
-
         UserScheduleRecord scheduleRecord = new UserScheduleRecord();
         scheduleRecord.setUserId(userId);
         scheduleRecord.setStart(request.getStart());
         scheduleRecord.setEnd(request.getEnd());
 
+
+        when(userService.userFromResponse(userResponse)).thenReturn(user);
+
         when(userScheduleRepository.save(any(UserScheduleRecord.class))).thenReturn(scheduleRecord);
+
+
 
         UserScheduleResponse response = userScheduleService.createUserSchedule(request);
 
@@ -110,6 +116,7 @@ public class UserScheduleServiceTest {
         assertEquals(request.getStart(), response.getStart());
         assertEquals(request.getEnd(), response.getEnd());
     }
+
     @Test
     public void createUserSchedule_nullRequest_throwsIllegalArgumentException(){
         CreateUserScheduleRequest request = null;
@@ -162,14 +169,40 @@ public class UserScheduleServiceTest {
     @Test
     public void findCurrentSchedule_invalidUserId_throwsIllegalArgumentException(){
         //GIVEN
+        String userId = UUID.randomUUID().toString();
         //WHEN
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
         //THEN
+        assertThrows(NullPointerException.class, () -> when(userScheduleService.findCurrentSchedule(userId)));
     }
     @Test
-    public void findCurrentSchedule_emptyUserScheduleId_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
+    public void findCurrentSchedule_emptyUserSchedule_throwsIllegalArgumentException(){
+        String userId = UUID.randomUUID().toString();
+
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(userId);
+        userResponse.setUserScheduleIds(null);
+
+        when(userService.findById(userId)).thenReturn(userResponse);
+
+        assertThrows(IllegalArgumentException.class, () -> userScheduleService.findCurrentSchedule(userId));
+
+    }
+    @Test
+    public void findCurrentSchedule_emptyResponse_throwsIllegalArgumentException(){
+        String userId = UUID.randomUUID().toString();
+        String scheduleId = UUID.randomUUID().toString();
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(userId);
+        userResponse.setUserScheduleIds(Collections.EMPTY_LIST);
+
+        when(userService.findById(userId)).thenReturn(userResponse);
+        when(userScheduleRepository.findById(scheduleId)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> userScheduleService.findCurrentSchedule(userId));
+
     }
     @Test
     public void deleteUserScheduleById_scheduleExist_scheduleDeleted(){
@@ -194,28 +227,52 @@ public class UserScheduleServiceTest {
         assertFalse(mockUser.getUserScheduleIds().contains(scheduleId)); // Verify that the ID was removed
     }
     @Test
-    public void deleteUserScheduleById_invalidScheduleId_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
-    public void deleteUserScheduleById_userDoesNotExist_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
-    @Test
     public void updateUserSchedule_validInfo_scheduleUpdated(){
         //GIVEN
+        String scheduleId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
+
+        ScheduledEventUpdateRequest scheduledEventUpdateRequest = mock(ScheduledEventUpdateRequest.class);
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(userId);
+
+        UserSchedule schedule = new UserSchedule();
+        schedule.setUserId(userResponse.getUserId());
+
+        UserScheduleUpdateRequest userScheduleUpdateRequest = new UserScheduleUpdateRequest();
+        userScheduleUpdateRequest.setScheduleId(scheduleId);
+        userScheduleUpdateRequest.setUserId(userId);
+        userScheduleUpdateRequest.setStart(START_TIME);
+        userScheduleUpdateRequest.setEnd(END_TIME);
+
+
+        userScheduleUpdateRequest.setScheduledEventUpdates(List.of(scheduledEventUpdateRequest));
+
+        when(userScheduleRepository.findById(scheduleId)).thenReturn(Optional.of(mock(UserScheduleRecord.class)));
+        when(userService.findById(userId)).thenReturn(userResponse);
+        when(scheduledEventService.updateScheduledEvent(
+                scheduledEventUpdateRequest.getEventId(),
+                scheduledEventUpdateRequest)).thenReturn(mock(ScheduledEventResponse.class)
+                );
+        when(userScheduleRepository.save(any(UserScheduleRecord.class))).thenReturn(mock(UserScheduleRecord.class));
 
         //WHEN
+        UserScheduleResponse response = userScheduleService.updateUserSchedule(scheduleId, userScheduleUpdateRequest);
+
         //THEN
+        assertNotNull(response);
+        verify(scheduledEventService, times(1)).updateScheduledEvent(
+                anyString(),
+                any(ScheduledEventUpdateRequest.class)
+        );
+        verify(userScheduleRepository, times(1)).save(any(UserScheduleRecord.class));
+
     }
-    @Test
-    public void updateUserSchedule_invalidScheduleId_throwsIllegalArgumentException(){
-        //GIVEN
-        //WHEN
-        //THEN
-    }
+//    @Test
+//    public void updateUserSchedule_invalidScheduleId_throwsIllegalArgumentException(){
+//        //GIVEN
+//        //WHEN
+//        //THEN
+//    }
 }
