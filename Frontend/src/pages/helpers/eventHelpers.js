@@ -5,7 +5,11 @@ import { toggleModal } from "./modal";
 
 const client = new ApiClient();
 
-// Get scrollbar width
+
+
+
+
+
 
 export function renderEvents() {
   try {
@@ -23,7 +27,7 @@ export function renderEvents() {
   const buttonGrp = createBtnGroup();
   eventsArea.append(buttonGrp, articleEvents);
   const addEventBtn = document.querySelector("#addEventBtn");
-  const dialog = createDialog("modal-add-event", "Add Event");
+  const dialog = createDialog("modal-add-event", "Add Event", "addEventForm");
   addEventBtn.append(dialog);
 }
 
@@ -37,9 +41,14 @@ export function createBtnGroup() {
   button.setAttribute("data-target", "modal-add-event");
   button.setAttribute("id", "addEventBtn");
   button.append(document.createTextNode("Add Event"));
-  button.addEventListener("click", (event) => {
+
+  function handlebuttonClick(event) {
     toggleModal(event);
-  });
+    console.log("removed button event listener");
+    button.removeEventListener("click", handlebuttonClick);
+  }
+
+  button.addEventListener("click", handlebuttonClick);
 
   li.append(button);
   ul.append(li);
@@ -47,6 +56,7 @@ export function createBtnGroup() {
 
   return btnGroup;
 }
+
 
 export function createEventListItem(data) {
   const { eventId, start, end, title, description } = data;

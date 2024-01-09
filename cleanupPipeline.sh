@@ -25,8 +25,8 @@ echo "Checking Artifact Bucket $CAPSTONE_ARTIFACT_BUCKET"
 if [ -z "$(aws s3api head-bucket --bucket "$CAPSTONE_ARTIFACT_BUCKET" 2>&1)" ] ; then
   echo "Deleting Artifact Bucket $CAPSTONE_ARTIFACT_BUCKET"
   aws s3 rm s3://$CAPSTONE_ARTIFACT_BUCKET --recursive
-  aws s3api delete-objects --bucket $CAPSTONE_ARTIFACT_BUCKET --delete "$(aws s3api list-object-versions --bucket $CAPSTONE_ARTIFACT_BUCKET --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" 1>/dev/null
-  aws s3api delete-objects --bucket $CAPSTONE_ARTIFACT_BUCKET --delete "$(aws s3api list-object-versions --bucket $CAPSTONE_ARTIFACT_BUCKET --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}')" 1>/dev/null
+#  aws s3api delete-objects --bucket $CAPSTONE_ARTIFACT_BUCKET --delete "$(aws s3api list-object-versions --bucket $CAPSTONE_ARTIFACT_BUCKET --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" 1>/dev/null
+#  aws s3api delete-objects --bucket $CAPSTONE_ARTIFACT_BUCKET --delete "$(aws s3api list-object-versions --bucket $CAPSTONE_ARTIFACT_BUCKET --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}')" 1>/dev/null
   aws s3 rb --force s3://$CAPSTONE_ARTIFACT_BUCKET
 fi
 

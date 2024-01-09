@@ -4,6 +4,7 @@ import { createList, getScheduleData } from "../dashboardHelpers";
 import { renderDays } from "./dayHelpers";
 import { toggleModal } from "./modal";
 import { createDialog } from "./createDialog";
+import { addScheduleForm } from "../addScheduleForm";
 
 const client = new ApiClient();
 
@@ -24,19 +25,14 @@ function createScheduleList() {
   return createList(lst, "schedule-list-item", "No schedules found");
 }
 
-async function createSchedule() {
-  await client.createSchedule(userId, currentWeek).then(async () => {
-    await client.updateUserInfo(userId);
-  });
-
-  await client
-    .getCurrentSchedule(userId)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+export function getCurrentWeek() {
+  const dt = DateTime.now();
+  const dateFromStr = dt.startOf("week");
+  const dateToStr = dt.endOf("week");
+  return {
+    start: dateFromStr,
+    end: dateToStr,
+  };
 }
 
 function createBtnGroup() {
@@ -49,9 +45,14 @@ function createBtnGroup() {
   button.setAttribute("data-target", "modal-add-schedule");
   button.setAttribute("id", "addScheduleBtn");
   button.append(document.createTextNode("Add Schedule"));
-  button.addEventListener("click", (event) => {
+
+  function handlebuttonClick(event) {
     toggleModal(event);
-  });
+    console.log("removed button event listener");
+    button.removeEventListener("click", handlebuttonClick);
+  }
+
+  button.addEventListener("click", handlebuttonClick);
   li.append(button);
   ul.append(li);
   btnGroup.append(ul);
@@ -69,7 +70,11 @@ export async function renderSchedules() {
   const buttonGrp = createBtnGroup();
   scheduleArea.append(buttonGrp);
   const addScheduleBtn = document.querySelector("#addScheduleBtn");
-  const dialog = createDialog("modal-add-schedule", "Add Schedule");
+  const dialog = createDialog(
+    "modal-add-schedule",
+    "Add Schedule",
+    "addScheduleForm",
+  );
   addScheduleBtn.append(dialog);
 
   const scheduleList = createScheduleList();
