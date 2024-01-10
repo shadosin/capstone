@@ -312,7 +312,6 @@ public class HealthMetricsServiceTest {
 
         // Capture the argument passed to cacheStore.put
         verify(cacheStore).put(eq(userId), cacheCaptor.capture());
-        HealthMetricsRecord cachedRecord = cacheCaptor.getValue();
 
         // Perform assertions on the saved record
         assertEquals(updatedCalorieIntake, savedRecord.getTotalCalorieIntake(), "Calorie intake should be updated correctly");
