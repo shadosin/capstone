@@ -116,7 +116,7 @@ public class EventDataControllerTest {
         mockResponse1.setExerciseId("ex123");
         mockResponse1.setType(type);
         mockResponse1.setIntensity("High");
-        mockResponse1.setExerciseName("Running");
+        mockResponse1.setName("Running");
         mockResponse1.setDuration(30);
         mockResponse1.setReps(0);
         mockResponse1.setSets(0);
@@ -128,7 +128,7 @@ public class EventDataControllerTest {
         mockResponse2.setExerciseId("ex456");
         mockResponse2.setType(type);
         mockResponse2.setIntensity("Moderate");
-        mockResponse2.setExerciseName("Cycling");
+        mockResponse2.setName("Cycling");
         mockResponse2.setDuration(45);
         mockResponse2.setReps(0);
         mockResponse2.setSets(0);
@@ -145,7 +145,7 @@ public class EventDataControllerTest {
                 .andExpect(jsonPath("$[0].exerciseId").value("ex123"))
                 .andExpect(jsonPath("$[0].type").value("Cardio"))
                 .andExpect(jsonPath("$[0].intensity").value("High"))
-                .andExpect(jsonPath("$[0].exerciseName").value("Running"))
+                .andExpect(jsonPath("$[0].name").value("Running"))
                 .andExpect(jsonPath("$[0].duration").value(30))
                 .andExpect(jsonPath("$[0].distance").value(5.0))
                 .andExpect(jsonPath("$[0].mets").value(8.0))
@@ -153,7 +153,7 @@ public class EventDataControllerTest {
                 .andExpect(jsonPath("$[1].exerciseId").value("ex456"))
                 .andExpect(jsonPath("$[1].type").value("Cardio"))
                 .andExpect(jsonPath("$[1].intensity").value("Moderate"))
-                .andExpect(jsonPath("$[1].exerciseName").value("Cycling"))
+                .andExpect(jsonPath("$[1].name").value("Cycling"))
                 .andExpect(jsonPath("$[1].duration").value(45))
                 .andExpect(jsonPath("$[1].distance").value(20.0))
                 .andExpect(jsonPath("$[1].mets").value(6.0))
