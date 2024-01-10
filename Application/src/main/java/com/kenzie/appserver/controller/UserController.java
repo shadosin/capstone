@@ -20,7 +20,7 @@ public class UserController {
     this.userService = userService;
   }
 
-  @GetMapping("/{userId}/")
+  @GetMapping("/{userId}")
   public ResponseEntity<UserResponse> getUser(@PathVariable("userId") String userId) {
       UserResponse userResponse = userService.findById(userId);
       return ResponseEntity.ok(userResponse);
