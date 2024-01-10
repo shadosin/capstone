@@ -35,7 +35,6 @@ public class ExerciseService {
         }
         return null;
     }
-    // todo add try catch to exercise DAO, change if parameter and add uuid after, refactor.
 
     public ExerciseData setData(String type,
                                 String intensity, String exerciseName, int duration,

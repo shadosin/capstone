@@ -17,7 +17,23 @@ export default function editUser() {
   function createInputField(id, label, type, placeholder, isRequired, value) {
     const field = document.createElement("div");
     let inputElement;
-    if (id === "username" || id === "userId") {
+
+    if (id === "weightUnit") {
+      const labelElement = document.createElement("label");
+      labelElement.htmlFor = id;
+      labelElement.textContent = label;
+
+      inputElement = document.createElement("select");
+      inputElement.id = id;
+      inputElement.name = id;
+      inputElement.required = true;
+      inputElement.innerHTML = `
+        <option value="lbs">lbs</option>
+        <option value="kg">kg</option>
+        `;
+      field.classList.add("formInput");
+      field.append(labelElement, inputElement);
+    } else if (id === "username" || id === "userId") {
       const labelElement = document.createElement("label");
       labelElement.htmlFor = id;
       labelElement.textContent = `${label}: ${value}`;
@@ -55,6 +71,26 @@ export default function editUser() {
     createInputField(id, label, type, placeholder, required, value);
   });
 
+  const { weight, weightUnit } = JSON.parse(
+    window.localStorage.getItem("metrics"),
+  );
+  createInputField(
+    "weight",
+    "Weight",
+    "number",
+    "Weight",
+    false,
+    Number(weight),
+  );
+  createInputField(
+    "weightUnit",
+    "Weight Unit",
+    "select",
+    "Weight Unit",
+    false,
+    weightUnit,
+  );
+
   const buttonGroup = document.createElement("div");
   buttonGroup.classList.add("btnGroup");
 
@@ -90,14 +126,9 @@ export default function editUser() {
     }
 
     try {
-      await client
-        .editUser(data)
-        .then((response) => {
-          window.sessionStorage.setItem("userInfo", JSON.stringify(response));
-        })
-        .then((response) => {
-          window.location.href = "/";
-        });
+      await client.editUser(data).then((response) => {
+        window.location.href = "/";
+      });
     } catch (error) {
       console.error(error);
     }

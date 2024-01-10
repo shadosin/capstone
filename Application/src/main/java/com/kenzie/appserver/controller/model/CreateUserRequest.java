@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -25,8 +24,6 @@ public class CreateUserRequest {
     private String phoneNum;
     @JsonProperty("email")
     private String email;
-//    @JsonProperty("dateJoined")
-//    private ZonedDateTime dateJoined;
     @JsonProperty("scheduleIdList")
     private List<String> userScheduleIds;
 
@@ -87,14 +84,6 @@ public class CreateUserRequest {
     public void setEmail(String email) {
         this.email = email;
     }
-
-//    public ZonedDateTime getDateJoined() {
-//        return dateJoined;
-//    }
-//
-//    public void setDateJoined(ZonedDateTime dateJoined) {
-//        this.dateJoined = dateJoined;
-//    }
 
     public List<String> getUserScheduleIds() {
         return userScheduleIds;

@@ -21,7 +21,7 @@ public class MealLambdaServiceClient {
 
     public MealData getMealData(String mealId) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        String response = endpointUtility.getEndpoint(GET_MEAL_ENDPOINT.replace("{id}", mealId));
+        String response = endpointUtility.getEndpoint(GET_MEAL_ENDPOINT.replace("{mealId}", mealId));
         MealData mealData;
         try{
             mealData = mapper.readValue(response, MealData.class);

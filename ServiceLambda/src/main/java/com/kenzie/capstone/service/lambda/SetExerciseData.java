@@ -28,7 +28,7 @@ public class SetExerciseData implements RequestHandler<APIGatewayProxyRequestEve
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent().withHeaders(headers);
 
         String data = input.getBody();
-        if(data == null || data.length() == 0){
+        if(data == null || data.isEmpty()){
             return response.withStatusCode(400).withBody("data is invalid");
         }
         try{

@@ -30,7 +30,7 @@ public class SetMealData implements RequestHandler<APIGatewayProxyRequestEvent, 
 
         String data = input.getBody();
 
-        if (data == null || data.length() == 0) {
+        if (data == null || data.isEmpty()) {
             return response
                     .withStatusCode(400)
                     .withBody("data is invalid");

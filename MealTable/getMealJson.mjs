@@ -48,14 +48,14 @@ for (const value of values) {
   jsonArray.push(newObj)
 }
 
-let JsonObj = {"Meal": []}
+let JsonObj = {"Meals": []}
 
 for (const item of jsonArray) {
 
   if (item.type["S"] != "NO_TYPE") {
 
 
-    JsonObj.Meal.push(
+    JsonObj.Meals.push(
       {
         "PutRequest": {
           "Item": {

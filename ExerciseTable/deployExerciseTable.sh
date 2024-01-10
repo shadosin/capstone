@@ -19,10 +19,10 @@ create_stack() {
 
 split_and_write() {
     local file=$1
-    local dataLength=$(jq '.Exercise | length' "$file")
+    local dataLength=$(jq '.Exercises | length' "$file")
     local -i count=0
     while [[ $count -lt $dataLength ]]; do
-        jq "{Exercise: .Exercise[$count:$((count + 25))]}" $file > temp.json
+        jq "{Exercises: .Exercises[$count:$((count + 25))]}" $file > temp.json
         echo "Writing batch $count to DynamoDB"
         aws dynamodb batch-write-item --request-items file://$TEMP_FILE
         let count+=25

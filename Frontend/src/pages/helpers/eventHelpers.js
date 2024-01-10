@@ -5,22 +5,35 @@ import { toggleModal } from "./modal";
 
 const client = new ApiClient();
 
-// Get scrollbar width
+
+
+
+
+
 
 export function renderEvents() {
+  try {
+    const eventsArea = document.querySelectorAll(".eventSection");
+    if (eventsArea) {
+      for (const element of eventsArea) element.remove();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const eventsArea = document.querySelector("#Events");
   const articleEvents = document.createElement("article");
-  articleEvents.classList.add("eventSection", "eventSection-hidden");
+  articleEvents.classList.add("eventSection");
   const buttonGrp = createBtnGroup();
   eventsArea.append(buttonGrp, articleEvents);
   const addEventBtn = document.querySelector("#addEventBtn");
-  const dialog = createDialog("modal-add-event", "Add Event");
+  const dialog = createDialog("modal-add-event", "Add Event", "addEventForm");
   addEventBtn.append(dialog);
 }
 
 export function createBtnGroup() {
   const btnGroup = document.createElement("article");
-  btnGroup.classList.add("btn-group", "eventSection", "eventSection-hidden");
+  btnGroup.classList.add("btn-group", "eventSection");
   const ul = document.createElement("ul");
   const li = document.createElement("li");
   const button = document.createElement("button");
@@ -28,9 +41,14 @@ export function createBtnGroup() {
   button.setAttribute("data-target", "modal-add-event");
   button.setAttribute("id", "addEventBtn");
   button.append(document.createTextNode("Add Event"));
-  button.addEventListener("click", (event) => {
+
+  function handlebuttonClick(event) {
     toggleModal(event);
-  });
+    console.log("removed button event listener");
+    button.removeEventListener("click", handlebuttonClick);
+  }
+
+  button.addEventListener("click", handlebuttonClick);
 
   li.append(button);
   ul.append(li);
@@ -38,6 +56,7 @@ export function createBtnGroup() {
 
   return btnGroup;
 }
+
 
 export function createEventListItem(data) {
   const { eventId, start, end, title, description } = data;

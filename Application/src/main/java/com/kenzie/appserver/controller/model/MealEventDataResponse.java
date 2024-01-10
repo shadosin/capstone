@@ -1,31 +1,37 @@
-package com.kenzie.capstone.service.model;
+package com.kenzie.appserver.controller.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.kenzie.capstone.service.model.MealData;
 
 import java.util.Objects;
-@DynamoDBTable(tableName = "Meals")
-public class MealRecord {
+
+public class MealEventDataResponse {
 
     private String mealId;
-
     private String name;
-
     private String url;
-
     private String type;
-
     private double calories;
-
     private double protein;
-
     private double carb;
-
     private double fat;
-
     private boolean glutenFree;
-
     private boolean vegan;
-    @DynamoDBHashKey(attributeName = "mealId")
+
+    public MealEventDataResponse() {}
+
+    public MealEventDataResponse(MealData mealData) {
+        this.mealId = mealData.getMealId();
+        this.name = mealData.getName();
+        this.url = mealData.getUrl();
+        this.type = mealData.getType();
+        this.calories = mealData.getCalories();
+        this.protein = mealData.getProtein();
+        this.carb = mealData.getCarb();
+        this.fat = mealData.getFat();
+        this.glutenFree = mealData.isGlutenFree();
+        this.vegan = mealData.isVegan();
+    }
+
     public String getMealId() {
         return mealId;
     }
@@ -33,7 +39,7 @@ public class MealRecord {
     public void setMealId(String mealId) {
         this.mealId = mealId;
     }
-    @DynamoDBAttribute(attributeName = "name")
+
     public String getName() {
         return name;
     }
@@ -41,7 +47,7 @@ public class MealRecord {
     public void setName(String name) {
         this.name = name;
     }
-    @DynamoDBAttribute(attributeName = "url")
+
     public String getUrl() {
         return url;
     }
@@ -50,7 +56,6 @@ public class MealRecord {
         this.url = url;
     }
 
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "TypeIndex", attributeName = "type")
     public String getType() {
         return type;
     }
@@ -58,48 +63,7 @@ public class MealRecord {
     public void setType(String type) {
         this.type = type;
     }
-    @DynamoDBAttribute(attributeName = "protein")
-    public double getProtein() {
-        return protein;
-    }
 
-    public void setProtein(double protein) {
-        this.protein = protein;
-    }
-    @DynamoDBAttribute(attributeName = "carbs")
-    public double getCarb() {
-        return carb;
-    }
-
-    public void setCarb(double carb) {
-        this.carb = carb;
-    }
-    @DynamoDBAttribute(attributeName = "fat")
-    public double getFat() {
-        return fat;
-    }
-
-    public void setFat(double fat) {
-        this.fat = fat;
-    }
-    @DynamoDBAttribute(attributeName = "gluten-free")
-    public boolean isGlutenFree() {
-        return glutenFree;
-    }
-
-    public void setGlutenFree(boolean glutenFree) {
-        this.glutenFree = glutenFree;
-    }
-    @DynamoDBAttribute(attributeName = "vegan")
-    public boolean isVegan() {
-        return vegan;
-    }
-
-    public void setVegan(boolean vegan) {
-        this.vegan = vegan;
-    }
-
-    @DynamoDBAttribute(attributeName = "calories")
     public double getCalories() {
         return calories;
     }
@@ -108,21 +72,65 @@ public class MealRecord {
         this.calories = calories;
     }
 
+    public double getProtein() {
+        return protein;
+    }
+
+    public void setProtein(double protein) {
+        this.protein = protein;
+    }
+
+    public double getCarb() {
+        return carb;
+    }
+
+    public void setCarb(double carb) {
+        this.carb = carb;
+    }
+
+    public double getFat() {
+        return fat;
+    }
+
+    public void setFat(double fat) {
+        this.fat = fat;
+    }
+
+    public boolean isGlutenFree() {
+        return glutenFree;
+    }
+
+    public void setGlutenFree(boolean glutenFree) {
+        this.glutenFree = glutenFree;
+    }
+
+    public boolean isVegan() {
+        return vegan;
+    }
+
+    public void setVegan(boolean vegan) {
+        this.vegan = vegan;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MealRecord)) return false;
-        MealRecord that = (MealRecord) o;
-        return protein == that.protein &&
-                carb == that.carb &&
-                fat == that.fat &&
-                calories == that.calories &&
+        if (o == null || getClass() != o.getClass()) return false;
+        MealEventDataResponse that = (MealEventDataResponse) o;
+        return Double.compare(calories, that.calories) == 0 &&
+                Double.compare(protein, that.protein) == 0 &&
+                Double.compare(carb, that.carb) == 0 &&
+                Double.compare(fat, that.fat) == 0 &&
+                glutenFree == that.glutenFree &&
+                vegan == that.vegan &&
                 Objects.equals(mealId, that.mealId) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(url, that.url) &&
                 Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mealId, type, calories, protein, carb, fat);
+        return Objects.hash(mealId, name, url, type, calories, protein, carb, fat, glutenFree, vegan);
     }
 }

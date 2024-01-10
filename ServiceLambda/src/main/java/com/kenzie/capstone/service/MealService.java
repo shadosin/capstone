@@ -22,8 +22,7 @@ public class MealService {
         if(!records.isEmpty()){
             return new MealData(records.get(0).getMealId(),
                     records.get(0).getName(),
-                    records.get(0).getDescription(),
-                    records.get(0).getRecipe(),
+                    records.get(0).getUrl(),
                     records.get(0).getType(),
                     records.get(0).getCalories(),
                     records.get(0).getProtein(),
@@ -36,8 +35,7 @@ public class MealService {
     }
 
     public MealData setData(String name,
-                            String description,
-                            String recipe,
+                            String url,
                             String type,
                             double calories,
                             double protein,
@@ -50,8 +48,7 @@ public class MealService {
 
         MealRecord record = dao.setMealRecord(mealId,
                 name,
-                description,
-                recipe,
+                url,
                 type,
                 calories,
                 protein,
@@ -62,8 +59,7 @@ public class MealService {
 
         return new MealData(mealId,
                 name,
-                description,
-                recipe,
+                url,
                 type,
                 calories,
                 protein,
@@ -80,8 +76,7 @@ public class MealService {
                     .map(record -> new MealData(
                             record.getMealId(),
                             record.getName(),
-                            record.getDescription(),
-                            record.getRecipe(),
+                            record.getUrl(),
                             record.getType(),
                             record.getCalories(),
                             record.getProtein(),

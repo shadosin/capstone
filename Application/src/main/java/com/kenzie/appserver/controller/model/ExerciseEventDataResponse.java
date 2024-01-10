@@ -1,16 +1,15 @@
-package com.kenzie.capstone.service.model;
+package com.kenzie.appserver.controller.model;
+
+import com.kenzie.capstone.service.model.ExerciseData;
 
 import java.util.Objects;
 
-public class ExerciseData {
+public class ExerciseEventDataResponse {
+
     private String exerciseId;
-
     private String type;
-
     private String intensity;
-
     private String exerciseName;
-
     private int duration;
     private int reps;
     private int sets;
@@ -18,28 +17,21 @@ public class ExerciseData {
     private double METS;
     private String description;
 
-    public ExerciseData() {}
+    public ExerciseEventDataResponse() {
 
-    public ExerciseData(String exerciseId,
-                        String type,
-                        String intensity,
-                        String exerciseName,
-                        int duration,
-                        int reps,
-                        int sets,
-                        double distance,
-                        double METS,
-                        String description){
-        this.exerciseId = exerciseId;
-        this.type = type;
-        this.intensity = intensity;
-        this.exerciseName = exerciseName;
-        this.duration = duration;
-        this.reps = reps;
-        this.sets = sets;
-        this.distance = distance;
-        this.METS = METS;
-        this.description = description;
+    }
+
+    public ExerciseEventDataResponse(ExerciseData exerciseData) {
+        this.exerciseId = exerciseData.getExerciseId();
+        this.type = exerciseData.getType();
+        this.intensity = exerciseData.getIntensity();
+        this.exerciseName = exerciseData.getExerciseName();
+        this.duration = exerciseData.getDuration();
+        this.reps = exerciseData.getReps();
+        this.sets = exerciseData.getSets();
+        this.distance = exerciseData.getDistance();
+        this.METS = exerciseData.getMETS();
+        this.description = exerciseData.getDescription();
     }
 
     public String getExerciseId() {
@@ -125,13 +117,22 @@ public class ExerciseData {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ExerciseData)) return false;
-        ExerciseData that = (ExerciseData) o;
-        return getExerciseId().equals(that.getExerciseId()) && getType().equals(that.getType());
+        if (o == null || getClass() != o.getClass()) return false;
+        ExerciseEventDataResponse that = (ExerciseEventDataResponse) o;
+        return duration == that.duration &&
+                reps == that.reps &&
+                sets == that.sets &&
+                Double.compare(distance, that.distance) == 0 &&
+                Double.compare(METS, that.METS) == 0 &&
+                Objects.equals(exerciseId, that.exerciseId) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(intensity, that.intensity) &&
+                Objects.equals(exerciseName, that.exerciseName) &&
+                Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getExerciseId(), getType());
+        return Objects.hash(exerciseId, type, intensity, exerciseName, duration, reps, sets, distance, METS, description);
     }
 }

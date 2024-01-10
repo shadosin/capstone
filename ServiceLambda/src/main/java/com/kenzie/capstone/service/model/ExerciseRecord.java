@@ -60,7 +60,7 @@ public class ExerciseRecord {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-    @DynamoDBAttribute(attributeName = "reps")
+    @DynamoDBAttribute(attributeName = "repetitions")
     public int getReps() {
         return reps;
     }
@@ -84,7 +84,7 @@ public class ExerciseRecord {
     public void setDistance(double distance) {
         this.distance = distance;
     }
-    @DynamoDBAttribute(attributeName = "METS")
+    @DynamoDBAttribute(attributeName = "mets")
     public double getMETS() {
         return METS;
     }

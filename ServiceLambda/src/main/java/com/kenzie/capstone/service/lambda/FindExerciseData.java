@@ -7,19 +7,25 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kenzie.capstone.service.ExerciseService;
-import com.kenzie.capstone.service.LambdaService;
 import com.kenzie.capstone.service.dependency.DaggerServiceComponent;
 import com.kenzie.capstone.service.dependency.ServiceComponent;
 import com.kenzie.capstone.service.model.ExerciseData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class FindExerciseData implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    static final Logger log = LogManager.getLogger();
+
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
+
+        log.info(gson.toJson(input));
 
         ServiceComponent serviceComponent = DaggerServiceComponent.create();
         ExerciseService service = serviceComponent.provideExerciseService();
@@ -30,20 +36,25 @@ public class FindExerciseData implements RequestHandler<APIGatewayProxyRequestEv
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-        String data = input.getBody();
-        if(data == null || data.length() == 0){
+        String exerciseId = input.getPathParameters().get("exerciseId");
+
+        if(exerciseId == null || exerciseId.isEmpty()){
             return response
                     .withStatusCode(400)
-                    .withBody("No such exercise exists");
+                    .withBody("Id is invalid");
         }
 
         try{
-            ExerciseData exerciseData = service.getExerciseData(data);
+            ExerciseData exerciseData = service.getExerciseData(exerciseId);
             String output = gson.toJson(exerciseData);
 
-            return response.withStatusCode(200).withBody(output);
+            return response
+                    .withStatusCode(200)
+                    .withBody(output);
         }catch (Exception e){
-            return response.withStatusCode(400).withBody(gson.toJson(e.getMessage()));
+            return response
+                    .withStatusCode(400)
+                    .withBody(gson.toJson(e.getMessage()));
         }
 
     }

@@ -4,7 +4,6 @@ import vegetables from "./assets/vegetables.jpg";
 import hero from "./assets/hero.png";
 import pico from "./css/pico.css";
 import styles from "./css/style.css";
-import dashboardStyles from "./css/dashboard.css";
 
 import navbar from "./navbar";
 
