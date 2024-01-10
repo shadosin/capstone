@@ -45,3 +45,5 @@ qodana*
 # Ignore Logs
 debugrunlog.txt
 runlog.txt
+
+LambdaVitatracService.yml-development.yml
