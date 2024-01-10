@@ -9,7 +9,7 @@ public class ExerciseEventDataResponse {
     private String exerciseId;
     private String type;
     private String intensity;
-    private String exerciseName;
+    private String name;
     private int duration;
     private int reps;
     private int sets;
@@ -25,7 +25,7 @@ public class ExerciseEventDataResponse {
         this.exerciseId = exerciseData.getExerciseId();
         this.type = exerciseData.getType();
         this.intensity = exerciseData.getIntensity();
-        this.exerciseName = exerciseData.getExerciseName();
+        this.name = exerciseData.getExerciseName();
         this.duration = exerciseData.getDuration();
         this.reps = exerciseData.getReps();
         this.sets = exerciseData.getSets();
@@ -58,12 +58,12 @@ public class ExerciseEventDataResponse {
         this.intensity = intensity;
     }
 
-    public String getExerciseName() {
-        return exerciseName;
+    public String getName() {
+        return name;
     }
 
-    public void setExerciseName(String exerciseName) {
-        this.exerciseName = exerciseName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getDuration() {
@@ -127,12 +127,12 @@ public class ExerciseEventDataResponse {
                 Objects.equals(exerciseId, that.exerciseId) &&
                 Objects.equals(type, that.type) &&
                 Objects.equals(intensity, that.intensity) &&
-                Objects.equals(exerciseName, that.exerciseName) &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exerciseId, type, intensity, exerciseName, duration, reps, sets, distance, METS, description);
+        return Objects.hash(exerciseId, type, intensity, name, duration, reps, sets, distance, METS, description);
     }
 }
