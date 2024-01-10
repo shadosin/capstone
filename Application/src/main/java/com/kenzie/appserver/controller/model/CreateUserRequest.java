@@ -25,8 +25,8 @@ public class CreateUserRequest {
     private String phoneNum;
     @JsonProperty("email")
     private String email;
-    @JsonProperty("dateJoined")
-    private ZonedDateTime dateJoined;
+//    @JsonProperty("dateJoined")
+//    private ZonedDateTime dateJoined;
     @JsonProperty("scheduleIdList")
     private List<String> userScheduleIds;
 
@@ -88,13 +88,13 @@ public class CreateUserRequest {
         this.email = email;
     }
 
-    public ZonedDateTime getDateJoined() {
-        return dateJoined;
-    }
-
-    public void setDateJoined(ZonedDateTime dateJoined) {
-        this.dateJoined = dateJoined;
-    }
+//    public ZonedDateTime getDateJoined() {
+//        return dateJoined;
+//    }
+//
+//    public void setDateJoined(ZonedDateTime dateJoined) {
+//        this.dateJoined = dateJoined;
+//    }
 
     public List<String> getUserScheduleIds() {
         return userScheduleIds;
