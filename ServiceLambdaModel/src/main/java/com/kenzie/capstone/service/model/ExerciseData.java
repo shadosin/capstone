@@ -15,7 +15,7 @@ public class ExerciseData {
     private int reps;
     private int sets;
     private double distance;
-    private double METS;
+    private double mets;
     private String description;
 
     public ExerciseData() {}
@@ -28,7 +28,7 @@ public class ExerciseData {
                         int reps,
                         int sets,
                         double distance,
-                        double METS,
+                        double mets,
                         String description){
         this.exerciseId = exerciseId;
         this.type = type;
@@ -38,7 +38,7 @@ public class ExerciseData {
         this.reps = reps;
         this.sets = sets;
         this.distance = distance;
-        this.METS = METS;
+        this.mets = mets;
         this.description = description;
     }
 
@@ -106,12 +106,12 @@ public class ExerciseData {
         this.distance = distance;
     }
 
-    public double getMETS() {
-        return METS;
+    public double getMets() {
+        return mets;
     }
 
-    public void setMETS(double METS) {
-        this.METS = METS;
+    public void setMets(double mets) {
+        this.mets = mets;
     }
 
     public String getDescription() {
