@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import ApiClient from "../api/apiClient";
+import {getCurrentWeek} from "./helpers/scheduleHelpers";
 
 const client = new ApiClient();
 
@@ -62,11 +63,16 @@ export function createArea(area) {
 }
 
 export async function getScheduleData() {
-  const userSessionData = window.sessionStorage.getItem("userInfo");
+  let userSessionData = JSON.parse( window.sessionStorage.getItem("userInfo"));
   let data = {};
   if (userSessionData) {
-    const { scheduleIdList } = JSON.parse(userSessionData);
+    let { scheduleIdList } = userSessionData
 
+    if (scheduleIdList.length === 0) {
+      scheduleIdList =  await client.createSchedule(userSessionData.userId, getCurrentWeek()).data
+      await client.updateUserInfo(userSessionData.userId)
+      }
+    console.log(scheduleIdList)
     for (const scheduleId of scheduleIdList) {
       await client
         .getOneSchedule(scheduleId)
