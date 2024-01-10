@@ -121,7 +121,7 @@ public class EventDataControllerTest {
         mockResponse1.setReps(0);
         mockResponse1.setSets(0);
         mockResponse1.setDistance(5.0);
-        mockResponse1.setMETS(8.0);
+        mockResponse1.setMets(8.0);
         mockResponse1.setDescription("Long distance running");
 
         ExerciseEventDataResponse mockResponse2 = new ExerciseEventDataResponse();
@@ -133,7 +133,7 @@ public class EventDataControllerTest {
         mockResponse2.setReps(0);
         mockResponse2.setSets(0);
         mockResponse2.setDistance(20.0);
-        mockResponse2.setMETS(6.0);
+        mockResponse2.setMets(6.0);
         mockResponse2.setDescription("Outdoor cycling");
 
         List<ExerciseEventDataResponse> mockResponses = Arrays.asList(mockResponse1, mockResponse2);

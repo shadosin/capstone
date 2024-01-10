@@ -14,7 +14,7 @@ public class ExerciseEventDataResponse {
     private int reps;
     private int sets;
     private double distance;
-    private double METS;
+    private double mets;
     private String description;
 
     public ExerciseEventDataResponse() {
@@ -30,7 +30,7 @@ public class ExerciseEventDataResponse {
         this.reps = exerciseData.getReps();
         this.sets = exerciseData.getSets();
         this.distance = exerciseData.getDistance();
-        this.METS = exerciseData.getMETS();
+        this.mets = exerciseData.getMets();
         this.description = exerciseData.getDescription();
     }
 
@@ -98,12 +98,12 @@ public class ExerciseEventDataResponse {
         this.distance = distance;
     }
 
-    public double getMETS() {
-        return METS;
+    public double getMets() {
+        return mets;
     }
 
-    public void setMETS(double METS) {
-        this.METS = METS;
+    public void setMets(double mets) {
+        this.mets = mets;
     }
 
     public String getDescription() {
@@ -123,7 +123,7 @@ public class ExerciseEventDataResponse {
                 reps == that.reps &&
                 sets == that.sets &&
                 Double.compare(distance, that.distance) == 0 &&
-                Double.compare(METS, that.METS) == 0 &&
+                Double.compare(mets, that.mets) == 0 &&
                 Objects.equals(exerciseId, that.exerciseId) &&
                 Objects.equals(type, that.type) &&
                 Objects.equals(intensity, that.intensity) &&
@@ -133,6 +133,6 @@ public class ExerciseEventDataResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(exerciseId, type, intensity, name, duration, reps, sets, distance, METS, description);
+        return Objects.hash(exerciseId, type, intensity, name, duration, reps, sets, distance, mets, description);
     }
 }

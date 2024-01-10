@@ -30,7 +30,7 @@ public class ExerciseService {
                     records.get(0).getReps(),
                     records.get(0).getSets(),
                     records.get(0).getDistance(),
-                    records.get(0).getMETS(),
+                    records.get(0).getMets(),
                     records.get(0).getDescription());
         }
         return null;
@@ -38,14 +38,14 @@ public class ExerciseService {
 
     public ExerciseData setData(String type,
                                 String intensity, String exerciseName, int duration,
-                                int reps, int sets, double distance, double METS,
+                                int reps, int sets, double distance, double mets,
                                 String description){
         String exerciseId = UUID.randomUUID().toString();
         ExerciseRecord record = dao.setExerciseRecord(exerciseId, type,intensity,
-                exerciseName, duration, reps, sets, distance, METS, description);
+                exerciseName, duration, reps, sets, distance, mets, description);
 
         return new ExerciseData(exerciseId, type, intensity, exerciseName, duration
-        , reps, sets, distance, METS, description);
+        , reps, sets, distance, mets, description);
     }
 
     public List<ExerciseData> getExerciseDataFromAttributeValue(String attributeValue){
@@ -61,7 +61,7 @@ public class ExerciseService {
                             record.getReps(),
                             record.getSets(),
                             record.getDistance(),
-                            record.getMETS(),
+                            record.getMets(),
                             record.getDescription()))
                     .collect(Collectors.toList());
         }

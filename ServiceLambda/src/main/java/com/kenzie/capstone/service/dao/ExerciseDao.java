@@ -38,7 +38,7 @@ public List<ExerciseRecord> findExerciseData(String exerciseId){
     }
     public ExerciseRecord setExerciseRecord(String exerciseId, String type,
                                             String intensity, String exerciseName, int duration,
-                                            int reps, int sets, double distance, double METS,
+                                            int reps, int sets, double distance, double mets,
                                             String description){
         ExerciseRecord record = new ExerciseRecord();
         record.setExerciseId(exerciseId);
@@ -49,7 +49,7 @@ public List<ExerciseRecord> findExerciseData(String exerciseId){
         record.setReps(reps);
         record.setSets(sets);
         record.setDistance(distance);
-        record.setMETS(METS);
+        record.setMets(mets);
         record.setDescription(description);
 
         try {

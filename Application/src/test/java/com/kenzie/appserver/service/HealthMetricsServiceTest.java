@@ -170,9 +170,9 @@ public class HealthMetricsServiceTest {
 
         String exerciseId = "testExerciseId";
         int exerciseDuration = 30;
-        double MET = 8.0;
+        double met = 8.0;
         // logic the calculateCaloriesBurned private method performs
-        double expectedCaloriesBurned = ((MET * initialWeight * 3.5) / 200) * exerciseDuration;
+        double expectedCaloriesBurned = ((met * initialWeight * 3.5) / 200) * exerciseDuration;
 
         ScheduledEvent exerciseEvent = new ScheduledEvent();
         exerciseEvent.setEventType(EventType.EXERCISE);
@@ -181,7 +181,7 @@ public class HealthMetricsServiceTest {
 
         ExerciseData exerciseData = new ExerciseData();
         exerciseData.setExerciseId(exerciseId);
-        exerciseData.setMETS(MET);
+        exerciseData.setMets(met);
         exerciseData.setDuration(exerciseDuration);
 
         HealthMetricsRecord existingRecord = new HealthMetricsRecord();
@@ -213,13 +213,13 @@ public class HealthMetricsServiceTest {
 
         String exerciseId = "testExerciseId";
         int exerciseDuration = 30;
-        double MET = 8.0;
+        double met = 8.0;
 
         // logic that convertPoundsToKilograms private method performs
         double initialWeightInKg = initialWeight / 2.20462;
 
         // logic the calculateCaloriesBurned private method performs
-        double expectedCaloriesBurned = ((MET * initialWeightInKg * 3.5) / 200) * exerciseDuration;
+        double expectedCaloriesBurned = ((met * initialWeightInKg * 3.5) / 200) * exerciseDuration;
 
         ScheduledEvent exerciseEvent = new ScheduledEvent();
         exerciseEvent.setEventType(EventType.EXERCISE);
@@ -228,7 +228,7 @@ public class HealthMetricsServiceTest {
 
         ExerciseData exerciseData = new ExerciseData();
         exerciseData.setExerciseId(exerciseId);
-        exerciseData.setMETS(MET);
+        exerciseData.setMets(met);
         exerciseData.setDuration(exerciseDuration);
 
         HealthMetricsRecord existingRecord = new HealthMetricsRecord();
