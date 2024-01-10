@@ -1,6 +1,8 @@
 import BaseClass from "../util/baseClass";
 import axios from "axios";
 
+import * as eventData from "./eventdata.js";
+
 export default class ApiClient extends BaseClass {
   static baseUrl = "http://127.0.0.1:5001";
 
@@ -25,7 +27,46 @@ export default class ApiClient extends BaseClass {
       console.warn(error);
     }
     this.props = props;
+
     this.clientLoaded(axios);
+    document.addEventListener("DOMContentLoaded", () => {
+      window.localStorage.setItem(
+        "mealBreakfast",
+        JSON.stringify(eventData.mealBreakfast),
+      );
+      window.localStorage.setItem(
+        "mealLunch",
+        JSON.stringify(eventData.mealLunch),
+      );
+      window.localStorage.setItem(
+        "mealDinner",
+        JSON.stringify(eventData.mealDinner),
+      );
+      window.localStorage.setItem(
+        "mealSnack",
+        JSON.stringify(eventData.mealSnack),
+      );
+      window.localStorage.setItem(
+        "exerciseCardio",
+        JSON.stringify(eventData.exerciseCardio),
+      );
+      window.localStorage.setItem(
+        "exerciseStrength",
+        JSON.stringify(eventData.exerciseStrength),
+      );
+      window.localStorage.setItem(
+        "exerciseFlexibility",
+        JSON.stringify(eventData.exerciseFlexibility),
+      );
+      window.localStorage.setItem(
+        "mealEvents",
+        JSON.stringify(eventData.mealData),
+      );
+      window.localStorage.setItem(
+        "exerciseEvents",
+        JSON.stringify(eventData.exerciseData),
+      );
+    });
   }
 
   clientLoaded(client) {
@@ -80,20 +121,21 @@ export default class ApiClient extends BaseClass {
     try {
       await this.client.post(url, payload, config).then((res) => {
         window.localStorage.setItem("metrics", JSON.stringify(res.data));
-      })
+      });
     } catch (error) {
       this.handleError("updateUserMetrics", error, errorCallback);
     }
   }
+
   async editUser(data, errorCallback) {
     const payload = data;
 
-    const {userId, weight, weightUnit} = payload;
+    const { userId, weight, weightUnit } = payload;
     const metricUpdatePayload = {
       userId,
       weight,
-      weightUnit: weightUnit.toUpperCase()
-    }
+      weightUnit: weightUnit.toUpperCase(),
+    };
 
     const url = `${ApiClient.baseUrl}/user/${payload.userId}`;
     const config = {
@@ -102,12 +144,14 @@ export default class ApiClient extends BaseClass {
       },
     };
     try {
-      await this.client.put(url, payload, config).then(async (res) => {
-        window.sessionStorage.setItem("userInfo", JSON.stringify(res.data));
-      }).then(async (res) => {
-          await this.updateUserMetrics(metricUpdatePayload)
-        }
-      )
+      await this.client
+        .put(url, payload, config)
+        .then(async (res) => {
+          window.sessionStorage.setItem("userInfo", JSON.stringify(res.data));
+        })
+        .then(async () => {
+          await this.updateUserMetrics(metricUpdatePayload);
+        });
     } catch (error) {
       this.handleError("editUser", error, errorCallback);
     }
@@ -217,6 +261,110 @@ export default class ApiClient extends BaseClass {
       console.error("Error in getUserMetrics:", error);
       return null; // Return null or a custom error object
     }
+  }
+
+  async getMealEvent(mealId) {
+    const url = `${ApiClient.baseUrl}/eventdata/meal/${mealId}`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const data = JSON.parse(window.localStorage.getItem("mealEvents"));
+
+    if (data) {
+      for (let meal of data) {
+        if (meal.mealId === mealId) {
+          return meal;
+        }
+      }
+    }
+
+    if (!data) {
+      try {
+        const response = await this.client.get(url, config);
+        console.log(response);
+        return response.data; // Return the data directly
+      } catch (error) {
+        console.error("Error in getMealEvent:", error);
+        return null; // Return null or a custom error object
+      }
+    }
+  }
+
+  async getExerciseEvent(exerciseId) {
+    const url = `${ApiClient.baseUrl}/eventdata/exercise/${exerciseId}`;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const data = JSON.parse(window.localStorage.getItem("exerciseEvents"));
+  console.log(data);
+
+    if (data) {
+      for (let exercise of data) {
+        console.log(exercise);
+        console.log(exercise.exerciseId, exerciseId)
+        if (exercise.exerciseId === exerciseId) {
+          return exercise;
+        }
+      }
+    }
+
+    if (!data) {
+      try {
+        const response = await this.client.get(url, config);
+        console.log(response);
+        return response.data; // Return the data directly
+      } catch (error) {
+        console.error("Error in getMealEvent:", error);
+        return null; // Return null or a custom error object
+      }
+    }
+  }
+
+  async getAllMealEvents(type) {
+    const url = `${ApiClient.baseUrl}/eventdata/meal/type/${type}`;
+
+    const data = JSON.parse(window.localStorage.getItem(`meal${type}`));
+
+    if (!data) {
+      try {
+        await this.client.get(url).then((res) => {
+          window.localStorage.setItem(`meal${type}`, JSON.stringify(res.data));
+        });
+      } catch (error) {
+        console.error(" Network Error in getAllMealEvents:", error);
+        return error; // Return null or a custom error object
+      }
+    }
+
+    return data || [];
+  }
+
+  async getAllExerciseEvents(type) {
+    const url = `${ApiClient.baseUrl}/eventdata/exercise/type/${type}`;
+
+    const data = JSON.parse(window.localStorage.getItem(`exercise${type}`));
+
+    if (!data) {
+      try {
+        await this.client.get(url).then((res) => {
+          window.localStorage.setItem(
+            `exercise${type}`,
+            JSON.stringify(res.data),
+          );
+        });
+      } catch (error) {
+        console.error(" Network Error in getAllexerciseEvents:", error);
+        return error; // Return null or a custom error object
+      }
+    }
+
+    return data || [];
   }
 
   handleError(method, error, errorCallback) {
