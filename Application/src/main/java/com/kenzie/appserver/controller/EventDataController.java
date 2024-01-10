@@ -19,25 +19,25 @@ public class EventDataController {
         this.eventDataService = eventDataService;
     }
 
-    @GetMapping("/meal/{mealId}")
+    @GetMapping("/meal/id/{mealId}")
     public ResponseEntity<MealEventDataResponse> getMealEventData(@PathVariable("mealId") String mealId) {
         MealEventDataResponse response = eventDataService.getMealDataById(mealId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/meal/{type}")
+    @GetMapping("/meal/type/{type}")
     public ResponseEntity<List<MealEventDataResponse>> getMealEventDataByType(@PathVariable("type") String type) {
         List<MealEventDataResponse> responses = eventDataService.getMealDataByType(type);
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/exercise/{exerciseId}")
+    @GetMapping("/exercise/id/{exerciseId}")
     public ResponseEntity<ExerciseEventDataResponse> getExerciseEventData(@PathVariable("exerciseId") String exerciseId) {
         ExerciseEventDataResponse response = eventDataService.getExerciseDataById(exerciseId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/exercise/{type}")
+    @GetMapping("/exercise/type/{type}")
     public ResponseEntity<List<ExerciseEventDataResponse>> getExerciseEventDataByType(@PathVariable("type") String type) {
         List<ExerciseEventDataResponse> responses = eventDataService.getExerciseDataByType(type);
         return ResponseEntity.ok(responses);
