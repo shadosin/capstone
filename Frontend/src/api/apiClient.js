@@ -29,44 +29,23 @@ export default class ApiClient extends BaseClass {
     this.props = props;
 
     this.clientLoaded(axios);
-    document.addEventListener("DOMContentLoaded", () => {
-      window.localStorage.setItem(
-        "mealBreakfast",
-        JSON.stringify(eventData.mealBreakfast),
-      );
-      window.localStorage.setItem(
-        "mealLunch",
-        JSON.stringify(eventData.mealLunch),
-      );
-      window.localStorage.setItem(
-        "mealDinner",
-        JSON.stringify(eventData.mealDinner),
-      );
-      window.localStorage.setItem(
-        "mealSnack",
-        JSON.stringify(eventData.mealSnack),
-      );
-      window.localStorage.setItem(
-        "exerciseCardio",
-        JSON.stringify(eventData.exerciseCardio),
-      );
-      window.localStorage.setItem(
-        "exerciseStrength",
-        JSON.stringify(eventData.exerciseStrength),
-      );
-      window.localStorage.setItem(
-        "exerciseFlexibility",
-        JSON.stringify(eventData.exerciseFlexibility),
-      );
-      window.localStorage.setItem(
-        "mealEvents",
-        JSON.stringify(eventData.mealData),
-      );
-      window.localStorage.setItem(
-        "exerciseEvents",
-        JSON.stringify(eventData.exerciseData),
-      );
-    });
+
+    const meals = ["Breakfast", "Lunch", "Dinner", "Snack"];
+    const exercises = ["Cardio", "Strength", "Flexibility"];
+
+    window.localStorage.setItem("exerciseEvents", JSON.stringify(eventData.exerciseData));
+    window.localStorage.setItem("exerciseCardio", JSON.stringify(eventData.exerciseCardio));
+    window.localStorage.setItem("exerciseStrength", JSON.stringify(eventData.exerciseStrength));
+    window.localStorage.setItem("exerciseFlexibility", JSON.stringify(eventData.exerciseFlexibility));
+
+    for (const meal of meals) {
+      this.getAllMealEvents(meal)
+    }
+    for (const exercise of exercises) {
+
+    this.getAllExerciseEvents(exercise)
+    }
+
   }
 
   clientLoaded(client) {
@@ -255,7 +234,7 @@ export default class ApiClient extends BaseClass {
 
     try {
       const response = await this.client.get(url, config);
-      console.log(response);
+      ;
       return response.data; // Return the data directly
     } catch (error) {
       console.error("Error in getUserMetrics:", error);
@@ -264,7 +243,7 @@ export default class ApiClient extends BaseClass {
   }
 
   async getMealEvent(mealId) {
-    const url = `${ApiClient.baseUrl}/eventdata/meal/${mealId}`;
+    const url = `${ApiClient.baseUrl}/eventData/meal/id/${mealId}`;
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -284,7 +263,7 @@ export default class ApiClient extends BaseClass {
     if (!data) {
       try {
         const response = await this.client.get(url, config);
-        console.log(response);
+        ;
         return response.data; // Return the data directly
       } catch (error) {
         console.error("Error in getMealEvent:", error);
@@ -294,7 +273,7 @@ export default class ApiClient extends BaseClass {
   }
 
   async getExerciseEvent(exerciseId) {
-    const url = `${ApiClient.baseUrl}/eventdata/exercise/${exerciseId}`;
+    const url = `${ApiClient.baseUrl}/eventData/exercise/id/${exerciseId}`;
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -302,12 +281,12 @@ export default class ApiClient extends BaseClass {
     };
 
     const data = JSON.parse(window.localStorage.getItem("exerciseEvents"));
-  console.log(data);
+  ;
 
     if (data) {
       for (let exercise of data) {
-        console.log(exercise);
-        console.log(exercise.exerciseId, exerciseId)
+        ;
+        
         if (exercise.exerciseId === exerciseId) {
           return exercise;
         }
@@ -317,7 +296,7 @@ export default class ApiClient extends BaseClass {
     if (!data) {
       try {
         const response = await this.client.get(url, config);
-        console.log(response);
+        ;
         return response.data; // Return the data directly
       } catch (error) {
         console.error("Error in getMealEvent:", error);
@@ -327,7 +306,7 @@ export default class ApiClient extends BaseClass {
   }
 
   async getAllMealEvents(type) {
-    const url = `${ApiClient.baseUrl}/eventdata/meal/type/${type}`;
+    const url = `${ApiClient.baseUrl}/eventData/meal/type/${type}`;
 
     const data = JSON.parse(window.localStorage.getItem(`meal${type}`));
 
@@ -346,7 +325,7 @@ export default class ApiClient extends BaseClass {
   }
 
   async getAllExerciseEvents(type) {
-    const url = `${ApiClient.baseUrl}/eventdata/exercise/type/${type}`;
+    const url = `${ApiClient.baseUrl}/eventData/exercise/type/${type}`;
 
     const data = JSON.parse(window.localStorage.getItem(`exercise${type}`));
 

@@ -6,9 +6,17 @@ window.addEventSubmit = function (event) {};
 
 window.renderEventItemOnForm = function (eventItem) {
   function generateListItems(eventDetails) {
-    return Object.entries(eventDetails)
-      .map(([key, value]) => `<li><strong>${key} : </strong>${value}</li>`)
-      .join("");
+    if (eventDetails) {
+      return Object.entries(eventDetails).map(([key, value]) => {
+        let output = "";
+        if (key === "name") {
+          output += `<h4><strong>${value}</strong></h4>`;
+        } else {
+          output += `<li><strong>${key} : </strong>${value}</li>`;
+        }
+        return output;
+      });
+    }
   }
 
   const eventItemCard = document.querySelector("#eventItemCard");
@@ -16,27 +24,38 @@ window.renderEventItemOnForm = function (eventItem) {
     eventItemCard.remove();
   }
 
-  function getName() {
-    if (eventItem.name) {
-      return eventItem.name;
-    } else {
-      return eventItem.exerciseName
-    }
+  const submitEventButton = document.querySelector("#submitEventButton");
+
+  if (submitEventButton) {
+    submitEventButton.remove();
   }
 
   const formElement = document.querySelector("#addEventForm");
   const div = document.createElement("div");
   div.id = "eventItemCard";
   div.classList.add("eventItemCard", "card");
-  div.innerHTML = `<h4><strong>${eventItem.name ?? eventItem.exerciseName}</strong></h4><ul>${generateListItems(eventItem)}</ul>`;
+  div.innerHTML = `<ul>${generateListItems(eventItem)}</ul>`;
 
   const submitButton = document.createElement("input");
+  submitButton.classList.add("btn");
+  submitButton.id = "submitEventButton";
   submitButton.type = "submit";
   formElement.append(div, submitButton);
+
+  const submitButtons = document.querySelectorAll("#submitEventButton");
+
+  if (submitButtons.length > 1) {
+    submitButtons[0].remove();
+  }
 };
 
 window.onEventSelect = async function (event) {
   const eventItemCard = document.querySelector("#eventItemCard");
+  const submitEventButton = document.querySelector("#submitEventButton");
+
+  if (submitEventButton) {
+    submitEventButton.remove();
+  }
 
   if (eventItemCard) {
     const eventItemCard = document.querySelector("#eventItemCard");
@@ -46,11 +65,8 @@ window.onEventSelect = async function (event) {
   }
 
   let eventItem;
-  console.log(event.target.id, event.target.value);
-
   if (event.target.id === "mealType") {
     const mealSelected = document.querySelector("#mealSelected").value;
-    console.log({ mealSelected });
     if (mealSelected) {
       eventItem = await client.getMealEvent(mealSelected);
     }
@@ -63,8 +79,6 @@ window.onEventSelect = async function (event) {
     }
   }
 
-  console.log({ eventItem });
-
   renderEventItemOnForm(eventItem);
 };
 
@@ -72,6 +86,11 @@ window.onTypeSelect = async function (event) {
   const formElement = document.querySelector("#addEventForm");
   const eventItemCard = document.querySelector("#eventItemCard");
 
+  const submitEventButton = document.querySelector("#submitEventButton");
+
+  if (submitEventButton) {
+    submitEventButton.remove();
+  }
   if (eventItemCard) {
     eventItemCard.remove();
   }
@@ -85,8 +104,6 @@ window.onTypeSelect = async function (event) {
   if (exerciseSelect) {
     exerciseSelect.remove();
   }
-
-  console.log(event.target.id, event.target.value);
 
   const selectElement = document.createElement("select");
 
@@ -117,8 +134,7 @@ window.onTypeSelect = async function (event) {
       selectElement.innerHTML = `<option value="" disabled selected>Select an Exercise</option>`;
       selectElement.innerHTML += response
         .map((exercise) => {
-          console.log({ exercise }  )
-          return `<option id=${exercise.exerciseId} value=${exercise.exerciseId}>${exercise.exerciseName}</option>`;
+          return `<option id=${exercise.exerciseId} value=${exercise.exerciseId}>${exercise.name}</option>`;
         })
         .join("");
     } catch (error) {
@@ -137,6 +153,12 @@ window.eventOnClick = function (event) {
 
   if (eventItemCard) {
     eventItemCard.remove();
+  }
+
+  const submitEventButton = document.querySelector("#submitEventButton");
+
+  if (submitEventButton) {
+    submitEventButton.remove();
   }
 
   const data = document.getElementById("data");
@@ -189,6 +211,12 @@ window.eventOnClick = function (event) {
 };
 
 export function addEventForm() {
+  const submitEventButton = document.querySelector("#submitEventButton");
+
+  if (submitEventButton) {
+    submitEventButton.remove();
+  }
+
   return `
     <div class="add-event-form">
       <form id="addEventForm" onsubmit="addEventSubmit(event)">

@@ -11,12 +11,12 @@ import home from "./pages/home";
 import dashboard from "./pages/dashboard";
 
 window.onstorage = (event) => {
-  console.log(event);
+  ;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log(`Document Loaded`);
-  console.log(`Loading NavBar`);
+  ;
+  ;
   navbar();
 
   const userInfo =

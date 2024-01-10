@@ -44,7 +44,7 @@ export function createBtnGroup() {
 
   function handlebuttonClick(event) {
     toggleModal(event);
-    console.log("removed button event listener");
+    ;
     button.removeEventListener("click", handlebuttonClick);
   }
 

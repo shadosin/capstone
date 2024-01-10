@@ -72,7 +72,7 @@ export async function getScheduleData() {
       scheduleIdList =  await client.createSchedule(userSessionData.userId, getCurrentWeek()).data
       await client.updateUserInfo(userSessionData.userId)
       }
-    console.log(scheduleIdList)
+    
     for (const scheduleId of scheduleIdList) {
       await client
         .getOneSchedule(scheduleId)
@@ -84,7 +84,7 @@ export async function getScheduleData() {
           window.localStorage.setItem("scheduleData", JSON.stringify(data));
         })
         .catch((error) => {
-          console.log(error);
+          ;
         });
     }
   }

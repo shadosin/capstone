@@ -15,7 +15,7 @@ async function getMetrics() {
     const metricsData = await client.getUserMetrics(userId);
 
     if (metricsData) {
-      console.log(metricsData);
+      ;
       return metricsData;
     } else {
       return "Error: No data received";

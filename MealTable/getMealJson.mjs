@@ -67,4 +67,3 @@ for (const item of jsonArray) {
   }
 }
 
-console.log(JSON.stringify(JsonObj))
