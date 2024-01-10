@@ -97,7 +97,11 @@ public class UserScheduleService {
         List<String> userScheduleIds = userResponse.getUserScheduleIds();
 
         if (userScheduleIds == null || userScheduleIds.isEmpty()) {
-            throw new IllegalArgumentException(String.format("User with Id: %s does not have a current schedule", userId));
+            throw new IllegalArgumentException(String.format(
+                            "User with Id: %s does not have a current schedule\n" +
+                            " because getUserScheduleIds() is returning null or empty",
+                    userId)
+            );
         }
 
         ZonedDateTime now = ZonedDateTime.now();
@@ -109,7 +113,10 @@ public class UserScheduleService {
                 .findFirst();
 
         if (optionalResponse.isEmpty()) {
-            throw new IllegalArgumentException(String.format("User with Id: %s does not have a current schedule", userId));
+            throw new IllegalArgumentException(String.format(
+                    "User with Id: %s does not have a current schedule:\n" +
+                    " " + "optionalResponse is empty", userId)
+            );
         }
         return optionalResponse.get();
     }
