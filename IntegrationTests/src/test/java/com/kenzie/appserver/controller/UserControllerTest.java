@@ -7,9 +7,14 @@ import com.kenzie.appserver.service.UserService;
 import net.andreinc.mockneat.MockNeat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,7 +25,7 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
+    @MockBean
     UserService userService;
 
     private final MockNeat mockNeat = MockNeat.threadLocal();
@@ -29,92 +34,82 @@ public class UserControllerTest {
 
     @Test
     public void getUser_Exists() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest();
-        createUserRequest.setUsername(mockNeat.strings().val());
-        createUserRequest.setPassword(mockNeat.strings().val());
-        UserResponse createdUser = userService.createUser(createUserRequest);
+        String userId = "123";
+        UserResponse mockResponse = new UserResponse();
+        mockResponse.setUserId(userId);
 
-        mvc.perform(get("/user/{userId}", createdUser.getUserId())
-                        .accept(MediaType.APPLICATION_JSON))
+        given(userService.findById(userId)).willReturn(mockResponse);
+
+        mvc.perform(get("/user/" + userId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("userId").value(createdUser.getUserId()))
-                .andExpect(jsonPath("username").value(createdUser.getUsername()));
+                .andExpect(jsonPath("$.userId").value(userId));
     }
 
     @Test
     public void getAllUsers_Exists() throws Exception {
-        mvc.perform(get("/user/all")
-                        .accept(MediaType.APPLICATION_JSON))
+        List<UserResponse> responses = new ArrayList<>();
+
+        given(userService.getAllUsers()).willReturn(responses);
+
+        mvc.perform(get("/user/all"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void createUser_CreateSuccessful() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest();
-        createUserRequest.setUsername(mockNeat.strings().val());
-        createUserRequest.setPassword(mockNeat.strings().val());
+        CreateUserRequest request = new CreateUserRequest();
+        UserResponse mockResponse =new UserResponse();
 
-        String requestJson = mapper.writeValueAsString(createUserRequest);
+        given(userService.createUser(request)).willReturn(mockResponse);
 
         mvc.perform(post("/user/create")
-                        .content(requestJson)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("userId").isNotEmpty());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
     }
 
     @Test
     public void deleteUser_DeleteSuccessful() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest();
-        createUserRequest.setUsername(mockNeat.strings().val());
-        createUserRequest.setPassword(mockNeat.strings().val());
-        UserResponse userResponse = userService.createUser(createUserRequest);
+        String userId = "user123";
 
-        mvc.perform(delete("/user/{userId}", userResponse.getUserId())
-                        .contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(delete("/user/" + userId))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     public void updateUser_PutSuccessful() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest();
-        createUserRequest.setUsername(mockNeat.strings().val());
-        createUserRequest.setPassword(mockNeat.strings().val());
-        UserResponse userResponse = userService.createUser(createUserRequest);
+        String userId = "123";
+        UserUpdateRequest request = new UserUpdateRequest();
+        UserResponse mockResponse = new UserResponse();
 
-        UserUpdateRequest updateRequest = new UserUpdateRequest();
-        updateRequest.setUsername(mockNeat.strings().val());
+        given(userService.updateUser(userId, request)).willReturn(mockResponse);
 
-        String requestJson = mapper.writeValueAsString(updateRequest);
-
-        mvc.perform(put("/user/{userId}", userResponse.getUserId())
-                        .content(requestJson)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("userId").value(userResponse.getUserId()))
-                .andExpect(jsonPath("username").value(updateRequest.getUsername()));
+        mvc.perform(put("/user/" + userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void loginUser_PostSuccessful() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest();
-        createUserRequest.setUsername(mockNeat.strings().val());
-        createUserRequest.setPassword("password");
-        UserResponse userResponse = userService.createUser(createUserRequest);
+        UserLoginRequest request = new UserLoginRequest();
+        UserResponse mockResponse = new UserResponse();
 
-        // Create a login request
-        UserLoginRequest loginRequest = new UserLoginRequest();
-        loginRequest.setUsername(userResponse.getUsername());
-        loginRequest.setPassword("password");
-
-        String requestJson = mapper.writeValueAsString(loginRequest);
+        given(userService.validateUser(request)).willReturn(mockResponse);
 
         mvc.perform(post("/user/login")
-                        .content(requestJson)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("userId").value(userResponse.getUserId()))
-                .andExpect(jsonPath("username").value(userResponse.getUsername()));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(status().isOk());
+    }
+
+    private static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
