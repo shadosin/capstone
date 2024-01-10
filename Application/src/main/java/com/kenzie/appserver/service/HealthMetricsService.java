@@ -106,13 +106,13 @@ public class HealthMetricsService {
         return pounds / 2.20462;
     }
 
-    private double calculateCaloriesBurned(double MET, double weightKg, int duration) {
+    private double calculateCaloriesBurned(double met, double weightKg, int duration) {
         // The MET value represents the energy cost of physical activities.
         // 1 MET is roughly equivalent to the energy cost of sitting quietly.
         // The formula for calories burned per minute is:
         // (MET value * body weight in kg * 3.5) / 200
         // Multiply by the duration of the activity
-        return ((MET * weightKg * 3.5) / 200) * duration;
+        return ((met * weightKg * 3.5) / 200) * duration;
     }
 
     private HealthMetricsRecord retrieveMetricsFromRepository(String userId) {
@@ -141,7 +141,7 @@ public class HealthMetricsService {
         // Process exercise events
         if (event.getEventType() == EventType.EXERCISE && event.getExerciseId() != null) {
             ExerciseData exerciseData = exerciseLambdaServiceClient.findExerciseData(event.getExerciseId());
-            double caloriesBurned = calculateCaloriesBurned(exerciseData.getMETS(), weightInKg, exerciseData.getDuration());
+            double caloriesBurned = calculateCaloriesBurned(exerciseData.getMets(), weightInKg, exerciseData.getDuration());
             metrics.setTotalCalorieExpenditure(metrics.getTotalCalorieExpenditure() + caloriesBurned);
         }
 

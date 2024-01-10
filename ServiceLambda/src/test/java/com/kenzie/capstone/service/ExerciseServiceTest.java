@@ -53,7 +53,7 @@ public class ExerciseServiceTest {
         assertNotNull(repsCaptor.getValue(), "Reps are generated");
         assertNotNull(setsCaptor.getValue(), "Sets are generated");
         assertNotNull(distanceCaptor.getValue(), "Distance is generated");
-        assertNotNull(metsCaptor.getValue(), "METS are generated");
+        assertNotNull(metsCaptor.getValue(), "mets are generated");
         assertNotNull(descriptionCaptor.getValue(), "description is generated");
 
         assertEquals(response.getExerciseId(), exerciseIdCaptor.getValue());
@@ -64,7 +64,7 @@ public class ExerciseServiceTest {
         assertEquals(response.getReps(), repsCaptor.getValue());
         assertEquals(response.getSets(), setsCaptor.getValue());
         assertEquals(response.getDistance(), distanceCaptor.getValue());
-        assertEquals(response.getMETS(), metsCaptor.getValue());
+        assertEquals(response.getMets(), metsCaptor.getValue());
         assertEquals(response.getDescription(), descriptionCaptor.getValue());
 
         assertNotNull(response, "A response is returned");
@@ -97,7 +97,7 @@ public class ExerciseServiceTest {
         record.setReps(reps);
         record.setSets(sets);
         record.setDistance(distance);
-        record.setMETS(mets);
+        record.setMets(mets);
         record.setDescription(description);
 
         when(exerciseDao.findExerciseData(exerciseId)).thenReturn(Arrays.asList(record));

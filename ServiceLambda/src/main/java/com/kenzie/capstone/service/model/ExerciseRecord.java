@@ -18,7 +18,7 @@ public class ExerciseRecord {
     private int reps;
     private int sets;
     private double distance;
-    private double METS;
+    private double mets;
     private String description;
     @DynamoDBHashKey(attributeName = "exerciseId")
     public String getExerciseId() {
@@ -85,12 +85,12 @@ public class ExerciseRecord {
         this.distance = distance;
     }
     @DynamoDBAttribute(attributeName = "mets")
-    public double getMETS() {
-        return METS;
+    public double getMets() {
+        return mets;
     }
 
-    public void setMETS(double METS) {
-        this.METS = METS;
+    public void setMets(double mets) {
+        this.mets = mets;
     }
     @DynamoDBAttribute(attributeName = "description")
     public String getDescription() {
