@@ -11,7 +11,8 @@ const client = new ApiClient();
 
 
 
-export function renderEvents() {
+export function renderEvents(day) {
+
   try {
     const eventsArea = document.querySelectorAll(".eventSection");
     if (eventsArea) {
@@ -44,7 +45,7 @@ export function createBtnGroup() {
 
   function handlebuttonClick(event) {
     toggleModal(event);
-    console.log("removed button event listener");
+    ;
     button.removeEventListener("click", handlebuttonClick);
   }
 

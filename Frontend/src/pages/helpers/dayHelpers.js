@@ -44,7 +44,9 @@ export function renderDays(event) {
   dayArea.append(articleDayList);
 
   articleDayList.addEventListener("click", (event) => {
-    const dayIndex = event.target.getAttribute("dayIndex");
+
+    const dayIndex = event.target.getAttribute("dayindex");
+    window.sessionStorage.setItem("dayIndex", dayIndex)
     const day = dayList[dayIndex];
     renderEvents(day);
   });

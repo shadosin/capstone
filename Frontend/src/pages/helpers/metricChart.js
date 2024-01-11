@@ -53,7 +53,7 @@ function getData() {
       value: metrics[metric],
     });
   }
-  console.log(output);
+  ;
   return output;
 }
 

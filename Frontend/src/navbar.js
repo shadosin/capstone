@@ -3,7 +3,6 @@ import registerPage from "./pages/register";
 import editUser from "./pages/editUser";
 
 function createUserButtons() {
-  console.log(`creating user buttons`);
   if (!window.sessionStorage.getItem("userInfo")) {
     const ul2 = document.createElement("ul");
     ul2.className = "navBtnGroup";
@@ -23,13 +22,12 @@ function createUserButtons() {
     // Append li elements to the second ul
     ul2.append(li2, li3);
     li2.addEventListener("click", () => {
-      console.log("Register Clicked");
+      ;
       document.querySelector("section").innerHTML = "";
       registerPage();
     });
 
     li3.addEventListener("click", () => {
-      console.log("login clicked");
       const section = document.querySelector("section");
       section.innerHTML = "";
       login();
@@ -45,7 +43,7 @@ function createUserButtons() {
     editProfileBtn.textContent = "Edit Profile";
 
     editProfileBtn.addEventListener("click", () => {
-      console.log("edit profile clicked");
+      ;
       const section = document.querySelector("section");
       section.innerHTML = "";
       editUser();
@@ -112,7 +110,7 @@ export default function navbar() {
   header.append(nav);
 
   ul1.addEventListener("click", () => {
-    console.log("home clicked");
+    ;
     const section = document.querySelector("section");
     section.innerHTML = "";
     window.location.href = "/";

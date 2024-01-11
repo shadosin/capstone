@@ -463,3 +463,23 @@ ul > li > p:hover {
 #metricChartCanvas {
     align-self: center;
 }
+
+
+.add-event-form, #addEventForm {
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+}
+
+.add-event-form {
+    margin: .25rem;
+    padding: 2rem;
+}
+. add-event-form > * {
+    margin: .25rem;
+    padding: .25rem;
+}
+
+.add-event-form > li {
+    list-style-type: none;
+}
