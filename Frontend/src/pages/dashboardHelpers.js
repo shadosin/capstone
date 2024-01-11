@@ -23,6 +23,7 @@ export function createList(listData, listItemClass, defaultText) {
   } else {
     for (let data of listData) {
       const listItem = createListItem(data);
+      listItem.setAttribute("dayIndex", String(listData.indexOf(data)))
       listItem.classList.add(listItemClass);
       list.append(listItem);
     }
@@ -40,13 +41,13 @@ export function createListItem(textContent) {
     listItem.append(text);
   } else {
     text = document.createElement("p");
-    text.innerHTML = `${textContent}`;
-    listItem.append(text);
+    listItem.innerHTML = `${textContent}`;
+    // listItem.append(text);
   }
   listItem.classList.add("schedule-list-item");
 
   if (listOfDays.includes(textContent)) {
-    listItem.setAttribute("dayIndex", String(listOfDays.indexOf(textContent)));
+    // listItem.setAttribute("dayIndex", String(listOfDays.indexOf(textContent)));
   }
   return listItem;
 }

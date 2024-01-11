@@ -1,8 +1,49 @@
 import ApiClient from "../api/apiClient";
+import { DateTime } from "luxon";
 
 const client = new ApiClient();
 
-window.addEventSubmit = function (event) {};
+window.addEventSubmit = async function (event) {
+  event.preventDefault();
+  const eventItemCard = document.querySelector(".eventItemCard");
+  const dayIndex = window.sessionStorage.getItem("dayIndex");
+
+  const scheduleListId = JSON.parse(
+    window.localStorage.getItem("scheduleData"),
+  )[dayIndex];
+  const userId = JSON.parse(window.sessionStorage.getItem("userInfo")).userId;
+
+  const form = document.querySelector("#addEventForm");
+  const formData = new FormData(form);
+
+  const formDataObj = Object.fromEntries(formData.entries());
+  const time = DateTime.fromISO(
+    `${formDataObj.date}T${formDataObj.time}`,
+  ).toISO();
+
+  const payload = {
+    scheduledDateTime: time,
+    userId,
+  };
+
+  if (formDataObj.type === "Meal") {
+    payload.eventType = "MEAL";
+  }
+  if (formDataObj.type === "Exercise") {
+    payload.eventType = "EXERCISE";
+  }
+
+  if (formDataObj.type === "Meal") {
+    payload.mealId = formDataObj.mealSelected;
+  }
+  if (formDataObj.type === "Exercise") {
+    payload.exerciseId = formDataObj.exerciseSelected;
+  }
+
+  await client.createScheduleEvent(payload, scheduleListId).then(async (response) => {
+    return await client.updateSchedule(response);
+  });
+};
 
 window.renderEventItemOnForm = function (eventItem) {
   function generateListItems(eventDetails) {
@@ -34,6 +75,14 @@ window.renderEventItemOnForm = function (eventItem) {
   const div = document.createElement("div");
   div.id = "eventItemCard";
   div.classList.add("eventItemCard", "card");
+
+  if (eventItem) {
+    console.log({ eventItem });
+    const itemId = eventItem.mealId || eventItem.exerciseId;
+    div.setAttribute("id", itemId);
+    const { name } = eventItem;
+    div.innerHTML = `<h4><strong>${name}</strong></h4>`;
+  }
   div.innerHTML = `<ul>${generateListItems(eventItem)}</ul>`;
 
   const submitButton = document.createElement("input");
@@ -220,6 +269,10 @@ export function addEventForm() {
   return `
     <div class="add-event-form">
       <form id="addEventForm" onsubmit="addEventSubmit(event)">
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time" required>
+        <label for="date" >Date</label>
+        <input type="date" id="date" name="date" required>
       <select id="type" name="type" required onclick="eventOnClick(event)">
         <option value="Meal">Meal</option>
          <option value="Exercise">Exercise</option>

@@ -916,7 +916,7 @@ export const exerciseStrength  =[
     "reps": 10,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Upper Body Weights"
   },
   {
@@ -928,7 +928,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 2.0,
+    "mets": 2.0,
     "description": "Upper Body Weights"
   },
   {
@@ -940,7 +940,7 @@ export const exerciseStrength  =[
     "reps": 5,
     "sets": 6,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -952,7 +952,7 @@ export const exerciseStrength  =[
     "reps": 15,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Lower Body Weights"
   },
   {
@@ -964,7 +964,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 8,
     "distance": 0.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Lower Body Weights"
   },
   {
@@ -976,7 +976,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -988,7 +988,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 3.0,
+    "mets": 3.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1000,7 +1000,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 8,
     "distance": 0.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Plyometrics"
   },
   {
@@ -1012,7 +1012,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 15,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Abdominals"
   },
   {
@@ -1024,7 +1024,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Posterior Chain Excercise"
   },
   {
@@ -1036,7 +1036,7 @@ export const exerciseStrength  =[
     "reps": 10,
     "sets": 3,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1048,7 +1048,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 12,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1060,7 +1060,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 10,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Arms Weighted"
   },
   {
@@ -1072,7 +1072,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 12,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1084,7 +1084,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 10,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1096,7 +1096,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1108,7 +1108,7 @@ export const exerciseStrength  =[
     "reps": 5,
     "sets": 5,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1120,7 +1120,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 3.0,
+    "mets": 3.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1132,7 +1132,7 @@ export const exerciseStrength  =[
     "reps": 10,
     "sets": 3,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1144,7 +1144,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 10,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1156,7 +1156,7 @@ export const exerciseStrength  =[
     "reps": 4,
     "sets": 8,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1168,7 +1168,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1180,7 +1180,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 7.0,
+    "mets": 7.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1192,7 +1192,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1204,7 +1204,7 @@ export const exerciseStrength  =[
     "reps": 10,
     "sets": 3,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Posterior Chain Excercise"
   },
   {
@@ -1216,7 +1216,7 @@ export const exerciseStrength  =[
     "reps": 0,
     "sets": 3,
     "distance": 0.3,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Stabalizers"
   },
   {
@@ -1228,7 +1228,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 2.0,
+    "mets": 2.0,
     "description": "Arms Weighted"
   },
   {
@@ -1240,7 +1240,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Posterior Chain Excercise"
   },
   {
@@ -1252,7 +1252,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 15,
     "distance": 0.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1264,7 +1264,7 @@ export const exerciseStrength  =[
     "reps": 4,
     "sets": 12,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1276,7 +1276,7 @@ export const exerciseStrength  =[
     "reps": 6,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1288,7 +1288,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 2.0,
+    "mets": 2.0,
     "description": "Posterior Chain Excercise"
   },
   {
@@ -1300,7 +1300,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 12,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1312,7 +1312,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 10,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Plyometrics"
   },
   {
@@ -1324,7 +1324,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 12,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1336,7 +1336,7 @@ export const exerciseStrength  =[
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 3.0,
+    "mets": 3.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1348,7 +1348,7 @@ export const exerciseStrength  =[
     "reps": 5,
     "sets": 5,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1360,7 +1360,7 @@ export const exerciseStrength  =[
     "reps": 5,
     "sets": 5,
     "distance": 0.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Lower Body Weights"
   },
   {
@@ -1372,7 +1372,7 @@ export const exerciseStrength  =[
     "reps": 0,
     "sets": 3,
     "distance": 0.3,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Stabalizers"
   },
   {
@@ -1384,7 +1384,7 @@ export const exerciseStrength  =[
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Upper Body Weights"
   },
   {
@@ -1396,7 +1396,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 20,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Upper Body"
   },
   {
@@ -1408,7 +1408,7 @@ export const exerciseStrength  =[
     "reps": 3,
     "sets": 12,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Arms Weighted"
   }
 ]
@@ -1422,7 +1422,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 3.0,
-    "METS": 8.0,
+    "mets": 8.0,
     "description": "Hight Intensity Cardio"
   },
   {
@@ -1434,7 +1434,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 8.0,
-    "METS": 8.0,
+    "mets": 8.0,
     "description": "Cardio"
   },
   {
@@ -1446,7 +1446,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 0.3,
-    "METS": 8.0,
+    "mets": 8.0,
     "description": "Hight Intensity Cardio"
   },
   {
@@ -1458,7 +1458,7 @@ export const exerciseCardio = [
     "reps": 3,
     "sets": 5,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Cardio"
   },
   {
@@ -1470,7 +1470,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 4.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Cardio"
   },
   {
@@ -1482,7 +1482,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 1,
     "distance": 3.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Cardio"
   },
   {
@@ -1494,7 +1494,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 1,
     "distance": 4.5,
-    "METS": 7.0,
+    "mets": 7.0,
     "description": "Hight Intensity Cardio"
   },
   {
@@ -1506,7 +1506,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 0.0,
-    "METS": 15.0,
+    "mets": 15.0,
     "description": "Hight Intensity Cardio"
   },
   {
@@ -1518,7 +1518,7 @@ export const exerciseCardio = [
     "reps": 3,
     "sets": 20,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Plyometrics"
   },
   {
@@ -1530,7 +1530,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 1.5,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Cardio"
   },
   {
@@ -1542,7 +1542,7 @@ export const exerciseCardio = [
     "reps": 0,
     "sets": 0,
     "distance": 2.5,
-    "METS": 7.0,
+    "mets": 7.0,
     "description": "Cardio"
   }
 ]
@@ -1556,7 +1556,7 @@ export const exerciseFlexibility = [
     "reps": 15,
     "sets": 4,
     "distance": 0.0,
-    "METS": 6.0,
+    "mets": 6.0,
     "description": "Plyometrics"
   },
   {
@@ -1568,7 +1568,7 @@ export const exerciseFlexibility = [
     "reps": 3,
     "sets": 25,
     "distance": 0.0,
-    "METS": 0.0,
+    "mets": 0.0,
     "description": "Abdominals"
   },
   {
@@ -1580,7 +1580,7 @@ export const exerciseFlexibility = [
     "reps": 0,
     "sets": 4,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Abdominals"
   },
   {
@@ -1592,7 +1592,7 @@ export const exerciseFlexibility = [
     "reps": 0,
     "sets": 0,
     "distance": 0.0,
-    "METS": 7.0,
+    "mets": 7.0,
     "description": "Flexibility"
   },
   {
@@ -1604,7 +1604,7 @@ export const exerciseFlexibility = [
     "reps": 0,
     "sets": 0,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Flexibility"
   },
   {
@@ -1616,7 +1616,7 @@ export const exerciseFlexibility = [
     "reps": 0,
     "sets": 0,
     "distance": 0.0,
-    "METS": 3.0,
+    "mets": 3.0,
     "description": "Flexibility"
   },
   {
@@ -1628,7 +1628,7 @@ export const exerciseFlexibility = [
     "reps": 10,
     "sets": 3,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Abdominals"
   },
   {
@@ -1640,7 +1640,7 @@ export const exerciseFlexibility = [
     "reps": 25,
     "sets": 4,
     "distance": 0.0,
-    "METS": 4.0,
+    "mets": 4.0,
     "description": "Abdominals"
   },
   {
@@ -1652,7 +1652,7 @@ export const exerciseFlexibility = [
     "reps": 3,
     "sets": 12,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Abdominals"
   },
   {
@@ -1664,7 +1664,7 @@ export const exerciseFlexibility = [
     "reps": 8,
     "sets": 4,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Plyometrics"
   },
   {
@@ -1676,7 +1676,7 @@ export const exerciseFlexibility = [
     "reps": 3,
     "sets": 8,
     "distance": 0.0,
-    "METS": 5.0,
+    "mets": 5.0,
     "description": "Abdominals"
   },
   {
@@ -1688,7 +1688,7 @@ export const exerciseFlexibility = [
     "reps": 12,
     "sets": 4,
     "distance": 0.0,
-    "METS": 3.0,
+    "mets": 3.0,
     "description": "Abdominals"
   }
 ]

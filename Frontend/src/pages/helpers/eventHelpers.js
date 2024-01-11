@@ -11,7 +11,8 @@ const client = new ApiClient();
 
 
 
-export function renderEvents() {
+export function renderEvents(day) {
+
   try {
     const eventsArea = document.querySelectorAll(".eventSection");
     if (eventsArea) {
